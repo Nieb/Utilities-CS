@@ -25,10 +25,7 @@ internal static partial class VEC_Projection {
     [Impl(AggressiveInlining)] internal static vec2 projectAB(vec2 P, vec2 A, vec2 B) {vec2 dAB = B-A;  return A + dAB*( dot(P-A,dAB)/dot(dAB) );}
     [Impl(AggressiveInlining)] internal static vec3 projectAB(vec3 P, vec3 A, vec3 B) {vec3 dAB = B-A;  return A + dAB*( dot(P-A,dAB)/dot(dAB) );}
 
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
     //
     //  Clamped version of projectAB()
     //
@@ -106,27 +103,24 @@ internal static partial class VEC_Projection {
     //      FarthestPointInBounds(  Point,  BoundsMin,               BoundsMax  )
     //      FarthestPointInBounds(  Point,  BoundsMin, BoundsCenter, BoundsMax  )
     //
-    [Impl(AggressiveInlining)] internal static  vec2 FarthestPointInBounds( vec2 P,  vec2 b0,  vec2 b1) => FarthestPointInBounds(P, b0, b0+(b1-b0)*0.5f, b1);
-    [Impl(AggressiveInlining)] internal static ivec2 FarthestPointInBounds(ivec2 P, ivec2 b0, ivec2 b1) => FarthestPointInBounds(P, b0, b0+(b1-b0)/2, b1);
+    [Impl(AggressiveInlining)] internal static  vec2 FarthestPointInBounds( vec2 P,  vec2 b0,            vec2 b1) => FarthestPointInBounds(P, b0, b0+(b1-b0)*0.5f, b1);
+    [Impl(AggressiveInlining)] internal static  vec2 FarthestPointInBounds( vec2 P,  vec2 b0,  vec2 bC,  vec2 b1) => new  vec2( (P.x > bC.x) ? b0.x : b1.x,
+                                                                                                                                (P.y > bC.y) ? b0.y : b1.y );
 
-    [Impl(AggressiveInlining)] internal static  vec3 FarthestPointInBounds( vec3 P,  vec3 b0,  vec3 b1) => FarthestPointInBounds(P, b0, b0+(b1-b0)*0.5f, b1);
-    [Impl(AggressiveInlining)] internal static ivec3 FarthestPointInBounds(ivec3 P, ivec3 b0, ivec3 b1) => FarthestPointInBounds(P, b0, b0+(b1-b0)/2, b1);
-
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [Impl(AggressiveInlining)] internal static v2 FarthestPointInBounds(v2 P, v2 b0, v2 bC, v2 b1) => new v2( (P.x > bC.x) ? b0.x : b1.x,
-                                                                                                              (P.y > bC.y) ? b0.y : b1.y );
-
-    [Impl(AggressiveInlining)] internal static i2 FarthestPointInBounds(i2 P, i2 b0, i2 bC, i2 b1) => new i2( (P.x > bC.x) ? b0.x : b1.x,
-                                                                                                              (P.y > bC.y) ? b0.y : b1.y );
+    [Impl(AggressiveInlining)] internal static ivec2 FarthestPointInBounds(ivec2 P, ivec2 b0,           ivec2 b1) => FarthestPointInBounds(P, b0, b0+(b1-b0)/2, b1);
+    [Impl(AggressiveInlining)] internal static ivec2 FarthestPointInBounds(ivec2 P, ivec2 b0, ivec2 bC, ivec2 b1) => new ivec2( (P.x > bC.x) ? b0.x : b1.x,
+                                                                                                                                (P.y > bC.y) ? b0.y : b1.y );
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [Impl(AggressiveInlining)] internal static v3 FarthestPointInBounds(v3 P, v3 b0, v3 bC, v3 b1) => new v3( (P.x > bC.x) ? b0.x : b1.x,
-                                                                                                              (P.y > bC.y) ? b0.y : b1.y,
-                                                                                                              (P.z > bC.z) ? b0.z : b1.z );
+    [Impl(AggressiveInlining)] internal static  vec3 FarthestPointInBounds( vec3 P,  vec3 b0,            vec3 b1) => FarthestPointInBounds(P, b0, b0+(b1-b0)*0.5f, b1);
+    [Impl(AggressiveInlining)] internal static  vec3 FarthestPointInBounds( vec3 P,  vec3 b0,  vec3 bC,  vec3 b1) => new  vec3( (P.x > bC.x) ? b0.x : b1.x,
+                                                                                                                                (P.y > bC.y) ? b0.y : b1.y,
+                                                                                                                                (P.z > bC.z) ? b0.z : b1.z );
 
-    [Impl(AggressiveInlining)] internal static i3 FarthestPointInBounds(i3 P, i3 b0, i3 bC, i3 b1) => new i3( (P.x > bC.x) ? b0.x : b1.x,
-                                                                                                              (P.y > bC.y) ? b0.y : b1.y,
-                                                                                                              (P.z > bC.z) ? b0.z : b1.z );
+    [Impl(AggressiveInlining)] internal static ivec3 FarthestPointInBounds(ivec3 P, ivec3 b0,           ivec3 b1) => FarthestPointInBounds(P, b0, b0+(b1-b0)/2, b1);
+    [Impl(AggressiveInlining)] internal static ivec3 FarthestPointInBounds(ivec3 P, ivec3 b0, ivec3 bC, ivec3 b1) => new ivec3( (P.x > bC.x) ? b0.x : b1.x,
+                                                                                                                                (P.y > bC.y) ? b0.y : b1.y,
+                                                                                                                                (P.z > bC.z) ? b0.z : b1.z );
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

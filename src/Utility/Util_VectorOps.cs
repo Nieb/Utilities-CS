@@ -480,7 +480,9 @@ internal static partial class VEC {
     [Impl(AggressiveInlining)] internal static v4 atan(v4 A) => new v4(atan(A.x), atan(A.y), atan(A.z), atan(A.w));
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static v1 atan2(v1 A, v1 B) => System.MathF.Atan2(A, B);
+    [Impl(AggressiveInlining)] internal static v1 atan2(v1 Y, v1 X) => System.MathF.Atan2(Y, X);
+
+    [Impl(AggressiveInlining)] internal static v1 atan2(v2 A) => System.MathF.Atan2(A.y, A.x);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

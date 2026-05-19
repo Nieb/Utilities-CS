@@ -182,7 +182,7 @@ internal static class VEC_Interpolation {
 
     //==========================================================================================================================================================
     //
-    //      PowerStep(x, 2f) == QuadStep(x)
+    //      "PowerStep(x,2f)" is equivalent to "QuadStep(x)"
     //
     [Impl(AggressiveInlining)] internal static v1 PowerStep(v1 V, v1 P)             {V = clamp(V);            return (V < 0.5f)  ?  pow(2f*V, P)/2f  :  1f-pow(2f-2f*V, P)/2f;}
     [Impl(AggressiveInlining)] internal static v1 PowerStep(v1 V, v1 P, v1 L, v1 U) {V = clamp((V-L)/(U-L));  return (V < 0.5f)  ?  pow(2f*V, P)/2f  :  1f-pow(2f-2f*V, P)/2f;}
@@ -260,15 +260,8 @@ internal static class VEC_Interpolation {
     //
     //  OUTPUT: 0..1
     //
-    internal static v1 SmoothestStep(v1 V, v1 L, v1 U) {
-        V = clamp((V-L)/(U-L));
-
-        v1 VV   = V  * V;
-        v1 VVV  = VV * V;
-        v1 VVVV = VV * VV;
-
-        return VVVV * (-20f*VVV + 70f*VV - 84f*V + 35f);
-    }
+    internal static v1 SmoothestStep(v1 V)             {V=clamp(V);            v1 VV=V*V;  v1 VVV=VV*V;  v1 VVVV=VV*VV;  return VVVV * (-20f*VVV + 70f*VV - 84f*V + 35f);}
+    internal static v1 SmoothestStep(v1 V, v1 L, v1 U) {V=clamp((V-L)/(U-L));  v1 VV=V*V;  v1 VVV=VV*V;  v1 VVVV=VV*VV;  return VVVV * (-20f*VVV + 70f*VV - 84f*V + 35f);}
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
