@@ -17,7 +17,15 @@ internal struct ivec3 : System.IFormattable {
     [FieldOffset(4)] public ivec2 yz;
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ivec2 xz {get => new ivec2(x,z);  set {x=value.x; z=value.y;}}
+    public ivec2 xz  {get => new ivec2(x,z);    set {x=value.x; z=value.y;}}
+    public ivec2 zy  {get => new ivec2(z,y);    set {z=value.x; y=value.y;}}
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    public ivec3 xzy {get => new ivec3(x,z,y);  set {x=value.x; z=value.y; y=value.z;}}
+    public ivec3 zyx {get => new ivec3(z,y,x);  set {z=value.x; y=value.y; x=value.z;}}
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    public ivec4 xyz_ => new ivec4(x,y,z,0);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -33,7 +41,7 @@ internal struct ivec3 : System.IFormattable {
     [Impl(AggressiveInlining)] public static implicit operator ivec3(   I3 T) => new ivec3( T.x, T.y, T.z); //  (int,int,int)  to  ivec3
   //[Impl(AggressiveInlining)] public static implicit operator    I3(ivec3 V) =>          ( V.x, V.y, V.z); //          ivec3  to  (int,int,int)
 
-    [Impl(AggressiveInlining)] public static implicit operator  VEC3(ivec3 V) => new  VEC3( V.x, V.y, V.z); //          ivec3  to  ew-gross
+    [Impl(AggressiveInlining)] public static implicit operator  VEC3(ivec3 V) => new  VEC3( V.x, V.y, V.z); //          ivec3  to  Vector3
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

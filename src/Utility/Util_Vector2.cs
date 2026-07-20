@@ -33,8 +33,8 @@ internal struct vec2 : System.IFormattable {
   //[Impl(AggressiveInlining)] public static implicit operator   F2(   vec2 V) =>         ( V.x, V.y); //           vec2  to  (float,float)
     [Impl(AggressiveInlining)] public static implicit operator vec2(  ivec2 V) => new vec2( V.x, V.y); //          ivec2  to  vec2
 
-    [Impl(AggressiveInlining)] public static implicit operator vec2(   VEC2 v) => new vec2( v.X, v.Y); //       ew-gross  to  vec2
-    [Impl(AggressiveInlining)] public static implicit operator VEC2(   vec2 V) => new VEC2( V.x, V.y); //           vec2  to  ew-gross
+    [Impl(AggressiveInlining)] public static implicit operator vec2(   VEC2 v) => new vec2( v.X, v.Y); //        Vector2  to  vec2
+    [Impl(AggressiveInlining)] public static implicit operator VEC2(   vec2 V) => new VEC2( V.x, V.y); //           vec2  to  Vector2
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

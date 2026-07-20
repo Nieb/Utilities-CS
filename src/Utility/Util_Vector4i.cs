@@ -42,7 +42,7 @@ internal struct ivec4 : System.IFormattable {
     [Impl(AggressiveInlining)] public static implicit operator ivec4((i2 A, i2 B) T) => new ivec4(T.A.x,T.A.y,T.B.x,T.B.y); //      (ivec2,ivec2)  to  ivec4
     [Impl(AggressiveInlining)] public static implicit operator ivec4((i3 V, i1 w) T) => new ivec4(T.V.x,T.V.y,T.V.z,  T.w); //        (ivec3,int)  to  ivec4
 
-    [Impl(AggressiveInlining)] public static implicit operator  VEC4(       ivec4 V) => new  VEC4(  V.x,  V.y,  V.z,  V.w); //              ivec4  to  ew-gross
+    [Impl(AggressiveInlining)] public static implicit operator  VEC4(       ivec4 V) => new  VEC4(  V.x,  V.y,  V.z,  V.w); //              ivec4  to  Vector4
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

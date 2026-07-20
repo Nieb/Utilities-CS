@@ -123,10 +123,11 @@ internal static class VEC_Rotation {
     //##########################################################################################################################################################
     //                                                                       "Yaw"
 #if Z_UP
-    internal static mat4 rol(float Theta) {
+    internal static mat4 rol(float Theta)
 #else
-    internal static mat4 yaw(float Theta) {
+    internal static mat4 yaw(float Theta)
 #endif
+    {
         if (Theta == 0f)
             return new();
 
@@ -142,10 +143,11 @@ internal static class VEC_Rotation {
 
     //==========================================================================================================================================================
 #if Z_UP
-    internal static vec3 rol(vec3 P, float Theta) {
+    internal static vec3 rol(vec3 P, float Theta)
 #else
-    internal static vec3 yaw(vec3 P, float Theta) {
+    internal static vec3 yaw(vec3 P, float Theta)
 #endif
+    {
         if (Theta == 0f)
             return P;
 
@@ -160,10 +162,11 @@ internal static class VEC_Rotation {
 
     //==========================================================================================================================================================
 #if Z_UP
-    internal static vec3 rol(vec3 P, vec3 Pivot, float Theta) {
+    internal static vec3 rol(vec3 P, vec3 Pivot, float Theta)
 #else
-    internal static vec3 yaw(vec3 P, vec3 Pivot, float Theta) {
+    internal static vec3 yaw(vec3 P, vec3 Pivot, float Theta)
 #endif
+    {
         if (Theta == 0f)
             return P;
 
@@ -183,10 +186,11 @@ internal static class VEC_Rotation {
     //##########################################################################################################################################################
     //                                                                       "Roll"
 #if Z_UP
-    internal static mat4 yaw(float Theta) {
+    internal static mat4 yaw(float Theta)
 #else
-    internal static mat4 rol(float Theta) {
+    internal static mat4 rol(float Theta)
 #endif
+    {
         if (Theta == 0f)
             return new();
 
@@ -202,10 +206,11 @@ internal static class VEC_Rotation {
 
     //==========================================================================================================================================================
 #if Z_UP
-    internal static vec3 yaw(vec3 P, float Theta) {
+    internal static vec3 yaw(vec3 P, float Theta)
 #else
-    internal static vec3 rol(vec3 P, float Theta) {
+    internal static vec3 rol(vec3 P, float Theta)
 #endif
+    {
         if (Theta == 0f)
             return P;
 
@@ -220,10 +225,11 @@ internal static class VEC_Rotation {
 
     //==========================================================================================================================================================
 #if Z_UP
-    internal static vec3 yaw(vec3 P, vec3 Pivot, float Theta) {
+    internal static vec3 yaw(vec3 P, vec3 Pivot, float Theta)
 #else
-    internal static vec3 rol(vec3 P, vec3 Pivot, float Theta) {
+    internal static vec3 rol(vec3 P, vec3 Pivot, float Theta)
 #endif
+    {
         if (Theta == 0f)
             return P;
 

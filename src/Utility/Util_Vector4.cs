@@ -42,8 +42,8 @@ internal struct vec4 : System.IFormattable {
     [Impl(AggressiveInlining)] public static implicit operator vec4((v2 A, v2 B) T) => new vec4(T.A.x,T.A.y,T.B.x,T.B.y); //                (vec2,vec2)  to  vec4
     [Impl(AggressiveInlining)] public static implicit operator vec4((v3 V, v1 w) T) => new vec4(T.V.x,T.V.y,T.V.z,  T.w); //               (vec3,float)  to  vec4
 
-    [Impl(AggressiveInlining)] public static implicit operator vec4(        VEC4 v) => new vec4(  v.X,  v.Y,  v.Z,  v.W); //                   ew-gross  to  vec4
-    [Impl(AggressiveInlining)] public static implicit operator VEC4(        vec4 V) => new VEC4(  V.x,  V.y,  V.z,  V.w); //                       vec4  to  ew-gross
+    [Impl(AggressiveInlining)] public static implicit operator vec4(        VEC4 v) => new vec4(  v.X,  v.Y,  v.Z,  v.W); //                    Vector4  to  vec4
+    [Impl(AggressiveInlining)] public static implicit operator VEC4(        vec4 V) => new VEC4(  V.x,  V.y,  V.z,  V.w); //                       vec4  to  Vector4
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

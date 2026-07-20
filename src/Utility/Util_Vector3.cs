@@ -17,12 +17,15 @@ internal struct vec3 : System.IFormattable {
     [FieldOffset(4)] public vec2 yz;
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    public vec2 xz  { get => new vec2(x,z);    set {x=value.x; z=value.y;}}
-    public vec2 zy  { get => new vec2(z,y);    set {z=value.x; y=value.y;}}
+    public vec2 xz  {get => new vec2(x,z);    set {x=value.x; z=value.y;}}
+    public vec2 zy  {get => new vec2(z,y);    set {z=value.x; y=value.y;}}
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    public vec3 xzy { get => new vec3(x,z,y);  set {x=value.x; z=value.y; y=value.z;}}
-    public vec3 zyx { get => new vec3(z,y,x);  set {z=value.x; y=value.y; x=value.z;}}
+    public vec3 xzy {get => new vec3(x,z,y);  set {x=value.x; z=value.y; y=value.z;}}
+    public vec3 zyx {get => new vec3(z,y,x);  set {z=value.x; y=value.y; x=value.z;}}
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    public vec4 xyz_ => new vec4(x,y,z,0);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -39,12 +42,12 @@ internal struct vec3 : System.IFormattable {
     //                                                                  Directly Assign
     [Impl(AggressiveInlining)] public static implicit operator vec3(     float[] V) => new vec3( V[0], V[1], V[2]); //             float[3]  to  vec3
     [Impl(AggressiveInlining)] public static implicit operator vec3(          V3 T) => new vec3(  T.x,  T.y,  T.z); //  (float,float,float)  to  vec3
-  //[Impl(AggressiveInlining)] public static implicit operator   F3(        vec3 V) =>         (  V.x,  V.y,  V.z); //                 vec3  to  (float,float,float)
+  //[Impl(AggressiveInlining)] public static implicit operator   V3(        vec3 V) =>         (  V.x,  V.y,  V.z); //                 vec3  to  (float,float,float)
     [Impl(AggressiveInlining)] public static implicit operator vec3((v2 V, v1 z) T) => new vec3(T.V.x,T.V.y,  T.z); //         (vec2,float)  to  vec3
     [Impl(AggressiveInlining)] public static implicit operator vec3(       ivec3 V) => new vec3(  V.x,  V.y,  V.z); //                ivec3  to  vec3
 
-    [Impl(AggressiveInlining)] public static implicit operator vec3(        VEC3 v) => new vec3(  v.X,  v.Y,  v.Z); //             ew-gross  to  vec3
-    [Impl(AggressiveInlining)] public static implicit operator VEC3(        vec3 V) => new VEC3(  V.x,  V.y,  V.z); //                 vec3  to  ew-gross
+    [Impl(AggressiveInlining)] public static implicit operator vec3(        VEC3 v) => new vec3(  v.X,  v.Y,  v.Z); //              Vector3  to  vec3
+    [Impl(AggressiveInlining)] public static implicit operator VEC3(        vec3 V) => new VEC3(  V.x,  V.y,  V.z); //                 vec3  to  Vector3
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

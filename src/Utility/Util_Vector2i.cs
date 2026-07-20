@@ -32,7 +32,7 @@ internal struct ivec2 : System.IFormattable {
     [Impl(AggressiveInlining)] public static implicit operator ivec2(   I2 T) => new ivec2( T.x, T.y); //  (int,int)  to  ivec2
   //[Impl(AggressiveInlining)] public static implicit operator    I2(ivec2 V) =>          ( V.x, V.y); //      ivec2  to  (int,int)
 
-    [Impl(AggressiveInlining)] public static implicit operator  VEC2(ivec2 V) => new  VEC2( V.x, V.y); //      ivec2  to  ew-gross
+    [Impl(AggressiveInlining)] public static implicit operator  VEC2(ivec2 V) => new  VEC2( V.x, V.y); //      ivec2  to  Vector2
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
