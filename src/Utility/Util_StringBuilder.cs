@@ -4,7 +4,6 @@ namespace Utility;
 internal static partial class STR {
     //######################################################################################################################################################
     //######################################################################################################################################################
-    [Impl(AggressiveOptimization)]
     internal static int CurrentLineLength(this StringBuilder StrBldr) {
         string STR = StrBldr.ToString();
 

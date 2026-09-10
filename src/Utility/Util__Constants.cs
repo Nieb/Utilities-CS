@@ -46,12 +46,12 @@ internal static class Constants {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    internal const float EPS9 = 0.000000001f;
-    internal const float EPS8 = 0.00000001f;
-    internal const float EPS7 = 0.0000001f;
-    internal const float EPS6 = 0.000001f;
-    internal const float EPS5 = 0.00001f;
-    internal const float EPS4 = 0.0001f;
+    internal const float EPS9 = 0.000_000_001f;
+    internal const float EPS8 = 0.000_000_01f;
+    internal const float EPS7 = 0.000_000_1f;
+    internal const float EPS6 = 0.000_001f;
+    internal const float EPS5 = 0.000_01f;
+    internal const float EPS4 = 0.000_1f;
     internal const float EPS3 = 0.001f;
     internal const float EPS2 = 0.01f;
     internal const float EPS1 = 0.1f;

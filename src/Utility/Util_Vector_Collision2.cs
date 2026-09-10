@@ -35,7 +35,7 @@ internal static class VEC_Collision2 {
     //
     //      PointVsLine(  Point,  Line-PointA,  Line-PointB,  Tolerance  )
     //
-    [Impl(AggressiveInlining)] internal static bool PointVsLine(vec2 P, vec2 La, vec2 Lb, float T) {
+    [Impl(AggressiveInlining)] internal static bool PointVsLine(vec2 P, vec2 La, vec2 Lb, float Tolerance) {
         vec2 dAP = P  - La;
         vec2 dAB = Lb - La;
 
@@ -43,7 +43,7 @@ internal static class VEC_Collision2 {
         float Dist = dot(dAP, dAB) / dot(dAB);
 
         return (Dist >= 0f && Dist <= 1f)
-            && dot(dAP - dAB*Dist) <= (T*T);
+            && dot(dAP - dAB*Dist) <= (Tolerance*Tolerance);
     }
 
     //##########################################################################################################################################################
@@ -61,20 +61,20 @@ internal static class VEC_Collision2 {
     //
     //      PointVsRect(  Point,  RectanglePosition,  RectangleSize  )
     //
-    [Impl(AggressiveInlining)] internal static bool PointVsRect(v2 P, v2 Rp, v2 Rs) => (P >= Rp && P <= Rp+Rs);
-    [Impl(AggressiveInlining)] internal static bool PointVsRect(i2 P, i2 Rp, i2 Rs) => (P >= Rp && P <  Rp+Rs);
+    [Impl(AggressiveInlining)] internal static bool PointVsRect( vec2 P,  vec2 Rp,  vec2 Rs) => (P >= Rp && P <= Rp+Rs);
+    [Impl(AggressiveInlining)] internal static bool PointVsRect(ivec2 P, ivec2 Rp, ivec2 Rs) => (P >= Rp && P <  Rp+Rs);
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static bool PointVsBounds(v2 P, v2 b0, v2 b1) => (P >= b0 && P <= b1);
-    [Impl(AggressiveInlining)] internal static bool PointVsBounds(i2 P, i2 b0, i2 b1) => (P >= b0 && P <  b1);
+    [Impl(AggressiveInlining)] internal static bool PointVsBounds( vec2 P,  vec2 b0,  vec2 b1) => (P >= b0 && P <= b1);
+    [Impl(AggressiveInlining)] internal static bool PointVsBounds(ivec2 P, ivec2 b0, ivec2 b1) => (P >= b0 && P <  b1);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
     //  Weinding is Anti-Clockwise.
     //
-    //              A
-    //        +Y    ●
+    //         +Y   A
+    //              ●
     //             / \
     //            /   \
     //           /     \

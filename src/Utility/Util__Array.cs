@@ -19,28 +19,38 @@ internal static class Array {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //  Get previous/next Element via provided index, with Array.Length wrapping.
+    //  Get previous|next Array-Item from "i", with Array.Length wrapping.
     //
-    //      Blarg.prev(i)       Equivalent to:    Blarg.prev(i,1)
-    //      Blarg.next(i)       Equivalent to:    Blarg.next(i,1)
+    //  NOTE: "ref"
+    //    struct MyStruct {...}
+    //    MyStruct[] Things;
+    //    ref MyStruct A = ref Things.next(i);    //  Modifying "A" will     alter array-item.  Reassignment of "A" will     alter array-item.
+    //        MyStruct B =     Things.next(i);    //  Modifying "B" will NOT alter array-item.  Reassignment of "B" will NOT alter array-item.  Stores copy of array-item.
     //
+    //    class MyClass {...}
+    //    MyClass[] Things;
+    //    ref MyClass A = ref Things.next(i);     //  Modifying "A" will     alter array-item.  Reassignment of "A" will     alter array-item.
+    //        MyClass B =     Things.next(i);     //  Modifying "B" will     alter array-item.  Reassignment of "B" will NOT alter array-item.
+    //
+    //      Blarg.prev(i)    is equivalent to:    Blarg.prev(i,1)
+    //      Blarg.next(i)    is equivalent to:    Blarg.next(i,1)
     //      Blarg.prev(i,2)
     //      Blarg.next(i,2)
     //
-    [Impl(AggressiveInlining)] internal static T prev<T>(this T[] A, int i)           => A[(   --i <         0) ?      A.Length - 1 : i];
-    [Impl(AggressiveInlining)] internal static T next<T>(this T[] A, int i)           => A[(   ++i >= A.Length) ?                 0 : i];
+    [Impl(AggressiveInlining)] internal static ref T prev<T>(this T[] A, int i)           => ref A[(   --i <         0) ?      A.Length - 1 : i];
+    [Impl(AggressiveInlining)] internal static ref T next<T>(this T[] A, int i)           => ref A[(   ++i >= A.Length) ?                 0 : i];
 
-    [Impl(AggressiveInlining)] internal static T prev<T>(this T[] A, int i, int Step) => A[(i-Step <         0) ? i-Step + A.Length : i-Step];
-    [Impl(AggressiveInlining)] internal static T next<T>(this T[] A, int i, int Step) => A[(i+Step >= A.Length) ? i+Step - A.Length : i+Step];
+    [Impl(AggressiveInlining)] internal static ref T prev<T>(this T[] A, int i, int Step) => ref A[(i-Step <         0) ? i-Step + A.Length : i-Step];
+    [Impl(AggressiveInlining)] internal static ref T next<T>(this T[] A, int i, int Step) => ref A[(i+Step >= A.Length) ? i+Step - A.Length : i+Step];
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //  Is NULL or Empty.
+    //  Is NULL or Empty.   (A == null || A.Length == 0);
     //
-    //  (A == null || A.Length == 0);
+    //      Blarg.IsVoid()
     //
     [Impl(AggressiveInlining)] internal static bool IsVoid<T>(this T[] A) => (A?.Length ?? 0) == 0;
 
@@ -49,7 +59,7 @@ internal static class Array {
     //
     //  Proper "Length" method.  (zero inclusive)
     //
-    //                    o----|--->|
+    //                    ●----|--->|
     //                    0    1    2
     //          Blarg = ["A", "B", "C"]
     //
@@ -88,6 +98,8 @@ internal static class Array {
 
     //==========================================================================================================================================================
     //
+    //  This was used as a temporary hack.  If this ends up in production code, you're probably doing something stupid.  :P
+    //
     //      Blarg.IndexFill();
     //
     [Impl(AggressiveInlining)] internal static void IndexFill(this  s8[] A) {for (int i=0; i<A.Length; ++i) {A[i] =  (s8)i;}}
@@ -95,12 +107,12 @@ internal static class Array {
     [Impl(AggressiveInlining)] internal static void IndexFill(this s16[] A) {for (int i=0; i<A.Length; ++i) {A[i] = (s16)i;}}
     [Impl(AggressiveInlining)] internal static void IndexFill(this u16[] A) {for (int i=0; i<A.Length; ++i) {A[i] = (u16)i;}}
     [Impl(AggressiveInlining)] internal static void IndexFill(this s32[] A) {for (int i=0; i<A.Length; ++i) {A[i] =      i;}}
-    [Impl(AggressiveInlining)] internal static void IndexFill(this u32[] A) {for (u32 i=0; i<A.Length; ++i) {A[i] =      i;}}
+    [Impl(AggressiveInlining)] internal static void IndexFill(this u32[] A) {for (int i=0; i<A.Length; ++i) {A[i] = (u32)i;}}
 
     //==========================================================================================================================================================
     //
     //  This would be better, but alas...
-    //      Blarg[i] = [Values, To, Set, Etc];
+    //      Blarg[i..] = [Values, To, Set, Etc];
     //
     //      Blarg.SetFrom(i,   Values, To, Set, Etc);
     //
@@ -124,7 +136,7 @@ internal static class Array {
     //  Immediately GarbageCollect an Array.
     //
     //  This only works when used upon the original ref from the originating scope.
-    //  Also, there must be no additional references elsewhere.
+    //  Also, there must be no additional references stored elsewhere.
     //
     //      Delete(ref Blarg);
     //      DeleteAndCollect(ref Blarg); ...

@@ -51,7 +51,7 @@ internal static partial class VEC {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //                                                                  "Cross" Product
-    [Impl(AggressiveInlining)] internal static v1 cross(v2 A, v2 B) => (A.x*B.y - A.y*B.x);         //  "Perpendicular Dot"    "2D Pseudoscalar"    "cross"...
+    [Impl(AggressiveInlining)] internal static v1 cross(v2 A, v2 B) => (A.x*B.y - A.y*B.x);
 
     [Impl(AggressiveInlining)] internal static v3 cross(v3 A, v3 B) => new v3((A.y*B.z - A.z*B.y),  (A.z*B.x - A.x*B.z),  (A.x*B.y - A.y*B.x));
 
@@ -59,10 +59,6 @@ internal static partial class VEC {
     [Impl(AggressiveInlining)] internal static v1 crozz(v3 A, v3 B) => length(cross(A,B));
 
     //==========================================================================================================================================================
-    //                                                            "Perpendicular Dot" Product       AKA: cross(vec2,vec2)
-  //[Impl(AggressiveInlining)] internal static v1 pot(v2 A, v2 B) => (A.x*B.y - A.y*B.x);
-
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------
     //                                                                   "Dot" Product
     //  dot(A) == dot(A,A) == "Squared-Length of A."
     //
@@ -77,10 +73,10 @@ internal static partial class VEC {
 
     //==========================================================================================================================================================
     //                                                                      "Square"
-    [Impl(AggressiveInlining)] internal static v1 sq(v1 A) => (A * A);
-    [Impl(AggressiveInlining)] internal static v2 sq(v2 A) => new v2((A.x*A.x), (A.y*A.y));
-    [Impl(AggressiveInlining)] internal static v3 sq(v3 A) => new v3((A.x*A.x), (A.y*A.y), (A.z*A.z));
-    [Impl(AggressiveInlining)] internal static v4 sq(v4 A) => new v4((A.x*A.x), (A.y*A.y), (A.z*A.z), (A.w*A.w));
+    [Impl(AggressiveInlining)] internal static v1 sq(v1 A) => (A*A);
+    [Impl(AggressiveInlining)] internal static v2 sq(v2 A) => (A*A);
+    [Impl(AggressiveInlining)] internal static v3 sq(v3 A) => (A*A);
+    [Impl(AggressiveInlining)] internal static v4 sq(v4 A) => (A*A);
 
     //==========================================================================================================================================================
     //                                                                   "Square Root"

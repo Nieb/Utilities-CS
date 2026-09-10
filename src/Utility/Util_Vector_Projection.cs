@@ -10,8 +10,8 @@ internal static partial class VEC_Projection {
     //
     //      project(  Point,  Line-Position,  Line-Normal  )
     //
-    [Impl(AggressiveInlining)] internal static vec2 project(vec2 P, vec2 Lp, vec2 Ln) => Lp + Ln*dot(P-Lp, Ln);
-    [Impl(AggressiveInlining)] internal static vec3 project(vec3 P, vec3 Lp, vec3 Ln) => Lp + Ln*dot(P-Lp, Ln);
+    [Impl(AggressiveInlining)] internal static vec2 Project(vec2 P, vec2 Lp, vec2 Ln) => Lp + Ln*dot(P-Lp, Ln);
+    [Impl(AggressiveInlining)] internal static vec3 Project(vec3 P, vec3 Lp, vec3 Ln) => Lp + Ln*dot(P-Lp, Ln);
 
     //==========================================================================================================================================================
     //
@@ -22,12 +22,14 @@ internal static partial class VEC_Projection {
     //
     //      projectAB(  Point,  Line-PointA,  Line-PointB  )
     //
-    [Impl(AggressiveInlining)] internal static vec2 projectAB(vec2 P, vec2 A, vec2 B) {vec2 dAB = B-A;  return A + dAB*( dot(P-A,dAB)/dot(dAB) );}
-    [Impl(AggressiveInlining)] internal static vec3 projectAB(vec3 P, vec3 A, vec3 B) {vec3 dAB = B-A;  return A + dAB*( dot(P-A,dAB)/dot(dAB) );}
+    [Impl(AggressiveInlining)] internal static vec2 ProjectAB(vec2 P, vec2 A, vec2 B) {vec2 dAB = B-A;  return A + dAB*( dot(P-A,dAB)/dot(dAB) );}
+    [Impl(AggressiveInlining)] internal static vec3 ProjectAB(vec3 P, vec3 A, vec3 B) {vec3 dAB = B-A;  return A + dAB*( dot(P-A,dAB)/dot(dAB) );}
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     //
-    //  Clamped version of projectAB()
+    //  Clamped version of ProjectAB()
+    //
+    //      NearestPointOnLine(  Point,  Line-PointA,  Line-PointB  )
     //
     [Impl(AggressiveInlining)] internal static vec2 NearestPointOnLine(vec2 P, vec2 A, vec2 B) {vec2 dAB = B-A;  return A + dAB*clamp( dot(P-A,dAB)/dot(dAB) );}
     [Impl(AggressiveInlining)] internal static vec3 NearestPointOnLine(vec3 P, vec3 A, vec3 B) {vec3 dAB = B-A;  return A + dAB*clamp( dot(P-A,dAB)/dot(dAB) );}
@@ -46,13 +48,14 @@ internal static partial class VEC_Projection {
     //
     internal static vec3 ProjectX(vec3 P, vec3 A, vec3 B) {
         vec2 dAB = B.yz - A.yz;
-        float lenSq = dot(dAB);
+        float LenSq = dot(dAB);
 
         //  Is Line colinear with axis?
-        if (lenSq < EPS7) return A;
+        if (LenSq < EPS7)
+            return A;
 
         //  Distance from LinePointA to NearestPointOnLine, as multiple of DeltaAB:
-        float Dist = dot(P.yz-A.yz, dAB) / lenSq;
+        float Dist = dot(P.yz-A.yz, dAB) / LenSq;
 
         return A + (B-A)*Dist;
     }
@@ -60,13 +63,14 @@ internal static partial class VEC_Projection {
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     internal static vec3 ProjectY(vec3 P, vec3 A, vec3 B) {
         vec2 dAB = B.xz - A.xz;
-        float lenSq = dot(dAB);
+        float LenSq = dot(dAB);
 
         //  Is Line colinear with axis?
-        if (lenSq < EPS7) return A;
+        if (LenSq < EPS7)
+            return A;
 
         //  Distance from LinePointA to NearestPointOnLine, as multiple of DeltaAB:
-        float Dist = dot(P.xz-A.xz, dAB) / lenSq;
+        float Dist = dot(P.xz-A.xz, dAB) / LenSq;
 
         return A + (B-A)*Dist;
     }
@@ -74,13 +78,14 @@ internal static partial class VEC_Projection {
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     internal static vec3 ProjectZ(vec3 P, vec3 A, vec3 B) {
         vec2 dAB = B.xy - A.xy;
-        float lenSq = dot(dAB);
+        float LenSq = dot(dAB);
 
         //  Is Line colinear with axis?
-        if (lenSq < EPS7) return A;
+        if (LenSq < EPS7)
+            return A;
 
         //  Distance from LinePointA to NearestPointOnLine, as multiple of DeltaAB:
-        float Dist = dot(P.xy-A.xy, dAB) / lenSq;
+        float Dist = dot(P.xy-A.xy, dAB) / LenSq;
 
         return A + (B-A)*Dist;
     }
@@ -95,6 +100,7 @@ internal static partial class VEC_Projection {
     [Impl(AggressiveInlining)] internal static  vec2 NearestPointInBounds( vec2 P,  vec2 b0,  vec2 b1) => P - (min(0f,P-b0) + max(0f,P-b1));
     [Impl(AggressiveInlining)] internal static ivec2 NearestPointInBounds(ivec2 P, ivec2 b0, ivec2 b1) => P - (min(0, P-b0) + max(0, P-b1));
 
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
     [Impl(AggressiveInlining)] internal static  vec3 NearestPointInBounds( vec3 P,  vec3 b0,  vec3 b1) => P - (min(0f,P-b0) + max(0f,P-b1));
     [Impl(AggressiveInlining)] internal static ivec3 NearestPointInBounds(ivec3 P, ivec3 b0, ivec3 b1) => P - (min(0, P-b0) + max(0, P-b1));
 
@@ -136,8 +142,9 @@ internal static partial class VEC_Projection {
         float Determinant = dotL - dotRL*dotRL;
 
         //  Distance from LinePointA to NearestPointOnLine, as multiple of DeltaAB:
-        float Dist = (abs(Determinant) < EPS7) ?  dot(dAP,dAB)                        / dotL        //  If RayLine & Line are near parallel, project RayPos to Line.
-                                               : (dot(dAB,dAP) - dotRL * dot(Rn,dAP)) / Determinant;
+        float Dist = (abs(Determinant) < EPS7) ? clamp(dot(dAP,dAB)                        / dotL)       //  If RayLine & Line are near parallel, project RayPos to Line.
+                                               :      (dot(dAB,dAP) - dotRL * dot(Rn,dAP)) / Determinant;
+
         return A + dAB*Dist;
     }
 

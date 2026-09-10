@@ -54,25 +54,40 @@ internal static class INT {
     //      Blarg[ prev(i, 2, Blarg.Length) ]
     //      Blarg[ next(i, 2, Blarg.Length) ]
     //
-    [Impl(AggressiveInlining)] internal static s16 prev(s16 i,           s16 U) => s16((--i <  0) ? U-1 : i);
-    [Impl(AggressiveInlining)] internal static s32 prev(s32 i,           s32 U) =>     (--i <  0) ? U-1 : i;
-    [Impl(AggressiveInlining)] internal static s64 prev(s64 i,           s64 U) =>     (--i <  0) ? U-1 : i;
+  //[Impl(AggressiveInlining)] internal static s16 prev(s16 i,           s32 U) => s16((i <= 0) ? U-1 : --i);
+  //[Impl(AggressiveInlining)] internal static u16 prev(u16 i,           s32 U) => u16((i <= 0) ? U-1 : --i);
+    [Impl(AggressiveInlining)] internal static s32 prev(s32 i,           s32 U) =>     (i <= 0) ?       U-1 : --i;
+    [Impl(AggressiveInlining)] internal static u32 prev(u32 i,           s32 U) =>     (i <= 0) ? (uint)U-1 : --i;
+  //[Impl(AggressiveInlining)] internal static s64 prev(s64 i,           s32 U) =>     (i <= 0) ? U-1 : --i;
+  //[Impl(AggressiveInlining)] internal static u64 prev(u64 i,           s32 U) =>     (i <= 0) ? U-1 : --i;
 
-    [Impl(AggressiveInlining)] internal static s16 next(s16 i,           s16 U) => s16((++i >= U) ?   0 : i);
-    [Impl(AggressiveInlining)] internal static s32 next(s32 i,           s32 U) =>     (++i >= U) ?   0 : i;
-    [Impl(AggressiveInlining)] internal static s64 next(s64 i,           s64 U) =>     (++i >= U) ?   0 : i;
+  //[Impl(AggressiveInlining)] internal static s16 next(s16 i,           s32 U) => s16((++i >= U) ? 0 : i);
+  //[Impl(AggressiveInlining)] internal static u16 next(u16 i,           s32 U) => u16((++i >= U) ? 0 : i);
+    [Impl(AggressiveInlining)] internal static s32 next(s32 i,           s32 U) =>     (++i >= U) ? 0 : i;
+    [Impl(AggressiveInlining)] internal static u32 next(u32 i,           s32 U) =>     (++i >= U) ? 0 : i;
+  //[Impl(AggressiveInlining)] internal static s64 next(s64 i,           s32 U) =>     (++i >= U) ? 0 : i;
+  //[Impl(AggressiveInlining)] internal static u64 next(u64 i,           s32 U) =>     (++i >= U) ? 0 : i;
 
-    [Impl(AggressiveInlining)] internal static s16 prev(s16 i, s16 Step, s16 U) => ((i = s16(i-Step)) <  0) ? s16(i+U) : i;
+  //[Impl(AggressiveInlining)] internal static s16 prev(s16 i, s16 Step, s16 U) => ((i = s16(i-Step)) <  0) ? s16(i+U) : i;
     [Impl(AggressiveInlining)] internal static s32 prev(s32 i, s32 Step, s32 U) => ((i =     i-Step ) <  0) ?     i+U  : i;
-    [Impl(AggressiveInlining)] internal static s64 prev(s64 i, s64 Step, s64 U) => ((i =     i-Step ) <  0) ?     i+U  : i;
+////[Impl(AggressiveInlining)] internal static u32 prev(u32 i, s32 Step, s32 U) => ((i =     i-Step ) <  0) ?     i+U  : i;
+  //[Impl(AggressiveInlining)] internal static s64 prev(s64 i, s64 Step, s64 U) => ((i =     i-Step ) <  0) ?     i+U  : i;
 
-    [Impl(AggressiveInlining)] internal static s16 next(s16 i, s16 Step, s16 U) => ((i = s16(i+Step)) >= U) ? s16(i-U) : i;
+  //[Impl(AggressiveInlining)] internal static s16 next(s16 i, s16 Step, s16 U) => ((i = s16(i+Step)) >= U) ? s16(i-U) : i;
     [Impl(AggressiveInlining)] internal static s32 next(s32 i, s32 Step, s32 U) => ((i =     i+Step ) >= U) ?     i-U  : i;
-    [Impl(AggressiveInlining)] internal static s64 next(s64 i, s64 Step, s64 U) => ((i =     i+Step ) >= U) ?     i-U  : i;
+////[Impl(AggressiveInlining)] internal static u32 next(u32 i, s32 Step, s32 U) => ((i =     i+Step ) >= U) ?     i-U  : i;
+  //[Impl(AggressiveInlining)] internal static s64 next(s64 i, s64 Step, s64 U) => ((i =     i+Step ) >= U) ?     i-U  : i;
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //                                                                  "Minimum" Value
+    [Impl(AggressiveInlining)] internal static  u8 min( u8 A,  u8 B)               => (A < B) ? A : B;
+    [Impl(AggressiveInlining)] internal static u16 min(u16 A, u16 B)               => (A < B) ? A : B;
+    [Impl(AggressiveInlining)] internal static u32 min(u32 A, u32 B)               => (A < B) ? A : B;
+    [Impl(AggressiveInlining)] internal static u64 min(u64 A, u64 B)               => (A < B) ? A : B;
+
+    [Impl(AggressiveInlining)] internal static  s8 min( s8 A,  s8 B)               => (A < B) ? A : B;
+    [Impl(AggressiveInlining)] internal static s16 min(s16 A, s16 B)               => (A < B) ? A : B;
     [Impl(AggressiveInlining)] internal static s32 min(s32 A, s32 B)               => (A < B) ? A : B;
     [Impl(AggressiveInlining)] internal static s64 min(s64 A, s64 B)               => (A < B) ? A : B;
 
@@ -103,6 +118,13 @@ internal static class INT {
 
     //==========================================================================================================================================================
     //                                                                  "Maximum" Value
+    [Impl(AggressiveInlining)] internal static  u8 max( u8 A,  u8 B)               => (A > B) ? A : B;
+    [Impl(AggressiveInlining)] internal static u16 max(u16 A, u16 B)               => (A > B) ? A : B;
+    [Impl(AggressiveInlining)] internal static u32 max(u32 A, u32 B)               => (A > B) ? A : B;
+    [Impl(AggressiveInlining)] internal static u64 max(u64 A, u64 B)               => (A > B) ? A : B;
+
+    [Impl(AggressiveInlining)] internal static  s8 max( s8 A,  s8 B)               => (A > B) ? A : B;
+    [Impl(AggressiveInlining)] internal static s16 max(s16 A, s16 B)               => (A > B) ? A : B;
     [Impl(AggressiveInlining)] internal static s32 max(s32 A, s32 B)               => (A > B) ? A : B;
     [Impl(AggressiveInlining)] internal static s64 max(s64 A, s64 B)               => (A > B) ? A : B;
 

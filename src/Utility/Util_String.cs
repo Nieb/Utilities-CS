@@ -131,7 +131,8 @@ internal static partial class STR {
     //
     //      EnumerableToString(Enmrbl, ItemsPerLine: 0, ItemPadding: 0, LineIndent: 0, ItemDelimiter: ", ", LineDelimiter: "\n")
     //
-    internal static string EnumerableToString<T>(System.Collections.Generic.IEnumerable<T> Enmrbl, int ItemsPerLine = 0, int ItemPadding = 0, int LineIndent = 0, string ItemDelimiter = ", ", string LineDelimiter = "\n") {
+    internal static string EnumerableToString<T>(System.Collections.Generic.IEnumerable<T> Enmrbl,
+                                                 int ItemsPerLine = 0, int ItemPadding = 0, int LineIndent = 0, string ItemDelimiter = ", ", string LineDelimiter = "\n") {
         if (Enmrbl == null)
             return "";
 

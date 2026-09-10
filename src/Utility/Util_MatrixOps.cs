@@ -24,8 +24,8 @@ internal static partial class MAT {
     //
     [Impl(AggressiveInlining)] public static mat4 ToView2D(vec2 ViewSize, vec2 DepthRange=default, //float ViewDepthNear, float ViewDepthFar,
                                                            bool CornerOrigin=true, bool FlipX=false, bool FlipY=false) {
-        float x0 = 0f, x1 = (FlipX ? -2f/ViewSize.x : 2f/ViewSize.x);
-        float y0 = 0f, y1 = (FlipY ? -2f/ViewSize.y : 2f/ViewSize.y);
+        float x0 = 0f, x1 = (FlipX ? -2f : 2f)/ViewSize.x;
+        float y0 = 0f, y1 = (FlipY ? -2f : 2f)/ViewSize.y;
         float z0 = 0f, z1 = 1f;
 
         if (CornerOrigin) {
@@ -150,6 +150,8 @@ internal static partial class MAT {
     //##########################################################################################################################################################
     //
     //  Project View-to-Perspective
+    //
+    //  https://www.desmos.com/calculator/4armk0kenc
     //
     [Impl(AggressiveInlining)] public static mat4 ToPerspective(float ViewAspectX, float FovY, float ViewDepthNear, float ViewDepthFar) {
         float F = ViewDepthFar;

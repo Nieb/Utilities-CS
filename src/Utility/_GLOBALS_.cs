@@ -24,9 +24,11 @@ global using static Utility.VEC_Filter;
 global using static Utility.VEC_Generate;
 global using static Utility.VEC_Geometry;
 global using static Utility.VEC_Interpolation;
+global using static Utility.VEC_Interpolation2;
 global using static Utility.VEC_Miscellaneous;
 global using static Utility.VEC_Projection;
 global using static Utility.VEC_Rotation;
+global using static Utility.VEC_Triangle;
 
 //##############################################################################################################################################################
 //##############################################################################################################################################################

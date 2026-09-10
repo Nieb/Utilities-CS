@@ -4,7 +4,7 @@ internal static class Random {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //  NOTE:  Random is not ThreadSafe...
+    //  NOTE:  Random is not ThreadSafe...                  https://learn.microsoft.com/en-us/dotnet/api/system.random.shared?view=net-10.0
     //
     //                          *Inclusive*  *Exclusive*
     //      System.Random.Next( LowerBounds, UpperBounds );

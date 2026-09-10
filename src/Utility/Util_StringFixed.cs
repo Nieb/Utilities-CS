@@ -18,7 +18,7 @@ public struct DimString {
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    public DimString() : this(0,0) {}
+    public DimString() : this(1,1) {}
 
     public DimString(int CharsPerLine, int NumOfLines) {
         if (CharsPerLine < 1) throw new System.ArgumentOutOfRangeException(nameof(CharsPerLine));
