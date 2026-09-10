@@ -199,12 +199,9 @@ internal static partial class Program {
         //######################################################################################################################################################
         //######################################################################################################################################################
         {
-            vec3 R_n = (0f, 0f,-1f),    R1n = R_n.xzy,    R2n = R_n.zyx;
-            vec3 R_p = (1f, 1f, 1f),    R1p = R_p.xzy,    R2p = R_p.zyx;
-
-            vec3 T_a = (1f, 2f, 0f),    T1a = T_a.xzy,    T2a = T_a.zyx;
-            vec3 T_b = (0f, 0f, 0f),    T1b = T_b.xzy,    T2b = T_b.zyx;
-            vec3 T_c = (2f, 0f, 0f),    T1c = T_c.xzy,    T2c = T_c.zyx;
+            vec3 R_p = (1f, 1f, 1f), R_n = (0f, 0f,-1f),    T_a = (1f, 2f, 0f), T_b = (0f, 0f, 0f), T_c = (2f, 0f, 0f);
+            vec3 R1p = R_p.xzy,      R1n = R_n.xzy,         T1a = T_a.xzy,      T1b = T_b.xzy,      T1c = T_c.xzy;
+            vec3 R2p = R_p.zyx,      R2n = R_n.zyx,         T2a = T_a.zyx,      T2b = T_b.zyx,      T2c = T_c.zyx;
 
             TEST("RayVsTriangle()", true
                 && RayVsTriangle(R_p, R_n, T_a, T_b, T_c, false) == 1f
@@ -371,7 +368,7 @@ internal static partial class Program {
             );
 
             #if false
-                string HitSideStr(int i) => (i==0?"-X" : i==2?"+X" : i==1?"-Y" : i==3?"+Y" : i==4?"-Z" : i==6?"+Z" : "~");
+                string HitSideStr(int i) => (i==0?"-X" : i==2?"+X" : i==1?"-Y" : i==3?"+Y" : i==4?"-Z" : i==6?"+Z" : "?");
                 TESTOUT($"""
                     [ 0]: {HitDist[ 0]:#0.00}    {HitSide[ 0]} "{HitSideStr(HitSide[ 0])}"
                     [ 1]: {HitDist[ 1]:#0.00}    {HitSide[ 1]} "{HitSideStr(HitSide[ 1])}"
