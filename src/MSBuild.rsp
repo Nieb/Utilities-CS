@@ -1,0 +1,10 @@
+#
+#   https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-command-line-reference
+#
+-consoleLoggerParameters:ShowProjectFile=false
+-verbosity:minimal
+
+#
+#   https://learn.microsoft.com/en-us/visualstudio/msbuild/common-msbuild-project-properties
+#
+-property:GenerateFullPaths=false
