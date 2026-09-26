@@ -19,7 +19,7 @@ internal static partial class PRINTOUT {
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Conditional("DEBUG")] internal static void HERE() => CONOUT("*** HERE! ***");
+    [Conditional("DEBUG")] internal static void HERE([CallerLineNumber] int LineNumber=0) => ConOut.WriteLine($"*** HERE! {LineNumber} ***");
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     [Conditional("DEBUG")] internal static void  CONOUT()               => ConOut.WriteLine();
@@ -27,25 +27,25 @@ internal static partial class PRINTOUT {
     [Conditional("DEBUG")] internal static void CONOUTC(string PrintMe) => ConOut.Write    (PrintMe);
 
     //==========================================================================================================================================================
-    [Conditional("DEBUG")] internal static void  CONOUT<T>(T PrintMe, [CallerArgumentExpression("PrintMe")] string Expr = "") =>
+    [Conditional("DEBUG")] internal static void  CONOUT<T>(T PrintMe, [CallerArgumentExpression("PrintMe")] string Expr="") =>
         ConOut.WriteLine(Expr.PadLeft(24)+": "+PrintMe.ToString());
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //[Conditional("DEBUG")] internal static void CONOUTd<T>(T PrintMe, [CallerArgumentExpression("PrintMe")] string Expr = "") where T : System.Numerics.IBinaryInteger<T> =>
+    //[Conditional("DEBUG")] internal static void CONOUTd<T>(T PrintMe, [CallerArgumentExpression("PrintMe")] string Expr="") where T : System.Numerics.IBinaryInteger<T> =>
     //    ConOut.WriteLine(Expr.PadLeft(24)+": "+CommaDelimit(PrintMe));
 
-    //[Conditional("DEBUG")] internal static void CONOUTb<T>(T PrintMe, [CallerArgumentExpression("PrintMe")] string Expr = "") where T : System.Numerics.IBinaryInteger<T> =>
+    //[Conditional("DEBUG")] internal static void CONOUTb<T>(T PrintMe, [CallerArgumentExpression("PrintMe")] string Expr="") where T : System.Numerics.IBinaryInteger<T> =>
     //    ConOut.WriteLine(Expr.PadLeft(24)+": "+IntToBinaryString(PrintMe));
 
-    //[Conditional("DEBUG")] internal static void CONOUTx<T>(T PrintMe, [CallerArgumentExpression("PrintMe")] string Expr = "") where T : System.Numerics.IBinaryInteger<T> =>
+    //[Conditional("DEBUG")] internal static void CONOUTx<T>(T PrintMe, [CallerArgumentExpression("PrintMe")] string Expr="") where T : System.Numerics.IBinaryInteger<T> =>
     //    ConOut.WriteLine(Expr.PadLeft(24)+": "+IntToHexString(PrintMe));
 
     //==========================================================================================================================================================
-    [Conditional("DEBUG")] internal static void CONOUT(byte[] PrintMe, [CallerArgumentExpression("PrintMe")] string Expr = "") =>
+    [Conditional("DEBUG")] internal static void CONOUT(byte[] PrintMe, [CallerArgumentExpression("PrintMe")] string Expr="") =>
         ConOut.WriteLine(Expr.PadLeft(24)+": \n"+ByteArrayToString(PrintMe));
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [Conditional("DEBUG")] internal static void CONOUT<T>(T[] PrintMe, int ItemsPerLine=8, [CallerArgumentExpression("PrintMe")] string Expr = "") =>
+    [Conditional("DEBUG")] internal static void CONOUT<T>(T[] PrintMe, int ItemsPerLine=8, [CallerArgumentExpression("PrintMe")] string Expr="") =>
         ConOut.WriteLine(Expr.PadLeft(24)+": \n"+EnumerableToString(PrintMe,ItemsPerLine));
 
     //##########################################################################################################################################################
