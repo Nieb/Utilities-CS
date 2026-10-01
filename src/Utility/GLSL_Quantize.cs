@@ -4,14 +4,14 @@ internal static partial class GLSL {
 //
 //  Quantization & Dithering should be done in GammaSpace.
 //
-//  𝒜𝑒𝓈𝓉𝒽𝑒𝓉𝒾𝒸 𝓐𝓮𝓼𝓽𝓱𝓮𝓽𝓲𝓬 𝐹𝒶𝓃𝒸𝓎 𝓕𝓪𝓷𝓬𝔂
+//      𝓐𝓮𝓼𝓽𝓱𝓮𝓽𝓲𝓬   𝒜𝑒𝓈𝓉𝒽𝑒𝓉𝒾𝒸
+//      𝓕𝓪𝓷𝓬𝔂 𝓐𝓕   𝐹𝒶𝓃𝒸𝓎 𝒜𝐹
+//      𝓡𝓮𝓽𝓻𝓸       𝑅𝑒𝓉𝓇𝑜
 //
-public readonly static string Quantize = $$$"""
+public readonly static string Quantization = $$$"""
+#line {{{LINE_QUANTIZATION + LINE_NUMBER(1)}}}
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    #line {{{LINE_QUANTIZE + LINE_NUMBER(1)}}}
-
-    //==========================================================================================================================================================
     vec3 Quantize(vec3 Color, float ValuesPerChnl) {
         return round(Color * ValuesPerChnl) / ValuesPerChnl;
     }
@@ -47,26 +47,22 @@ public readonly static string Quantize = $$$"""
 
     void Checkerboard() {
         ivec2 c = ivec2(floor(gl_FragCoord.xy));
+
         if (((c.x ^ c.y) & 1) == 0)
             discard;
     }
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    float SoftLimit(float V, float T) {
-        if (V <= T) {
-            return V;
-        } else {
-            float  TT = T * T;
-            float iTT = 1.0 - T;    iTT *= iTT;
-            return 1.0 - iTT/(iTT + V - TT);
-        }
-    }
+    float HardLimit(float V, float T) {return clamp(V, 0.0, T);} //{return mix(V, T, step(T,V));}
 
-  //float SoftLimit(float V, float T) {                   float TT = T*T;  float iTT = 1.0-T;    iTT*=iTT;  return mix(V,  1.0-(iTT/(iTT+V-TT)),  step(T,V));}
+    //==========================================================================================================================================================
+    float SoftLimit(float V, float T) {                 float iTT=1.0-T; iTT*=iTT;  return mix(V,   1.0 - (   iTT   / (iTT + V - T*T)),  step(T,V));}
+    vec3  SoftLimit(vec3  V, float t) {vec3 T=vec3(t);  vec3  iTT=1.0-T; iTT*=iTT;  return mix(V,   1.0 - (   iTT   / (iTT + V - T*T)),  step(T,V));}
 
-    vec3  SoftLimit(vec3  V, float t) {vec3 T = vec3(t);  vec3  TT = T*T;  vec3  iTT = 1.0-T;    iTT*=iTT;  return mix(V,  1.0-(iTT/(iTT+V-TT)),  step(T,V));}
-  //vec3 SoftLimit(vec3 V, float T) {return vec3(SoftLimit(V.x, T), SoftLimit(V.y, T), SoftLimit(V.z, T));}
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    float SoftLimit_Sigmoid(float V, float T) {                 float iT=1.0-T;     return mix(V,  T-iT + ((2.0*iT) / (1.0+exp((-V+T)*(2.0/iT)))),  step(T,V));}
+    vec3  SoftLimit_Sigmoid(vec3  V, float t) {vec3 T=vec3(t);  vec3  iT=1.0-T;     return mix(V,  T-iT + ((2.0*iT) / (1.0+exp((-V+T)*(2.0/iT)))),  step(T,V));}
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

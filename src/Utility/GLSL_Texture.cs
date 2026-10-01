@@ -24,13 +24,11 @@ internal static partial class GLSL {
 //                            W--Z
 //
 public readonly static string Texture = $$$"""
+#line {{{LINE_TEXTURE + LINE_NUMBER(1)}}}
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    #line {{{LINE_TEXTURE + LINE_NUMBER(1)}}}
-
-    //======================================================================================================================================================
     //                                                                   Smooth Nearest
     //  "Smooth Nearest"  "Smooth PixelArt"
     //      https://www.shadertoy.com/view/csX3RH
@@ -39,8 +37,11 @@ public readonly static string Texture = $$$"""
         vec2 TexSize = vec2(textureSize(Tex, 0));
 
         TexUV *= TexSize;
+
         vec2 Seam = floor(TexUV+0.5);
+
         TexUV = (TexUV - Seam)/fwidth(TexUV) + Seam;
+
         TexUV = clamp(TexUV, Seam-0.5, Seam+0.5);
 
         return texture(Tex, TexUV/TexSize);
@@ -50,13 +51,15 @@ public readonly static string Texture = $$$"""
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    //                                                             Sharper Pixel Interpolation (than bilinear)
+    //                                                    Sharper (than bilinear) Pixel Interpolation
     vec4 TextureSharp(sampler2D Tex, vec2 TexUV) {
         int MipLevel = int(textureQueryLod(Tex, TexUV).x);
         vec2 TexSize = vec2(textureSize(Tex, MipLevel));
 
         TexUV *= TexSize;
         TexUV = floor(TexUV-0.5)+0.5 + smoothstep(0.0,1.0,fract(TexUV-0.5));
+        //TexUV = floor(TexUV-0.5)+0.5 + smoothstep(0.0,1.0,smoothstep(0.0,1.0,fract(TexUV-0.5)));
+        //TexUV = floor(TexUV-0.5)+0.5 + SmoothestStep(fract(TexUV-0.5));
 
         return texture(Tex, TexUV/TexSize);
     }
@@ -97,7 +100,6 @@ public readonly static string Texture = $$$"""
     //                                 +X
     vec4 Texture_Barylinear(sampler2D Tex, vec2 TexUV, int MipLevel) {
         MipLevel = min(MipLevel, textureQueryLevels(Tex)-1);
-        //MipLevel = int(textureQueryLod(Tex, TexUV).x);
 
         vec2 TexSize = vec2(textureSize(Tex, MipLevel));
 
@@ -129,9 +131,8 @@ public readonly static string Texture = $$$"""
         return (A*W.x  +  B*W.y  +  C*W.z);
     }
     /*
-    vec4 Texture_Barylinear(sampler2D Tex, vec2 TexUV, int MipLevel=0) {
+    vec4 Texture_Barylinear(sampler2D Tex, vec2 TexUV, int MipLevel) {
         MipLevel = min(MipLevel, textureQueryLevels(Tex)-1);
-        //MipLevel = int(textureQueryLod(Tex, TexUV).x);
 
         vec2 TexSize = vec2(textureSize(Tex, MipLevel));
 
@@ -154,7 +155,7 @@ public readonly static string Texture = $$$"""
     }
     */
 
-    vec4 Texture_Barylinear(sampler2D Tex, vec2 TexUV) {return Texture_Barylinear(Tex, TexUV, 0);} //  Optional Parameter Hack.
+    vec4 Texture_Barylinear(sampler2D Tex, vec2 TexUV) {return Texture_Barylinear(Tex, TexUV, int(textureQueryLod(Tex,TexUV).x) );} //  Optional Parameter Hack.
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     //                          +Y
@@ -166,7 +167,7 @@ public readonly static string Texture = $$$"""
     //                                 +X
     vec4 Texture_Barylinear_(sampler2D Tex, vec2 TexUV, int MipLevel) {
         MipLevel = min(MipLevel, textureQueryLevels(Tex)-1);
-        //MipLevel = int(textureQueryLod(Tex, TexUV).x);
+
         vec2 TexSize = vec2(textureSize(Tex, MipLevel));
 
         //  "TexCoord"  "Pixel UV"  "Weights"
@@ -189,7 +190,7 @@ public readonly static string Texture = $$$"""
         return (A*W.x  +  B*W.y  +  C*W.z);
     }
 
-    vec4 Texture_Barylinear_(sampler2D Tex, vec2 TexUV) {return Texture_Barylinear_(Tex, TexUV, 0);} //  Optional Parameter Hack.
+    vec4 Texture_Barylinear_(sampler2D Tex, vec2 TexUV) {return Texture_Barylinear_(Tex, TexUV, int(textureQueryLod(Tex,TexUV).x) );} //  Optional Parameter Hack.
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -197,34 +198,84 @@ public readonly static string Texture = $$$"""
     //##########################################################################################################################################################
     //                                                                      TriPlanar
     vec4 Texture_TriPlanar(sampler2D TEX, vec3 Pos, vec3 Nrm, float BiasExp, bool TEST) {
-        vec2 TexSize = vec2(textureSize(TEX,0));
+        vec3 Select = step(0.0, Nrm);
 
-        vec4 TexSmplX = texture(TEX,    (Nrm.x>0.0 ?               Pos.zy : vec2(-Pos.z,  Pos.y))/TexSize    );
-        vec4 TexSmplY = texture(TEX,    (Nrm.y>0.0 ?               Pos.xz : vec2( Pos.x, -Pos.z))/TexSize    );
-        vec4 TexSmplZ = texture(TEX,    (Nrm.z>0.0 ? vec2(-Pos.x,  Pos.y) :               Pos.xy)/TexSize    );
+        vec2 TexCoordX = mix(vec2(-Pos.z, Pos.y),       Pos.zy       , Select.x);
+        vec2 TexCoordY = mix(vec2( Pos.x,-Pos.z),       Pos.xz       , Select.y);
+        vec2 TexCoordZ = mix(      Pos.xy       , vec2(-Pos.x, Pos.y), Select.z);
 
-        vec3 BlendMask = vec3(
-            ToLightness(TexSmplX.rgb),
-            ToLightness(TexSmplY.rgb),
-            ToLightness(TexSmplZ.rgb)
-        );
+        vec2 TexScale = 1.0 / vec2(textureSize(TEX,0));
+
+        vec4 TexSmplX = texture(TEX, TexCoordX * TexScale);
+        vec4 TexSmplY = texture(TEX, TexCoordY * TexScale);
+        vec4 TexSmplZ = texture(TEX, TexCoordZ * TexScale);
+
+        vec3 BlendMask = vec3( ToLightness(TexSmplX.rgb), ToLightness(TexSmplY.rgb), ToLightness(TexSmplZ.rgb) );
+      //vec3 BlendMask = vec3(TexSmplX.a, TexSmplY.a, TexSmplZ.a);
+        //
+        //  Alpha will be Opacity, BlendMask will be a separate sampler2D ?
+        //      Opacity & BlendMask could use same slot.
+        //      any texture intended for Triplanar won't use Transparency...?
+        //
 
         vec3 Blend = pow(Clamp(Blend_Overlay(BlendMask, abs(Nrm))), vec3(BiasExp));
-        //return vec4(Blend.rrr, 1.0);
-        //return vec4(Blend.ggg, 1.0);
-        //return vec4(Blend.bbb, 1.0);
-        //return vec4(Blend, 1.0);
 
         if (TEST) {
-            TexSmplX.rgb = vec3(ToBrightness(TexSmplX.rgb), 0.0, 0.0);
-            TexSmplY.rgb = vec3(0.0, ToBrightness(TexSmplY.rgb), 0.0);
-            TexSmplZ.rgb = vec3(0.0, 0.0, ToBrightness(TexSmplZ.rgb));
+            //return vec4(Blend.rrr, 1.0);
+            //return vec4(Blend.ggg, 1.0);
+            //return vec4(Blend.bbb, 1.0);
+            //return vec4(Blend, 1.0);
+
+            //TexSmplX.rgb = vec3(ToBrightness(TexSmplX.rgb), 0.0, 0.0);
+            //TexSmplY.rgb = vec3(0.0, ToBrightness(TexSmplY.rgb), 0.0);
+            //TexSmplZ.rgb = vec3(0.0, 0.0, ToBrightness(TexSmplZ.rgb));
+
+            TexSmplX.rgb = ToBrightness(TexSmplX.rgb) * vec3(1.00, 0.16, 0.16);
+            TexSmplY.rgb = ToBrightness(TexSmplY.rgb) * vec3(0.05, 0.93, 0.05);
+            TexSmplZ.rgb = ToBrightness(TexSmplZ.rgb) * vec3(0.12, 0.36, 1.00);
         }
 
         return (TexSmplX*Blend.x  +  TexSmplY*Blend.y  +  TexSmplZ*Blend.z) / SumOf(Blend);
     }
-
     vec4 Texture_TriPlanar(sampler2D TEX, vec3 Pos, vec3 Nrm, float BiasExp) {return Texture_TriPlanar(TEX, Pos, Nrm, BiasExp, false);} //  Optional Parameter Hack.
+
+    //==========================================================================================================================================================
+    vec4 Texture_TriPlanar(sampler2D TexX, sampler2D TexY, sampler2D TexZ,  vec3 Pos, vec3 Nrm, float BiasExp) {
+        vec3 Select = step(0.0, Nrm);
+
+        vec2 TexCoordX = mix(vec2(-Pos.z, Pos.y),       Pos.zy       , Select.x);
+        vec2 TexCoordY = mix(vec2( Pos.x,-Pos.z),       Pos.xz       , Select.y);
+        vec2 TexCoordZ = mix(      Pos.xy       , vec2(-Pos.x, Pos.y), Select.z);
+
+        vec4 TexSmplX = texture(TexX, TexCoordX/textureSize(TexX,0));
+        vec4 TexSmplY = texture(TexY, TexCoordY/textureSize(TexY,0));
+        vec4 TexSmplZ = texture(TexZ, TexCoordZ/textureSize(TexZ,0));
+
+        vec3 BlendMask = vec3(TexSmplX.a, TexSmplY.a, TexSmplZ.a);
+
+        vec3 Blend = pow(Clamp(Blend_Overlay(BlendMask, abs(Nrm))), vec3(BiasExp)); //  Does this need clamp() ???
+
+        return (TexSmplX*Blend.x  +  TexSmplY*Blend.y  +  TexSmplZ*Blend.z) / SumOf(Blend);
+    }
+
+    //==========================================================================================================================================================
+    vec4 Texture_TriPlanar(sampler2D TexXn, sampler2D TexXp, sampler2D TexYn, sampler2D TexYp, sampler2D TexZn, sampler2D TexZp,  vec3 Pos, vec3 Nrm, float BiasExp) {
+        vec3 Select = step(0.0, Nrm);
+
+        vec2 TexCoordX = mix(vec2(-Pos.z, Pos.y),       Pos.zy       , Select.x);
+        vec2 TexCoordY = mix(vec2( Pos.x,-Pos.z),       Pos.xz       , Select.y);
+        vec2 TexCoordZ = mix(      Pos.xy       , vec2(-Pos.x, Pos.y), Select.z);
+
+        vec4 TexSmplX = (Select.x < 0.5)  ?  texture(TexXn, TexCoordX/textureSize(TexXn,0))  :  texture(TexXp, TexCoordX/textureSize(TexXp,0));
+        vec4 TexSmplY = (Select.y < 0.5)  ?  texture(TexYn, TexCoordY/textureSize(TexYn,0))  :  texture(TexYp, TexCoordY/textureSize(TexYp,0));
+        vec4 TexSmplZ = (Select.z < 0.5)  ?  texture(TexZn, TexCoordZ/textureSize(TexZn,0))  :  texture(TexZp, TexCoordZ/textureSize(TexZp,0));
+
+        vec3 BlendMask = vec3(TexSmplX.a, TexSmplY.a, TexSmplZ.a);
+
+        vec3 Blend = pow(Clamp(Blend_Overlay(BlendMask, abs(Nrm))), vec3(BiasExp)); //  Does this need clamp() ???
+
+        return (TexSmplX*Blend.x  +  TexSmplY*Blend.y  +  TexSmplZ*Blend.z) / SumOf(Blend);
+    }
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
