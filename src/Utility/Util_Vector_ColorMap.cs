@@ -15,45 +15,45 @@ internal static class ColorMap {
     //
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] internal static uint BlackBody(int V) => LUT_Byte_BlackBody[ClampToByte(V)];
-    [Impl(AggressiveInlining)] internal static uint Fast     (int V) => LUT_Byte_Fast     [ClampToByte(V)];
-    [Impl(AggressiveInlining)] internal static uint Inferno  (int V) => LUT_Byte_Inferno  [ClampToByte(V)];
-    [Impl(AggressiveInlining)] internal static uint Magma    (int V) => LUT_Byte_Magma    [ClampToByte(V)];
-    [Impl(AggressiveInlining)] internal static uint Turbo    (int V) => LUT_Byte_Turbo    [ClampToByte(V)];
-    [Impl(AggressiveInlining)] internal static uint Viridis  (int V) => LUT_Byte_Viridis  [ClampToByte(V)];
+    [In(line)] internal static uint BlackBody(int V) => LUT_Byte_BlackBody[ClampToByte(V)];
+    [In(line)] internal static uint Fast     (int V) => LUT_Byte_Fast     [ClampToByte(V)];
+    [In(line)] internal static uint Inferno  (int V) => LUT_Byte_Inferno  [ClampToByte(V)];
+    [In(line)] internal static uint Magma    (int V) => LUT_Byte_Magma    [ClampToByte(V)];
+    [In(line)] internal static uint Turbo    (int V) => LUT_Byte_Turbo    [ClampToByte(V)];
+    [In(line)] internal static uint Viridis  (int V) => LUT_Byte_Viridis  [ClampToByte(V)];
 
     //==========================================================================================================================================================
-    internal static vec3 BlackBody(float V) {
+    [In(line)] internal static vec3 BlackBody(float V) {
         if      (V <= 0f) return LUT_Unit_BlackBody[0];
         else if (V >= 1f) return LUT_Unit_BlackBody[255];
         else {V *= 255f; return Mix(fract(V), LUT_Unit_BlackBody[FloorToInt(V)], LUT_Unit_BlackBody[CeilToInt(V)]);}
     }
 
-    internal static vec3 Fast(float V) {
+    [In(line)] internal static vec3 Fast(float V) {
         if      (V <= 0f) return LUT_Unit_Fast[0];
         else if (V >= 1f) return LUT_Unit_Fast[255];
         else {V *= 255f; return Mix(fract(V), LUT_Unit_Fast[FloorToInt(V)], LUT_Unit_Fast[CeilToInt(V)]);}
     }
 
-    internal static vec3 Inferno(float V) {
+    [In(line)] internal static vec3 Inferno(float V) {
         if      (V <= 0f) return LUT_Unit_Inferno[0];
         else if (V >= 1f) return LUT_Unit_Inferno[255];
         else {V *= 255f; return Mix(fract(V), LUT_Unit_Inferno[FloorToInt(V)], LUT_Unit_Inferno[CeilToInt(V)]);}
     }
 
-    internal static vec3 Magma(float V) {
+    [In(line)] internal static vec3 Magma(float V) {
         if      (V <= 0f) return LUT_Unit_Magma[0];
         else if (V >= 1f) return LUT_Unit_Magma[255];
         else {V *= 255f; return Mix(fract(V), LUT_Unit_Magma[FloorToInt(V)], LUT_Unit_Magma[CeilToInt(V)]);}
     }
 
-    internal static vec3 Turbo(float V) {
+    [In(line)] internal static vec3 Turbo(float V) {
         if      (V <= 0f) return LUT_Unit_Turbo[0];
         else if (V >= 1f) return LUT_Unit_Turbo[255];
         else {V *= 255f; return Mix(fract(V), LUT_Unit_Turbo[FloorToInt(V)], LUT_Unit_Turbo[CeilToInt(V)]);}
     }
 
-    internal static vec3 Viridis(float V) {
+    [In(line)] internal static vec3 Viridis(float V) {
         if      (V <= 0f) return LUT_Unit_Viridis[0];
         else if (V >= 1f) return LUT_Unit_Viridis[255];
         else {V *= 255f; return Mix(fract(V), LUT_Unit_Viridis[FloorToInt(V)], LUT_Unit_Viridis[CeilToInt(V)]);}

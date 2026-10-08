@@ -22,61 +22,62 @@ internal struct bvec4 : System.IFormattable {
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] public bvec4() {}
-    [Impl(AggressiveInlining)] public bvec4(u8 X, u8 Y, u8 Z, u8 W) {x=X; y=Y; z=Z; w=W;}
-    [Impl(AggressiveInlining)] public bvec4(u32 XYZW)               {U = XYZW;}
+    [In(line)] public bvec4() {}
+    [In(line)] public bvec4(u8 X, u8 Y, u8 Z, u8 W) {x=X; y=Y; z=Z; w=W;}
+    [In(line)] public bvec4(u32 XYZW)               {U = XYZW;}
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [Impl(AggressiveInlining)] public static implicit operator   u32(                   bvec4 A) => A.U;                        //                  bvec4  to  uint
-    [Impl(AggressiveInlining)] public static implicit operator bvec4(                   u32   A) => new bvec4(A);               //                   uint  to  bvec4
-    [Impl(AggressiveInlining)] public static implicit operator bvec4((u8 x, u8 y, u8 z, u8 w) T) => new bvec4(T.x,T.y,T.z,T.w); //  (byte,byte,byte,byte)  to  bvec4
+    [In(line)] public static implicit operator   u32(                   bvec4 A) => A.U;                        //                  bvec4  to  uint
+    [In(line)] public static implicit operator bvec4(                   u32   A) => new bvec4(A);               //                   uint  to  bvec4
+
+    [In(line)] public static implicit operator bvec4((u8 x, u8 y, u8 z, u8 w) T) => new bvec4(T.x,T.y,T.z,T.w); //  (byte,byte,byte,byte)  to  bvec4
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //  Operators Arithmetic:  +  -  *  /  %
 
-    [Impl(AggressiveInlining)] public static bvec4 operator +(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x+B.x),ClampToByte(A.y+B.y),ClampToByte(A.z+B.z),ClampToByte(A.w+B.w));
+    [In(line)] public static bvec4 operator +(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x+B.x),ClampToByte(A.y+B.y),ClampToByte(A.z+B.z),ClampToByte(A.w+B.w));
 
-    [Impl(AggressiveInlining)] public static bvec4 operator -(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x-B.x),ClampToByte(A.y-B.y),ClampToByte(A.z-B.z),ClampToByte(A.w-B.w));
+    [In(line)] public static bvec4 operator -(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x-B.x),ClampToByte(A.y-B.y),ClampToByte(A.z-B.z),ClampToByte(A.w-B.w));
 
-    [Impl(AggressiveInlining)] public static bvec4 operator *(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x*B.x),ClampToByte(A.y*B.y),ClampToByte(A.z*B.z),ClampToByte(A.w*B.w));
+    [In(line)] public static bvec4 operator *(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x*B.x),ClampToByte(A.y*B.y),ClampToByte(A.z*B.z),ClampToByte(A.w*B.w));
 
-    [Impl(AggressiveInlining)] public static bvec4 operator /(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x/B.x),ClampToByte(A.y/B.y),ClampToByte(A.z/B.z),ClampToByte(A.w/B.w));
+    [In(line)] public static bvec4 operator /(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x/B.x),ClampToByte(A.y/B.y),ClampToByte(A.z/B.z),ClampToByte(A.w/B.w));
 
-    [Impl(AggressiveInlining)] public static bvec4 operator %(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x%B.x),ClampToByte(A.y%B.y),ClampToByte(A.z%B.z),ClampToByte(A.w%B.w));
+    [In(line)] public static bvec4 operator %(bvec4 A, bvec4 B) => new bvec4(ClampToByte(A.x%B.x),ClampToByte(A.y%B.y),ClampToByte(A.z%B.z),ClampToByte(A.w%B.w));
 
     //==========================================================================================================================================================
     //  Operators Bitwise:  ~    &    |   ^    <<          >>           >>>
     //                      NOT  AND  OR  XOR  SHIFT_LEFT  SHIFT_RIGHT  SHIFT_RIGHT(cast to uint, shift, cast back to int)
 
-    [Impl(AggressiveInlining)] public static bvec4 operator ~(bvec4 A)          => (~A.U);
+    [In(line)] public static bvec4 operator ~(bvec4 A)          => (~A.U);
 
-    [Impl(AggressiveInlining)] public static bvec4 operator &(bvec4 A, bvec4 B) => (A.U & B.U);
-    [Impl(AggressiveInlining)] public static bvec4 operator &(bvec4 A, uint  B) => (A.U & B  );
-    [Impl(AggressiveInlining)] public static bvec4 operator &(uint  A, bvec4 B) => (A   & B.U);
+    [In(line)] public static bvec4 operator &(bvec4 A, bvec4 B) => (A.U & B.U);
+    [In(line)] public static bvec4 operator &(bvec4 A, uint  B) => (A.U & B  );
+    [In(line)] public static bvec4 operator &(uint  A, bvec4 B) => (A   & B.U);
 
-    [Impl(AggressiveInlining)] public static bvec4 operator |(bvec4 A, bvec4 B) => (A.U | B.U);
-    [Impl(AggressiveInlining)] public static bvec4 operator |(bvec4 A, uint  B) => (A.U | B  );
-    [Impl(AggressiveInlining)] public static bvec4 operator |(uint  A, bvec4 B) => (A   | B.U);
+    [In(line)] public static bvec4 operator |(bvec4 A, bvec4 B) => (A.U | B.U);
+    [In(line)] public static bvec4 operator |(bvec4 A, uint  B) => (A.U | B  );
+    [In(line)] public static bvec4 operator |(uint  A, bvec4 B) => (A   | B.U);
 
-    [Impl(AggressiveInlining)] public static bvec4 operator ^(bvec4 A, bvec4 B) => (A.U ^ B.U);
-    [Impl(AggressiveInlining)] public static bvec4 operator ^(bvec4 A, uint  B) => (A.U ^ B  );
-    [Impl(AggressiveInlining)] public static bvec4 operator ^(uint  A, bvec4 B) => (A   ^ B.U);
+    [In(line)] public static bvec4 operator ^(bvec4 A, bvec4 B) => (A.U ^ B.U);
+    [In(line)] public static bvec4 operator ^(bvec4 A, uint  B) => (A.U ^ B  );
+    [In(line)] public static bvec4 operator ^(uint  A, bvec4 B) => (A   ^ B.U);
 
-    [Impl(AggressiveInlining)] public static bvec4 operator <<(bvec4 A, int n)  => (A.U << n);
-    [Impl(AggressiveInlining)] public static bvec4 operator >>(bvec4 A, int n)  => (A.U >> n);
+    [In(line)] public static bvec4 operator <<(bvec4 A, int n)  => (A.U << n);
+    [In(line)] public static bvec4 operator >>(bvec4 A, int n)  => (A.U >> n);
 
     //==========================================================================================================================================================
     //  Operators Logical:  ==  !=  <  >  <=  >=     ( ! && || )
 
-    [Impl(AggressiveInlining)] public static bool operator ==(bvec4 A, bvec4 B) => (A.U == B.U);
-    [Impl(AggressiveInlining)] public static bool operator ==(bvec4 A, uint  B) => (A.U == B  );
-    [Impl(AggressiveInlining)] public static bool operator ==(uint  A, bvec4 B) => (A   == B.U);
+    [In(line)] public static bool operator ==(bvec4 A, bvec4 B) => (A.U == B.U);
+    [In(line)] public static bool operator ==(bvec4 A, uint  B) => (A.U == B  );
+    [In(line)] public static bool operator ==(uint  A, bvec4 B) => (A   == B.U);
 
-    [Impl(AggressiveInlining)] public static bool operator !=(bvec4 A, bvec4 B) => (A.U != B.U);
-    [Impl(AggressiveInlining)] public static bool operator !=(bvec4 A, uint  B) => (A.U != B  );
-    [Impl(AggressiveInlining)] public static bool operator !=(uint  A, bvec4 B) => (A   != B.U);
+    [In(line)] public static bool operator !=(bvec4 A, bvec4 B) => (A.U != B.U);
+    [In(line)] public static bool operator !=(bvec4 A, uint  B) => (A.U != B  );
+    [In(line)] public static bool operator !=(uint  A, bvec4 B) => (A   != B.U);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

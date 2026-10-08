@@ -20,7 +20,7 @@ internal static partial class STR {
     //      "HH:mm:ss.fff"
     //      "HH:mm:ss.ffffff"
     //
-    [Impl(AggressiveInlining)] internal static string DateTime(string FormatString) => System.DateTime.Now.ToString(FormatString);
+    [In(line)] internal static string DateTime(string FormatString) => System.DateTime.Now.ToString(FormatString);
 
     //==========================================================================================================================================================
     internal static string RandomDigits(int Count) {
@@ -39,8 +39,7 @@ internal static partial class STR {
     //##########################################################################################################################################################
     //                                                                Convert FROM String
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)]
-    internal static bool ToBool(this string STR) {
+    [In(line)] internal static bool ToBool(this string STR) {
         if (STR.IsVoid())
             return false;
 
@@ -53,8 +52,7 @@ internal static partial class STR {
     }
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)]
-    internal static System.DateTime ToDateTime(this string STR) {
+    [In(line)] internal static System.DateTime ToDateTime(this string STR) {
         if (STR.IsVoid())
             return System.DateTime.MinValue;
 
@@ -66,8 +64,7 @@ internal static partial class STR {
     }
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)]
-    internal static System.Net.IPAddress ToIpAddress(this string STR) {
+    [In(line)] internal static System.Net.IPAddress ToIpAddress(this string STR) {
         if (STR.IsVoid())
             return new System.Net.IPAddress(0);
 
@@ -275,8 +272,7 @@ internal static partial class STR {
     //  Better:
     //      "blarg".IsVoid()
     //
-    [Impl(AggressiveInlining)]
-    internal static bool IsVoid(this string STR) {
+    [In(line)] internal static bool IsVoid(this string STR) {
         if (STR == null)
             return true;
 
@@ -433,8 +429,8 @@ internal static partial class STR {
         return new string(Result);
     }
 
-    [Impl(AggressiveInlining)] internal static string ToLowerCase(this string STR) => STR.ToLower();
-    [Impl(AggressiveInlining)] internal static string ToUpperCase(this string STR) => STR.ToUpper();
+    [In(line)] internal static string ToLowerCase(this string STR) => STR.ToLower();
+    [In(line)] internal static string ToUpperCase(this string STR) => STR.ToUpper();
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

@@ -1,3 +1,7 @@
+//using System;
+//using System.Diagnostics;
+//using System.Linq;
+
 using CallerLineNumber         = System.Runtime.CompilerServices.CallerLineNumberAttribute;
 using CallerArgumentExpression = System.Runtime.CompilerServices.CallerArgumentExpressionAttribute;
 
@@ -25,8 +29,33 @@ internal static class Miscellaneous {
     //
     //  'FilePath' can include a file name, it doesn't need to be stripped from string.
     //
-    [Impl(AggressiveInlining)] public static void IfNotExist_CreateDirectory(string FilePath) =>
-        System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(FilePath));
+    [In(line)] public static void IfNotExist_CreateDirectory(string FilePath) =>
+        System.IO.Directory.CreateDirectory(
+            System.IO.Path.GetDirectoryName(FilePath)
+        );
+
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //
+    //  Returns usage in Bytes.
+    //
+  //public static long GetProcessVramUsage() {
+  //    int pid = Process.GetCurrentProcess().Id;
+  //    var category = new PerformanceCounterCategory("GPU Process Memory");
+  //
+  //    // Find instances belonging to the current Process ID
+  //    string[] instanceNames = category.GetInstanceNames().Where(name => name.Contains($"pid_{pid}")).ToArray();
+  //
+  //    long TotalBytes = 0;
+  //
+  //    foreach (string instance in instanceNames) {
+  //        using (var counter = new PerformanceCounter("GPU Process Memory", "Local Usage", instance, true)) {
+  //            TotalBytes += counter.RawValue;
+  //        }
+  //    }
+  //
+  //    return TotalBytes;
+  //}
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

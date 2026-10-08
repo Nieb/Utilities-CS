@@ -6,7 +6,7 @@ internal static partial class VEC_Miscellaneous {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //  https://www.desmos.com/calculator/0bfrvyicjc
+    //  A & B should be normalized.
     //
     //          B     M            M
     //           \   /              \
@@ -16,7 +16,15 @@ internal static partial class VEC_Miscellaneous {
     //                              /
     //                             B
     //
-    internal static vec2 Bisect(vec2 A, vec2 B) {
+    //  https://www.desmos.com/calculator/0bfrvyicjc
+    //
+    internal static vec2 Bisect(vec2 An, vec2 Bn) {
+        vec2 Bisector = An + Bn;
+        return (abs(Bisector) < EPS6) ? rot_lf(An)
+                                      : normalize((cross(An,Bn) < 0f) ? -Bisector : Bisector);
+    }
+
+    /*internal static vec2 Bisect(vec2 A, vec2 B) {
         float tA = atan2(A.y, A.x);
         float tB = atan2(B.y, B.x);
 
@@ -26,62 +34,29 @@ internal static partial class VEC_Miscellaneous {
 
         (float mSin, float mCos) = sincos(tM);
         return new vec2(mCos, mSin);
-    }
+    }*/
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //  ViewAspectX == ViewSizeX/ViewSizeY      1.777~ == 16/9
-    //  ViewAspectY == ViewSizeY/ViewSizeX      0.5625 ==  9/16
+    //  ViewAspectX == ViewSizeX/ViewSizeY      16/9  == 1.777~
+    //  ViewAspectY == ViewSizeY/ViewSizeX       9/16 == 0.5625
     //
-    [Impl(AggressiveInlining)] internal static float FovX_FromY(float FovY, float ViewAspectX) => 2f * atan(tan(FovY/2f) * ViewAspectX);
-    [Impl(AggressiveInlining)] internal static float FovY_FromX(float FovX, float ViewAspectY) => 2f * atan(tan(FovX/2f) * ViewAspectY);
-
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
+    //  NOTE:  This is for a Planar-Projection Camera!  Not a Radial-Projection.
     //
-    //  https://www.desmos.com/calculator/mqajs8tfgd
-    //  https://www.desmos.com/3d/p8hvpd8xwz
-    //
-    //  Asymptotic  AKA: "Falloff infinitely approaches zero."
-    //      Result < 0.1           at radius: 1.51742712939~
-    //      Result < 0.01          at radius: 2.14596602629~
-    //      Result < 0.001         at radius: 2.62826088488~
-    //      Result < 0.000_1       at radius: 3.03485425877~
-    //      Result < 0.000_01      at radius: 3.39307021221~
-    //      Result < 0.000_001     at radius: 3.71692218885~
-    //      Result < 0.000_000_1   at radius: 4.01473481702~
-    //      Result < 0.000_000_01  at radius: 4.29193205258~
-    //      Result < 0.000_000_001 at radius: 4.55228138816~
-    //
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [Impl(AggressiveInlining)] internal static v1  Gaussian(v1 x)             => exp(-(x*x));
-    [Impl(AggressiveInlining)] internal static v1 iGaussian(v1 y)             => sqrt(-log(y));
-
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [Impl(AggressiveInlining)] internal static v1  Gaussian(v1 x, v1 y)       => exp(-  (x*x) -   (y*y));
-    [Impl(AggressiveInlining)] internal static v1  Gaussian(v1 x, v1 y, v1 S) => exp(-sq(x/S) - sq(y/S));
-
-    [Impl(AggressiveInlining)] internal static v1  Gaussian(v2 V)             => Gaussian(V.x, V.y);
+    [In(line)] internal static float FovX_FromY(float FovY, float ViewAspectX)               => 2f * atan2(tan(FovY/2f) * ViewAspectX, 1f);
+    [In(line)] internal static float FovY_FromX(float FovX, float ViewAspectY)               => 2f * atan2(tan(FovX/2f) * ViewAspectY, 1f);
 
     //==========================================================================================================================================================
-    //
-    //  https://www.desmos.com/calculator/ku1ahcyzyw
-    //  https://www.desmos.com/3d/gohoq8tutz
-    //
-    //  "x * PI" gives a period of 2, instead of PI.
-    //
-    //  NOTE: Formula undefined at zero.
-    //            Lanczos(0.0) == NaN
-    //
-    [Impl(AggressiveInlining)] internal static v1 Lanczos(v1 x) {x = x*PI;  return (2f * sin(x) * sin(x/2f)) / (x*x);}
+    [In(line)] internal static float FovX_FromY_Stereographic(float FovY, float ViewAspectX) => 4f * atan2(tan(FovY/4f) * ViewAspectX, 1f);
+    [In(line)] internal static float FovY_FromX_Stereographic(float FovX, float ViewAspectY) => 4f * atan2(tan(FovX/4f) * ViewAspectY, 1f);
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static v1 Sigmoid(v1 x) => 1f / (1f + exp(-x));
+    //internal static float FovX_FromY_Equidistant(float FovY, float ViewAspectX) => FovY * ViewAspectX;
+
+    //internal static float FovX_FromY_Equisolid(float FovY, float ViewAspectX) => 2f * asin(sin(FovY / 2f) * ViewAspectX);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -107,16 +82,81 @@ internal static partial class VEC_Miscellaneous {
     //internal static float SphericalDistance(vec3 A, vec3 B) => acos(clamp(dot(A,B), -1f, 1f));
     internal static float SphericalDistance(vec3 A, vec3 B) => atan2(length(cross(A,B)), dot(A,B));
 
-    //==========================================================================================================================================================
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    [In(line)] internal static v1 WeightedSum(v1 A,v1 B,            v2 W) => (A*W.x + B*W.y);
+    [In(line)] internal static v2 WeightedSum(v2 A,v2 B,            v2 W) => (A*W.x + B*W.y);
+    [In(line)] internal static v3 WeightedSum(v3 A,v3 B,            v2 W) => (A*W.x + B*W.y);
+    [In(line)] internal static v4 WeightedSum(v4 A,v4 B,            v2 W) => (A*W.x + B*W.y);
+
+    [In(line)] internal static v1 WeightedSum(v1 A,v1 B,v1 C,       v3 W) => (A*W.x + B*W.y + C*W.z);
+    [In(line)] internal static v2 WeightedSum(v2 A,v2 B,v2 C,       v3 W) => (A*W.x + B*W.y + C*W.z);
+    [In(line)] internal static v3 WeightedSum(v3 A,v3 B,v3 C,       v3 W) => (A*W.x + B*W.y + C*W.z);
+    [In(line)] internal static v4 WeightedSum(v4 A,v4 B,v4 C,       v3 W) => (A*W.x + B*W.y + C*W.z);
+
+    [In(line)] internal static v1 WeightedSum(v1 A,v1 B,v1 C,v1 D,  v4 W) => (A*W.x + B*W.y + C*W.z + D*W.w);
+    [In(line)] internal static v2 WeightedSum(v2 A,v2 B,v2 C,v2 D,  v4 W) => (A*W.x + B*W.y + C*W.z + D*W.w);
+    [In(line)] internal static v3 WeightedSum(v3 A,v3 B,v3 C,v3 D,  v4 W) => (A*W.x + B*W.y + C*W.z + D*W.w);
+    [In(line)] internal static v4 WeightedSum(v4 A,v4 B,v4 C,v4 D,  v4 W) => (A*W.x + B*W.y + C*W.z + D*W.w);
+
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
     //
-    //  Spherical Coordinates
+    //  Efficient DDA Circle Outline
+    //  by Casey Muratori
     //
-    //      ( r,  θ,  φ )
+    //      KC_Circle(  Radius,  Padding-LowerBounds,  Padding-UpperBounds  )
     //
-    //          X   Depth/Elevation     r               Radial Distance         Distance along the line connecting Point to Sphere-Origin.
-    //          Y   Pitch               θ "theta"       Polar Angle             Angle between this radial line and a given polar axis.
-    //          Z   Yaw                 φ "phi"         Azimuthal Angle         Angle of rotation of the radial line around the polar axis.
-    //
+    internal static uint[] KC_Circle(int R, int PadLow=1, int PadUpr=2, uint CenterColor=0xFF0000FFu, uint CircleColor=0x996633FFu, uint BgColor=0x000000FFu) {  //  RrGgBbAa
+        int R2 = R+R;
+        int X  =  R;
+        int Y  =  0;
+        int dY = -2;
+        int dX = R2+R2 - 4;
+        int D  = R2 - 1;
+
+        int Pos = PadLow + R;
+        int Dim = Pos + 1 + R + PadUpr;
+
+        uint[] Bitmap = new uint[Dim*Dim];
+
+        Bitmap.FillWith(BgColor);
+
+        Bitmap[Pos+(Pos*Dim)] = CenterColor;
+
+        while (Y <= X) {
+            Bitmap[Pos-X + ((Pos-Y) * Dim)] = CircleColor; //  (-X, -Y)
+            Bitmap[Pos+X + ((Pos-Y) * Dim)] = CircleColor; //  ( X, -Y)
+            Bitmap[Pos-X + ((Pos+Y) * Dim)] = CircleColor; //  (-X,  Y)
+            Bitmap[Pos+X + ((Pos+Y) * Dim)] = CircleColor; //  ( X,  Y)      X decrements    R  to  R/2
+            Bitmap[Pos-Y + ((Pos-X) * Dim)] = CircleColor; //  (-Y, -X)      Y increments    0  to  R/2
+            Bitmap[Pos+Y + ((Pos-X) * Dim)] = CircleColor; //  ( Y, -X)
+            Bitmap[Pos-Y + ((Pos+X) * Dim)] = CircleColor; //  (-Y,  X)
+            Bitmap[Pos+Y + ((Pos+X) * Dim)] = CircleColor; //  ( Y,  X)
+
+            D  += dY;
+            dY -=  4;
+            Y  +=  1;
+
+            #if false
+                if (D < 0) {
+                    D  += dX;
+                    dX -= 4;
+                    X  -= 1;
+                }
+            #else //  Branchless version:
+                int Mask = (D >> 31);
+                D  +=  dX & Mask;
+                dX -=   4 & Mask;
+                X  +=       Mask;
+            #endif
+        }
+
+        return Bitmap;
+    }
+
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################

@@ -35,32 +35,32 @@ public struct DimString {
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] public void Clear() {
+    [In(line)] public void Clear() {
         this.CursorPosX = 0;
         this.CursorPosY = 0;
         System.Array.Clear(this.Text);
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //[Impl(AggressiveInlining)] public void FillWith(char c) => this.Text.AsSpan().Fill(new Rune(c));
+    //[In(line)] public void FillWith(char c) => this.Text.AsSpan().Fill(new Rune(c));
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] private void AdvanceCursorToNextLine() {this.CursorPosX = 0;  ++this.CursorPosY;}
+    [In(line)] private void AdvanceCursorToNextLine() {this.CursorPosX = 0;  ++this.CursorPosY;}
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //[Impl(AggressiveInlining)] public void SetCursorPosX(int X) => this.CursorPosX = clamp(X, 0, this.SizeX);
-    //[Impl(AggressiveInlining)] public void SetCursorPosY(int Y) => this.CursorPosY = clamp(Y, 0, this.SizeY);
-    //[Impl(AggressiveInlining)] public void SetCursorPos(int X, int Y) {
+    //[In(line)] public void SetCursorPosX(int X) => this.CursorPosX = clamp(X, 0, this.SizeX);
+    //[In(line)] public void SetCursorPosY(int Y) => this.CursorPosY = clamp(Y, 0, this.SizeY);
+    //[In(line)] public void SetCursorPos(int X, int Y) {
     //    this.CursorPosX = clamp(X, 0, this.SizeX);
     //    this.CursorPosY = clamp(Y, 0, this.SizeY);
     //}
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] private readonly int Index(int X, int Y) => X + (Y*this.SizeX);
+    [In(line)] private readonly int Index(int X, int Y) => X + (Y*this.SizeX);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] public void Append(string S) => Append(S.AsSpan());
+    [In(line)] public void Append(string S) => Append(S.AsSpan());
 
     public void Append(ReadOnlySpan<char> S) {
         if (this.CursorPosY >= this.SizeY)
@@ -119,9 +119,9 @@ public struct DimString {
     }
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] public void AppendLine(string S) => AppendLine(S.AsSpan());
+    [In(line)] public void AppendLine(string S) => AppendLine(S.AsSpan());
 
-    [Impl(AggressiveInlining)] public void AppendLine(ReadOnlySpan<char> S) {
+    [In(line)] public void AppendLine(ReadOnlySpan<char> S) {
         if (this.CursorPosY >= this.SizeY)
             return;
         this.Append(S);
@@ -129,7 +129,7 @@ public struct DimString {
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [Impl(AggressiveInlining)] public void AppendLine() {
+    [In(line)] public void AppendLine() {
         if (this.CursorPosY >= this.SizeY)
             return;
         this.AdvanceCursorToNextLine();

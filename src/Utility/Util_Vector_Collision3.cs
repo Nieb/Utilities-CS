@@ -3,15 +3,8 @@ namespace Utility;
 internal static partial class VEC_Collision3 {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    //
-    //  Used in functions that return a Collision-Position.
-    //
-    internal const float MISS = float.NegativeInfinity;
-    //internal static readonly vec3 MISS = new vec3(float.NegativeInfinity);
-
     //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
+    //                                                                   Point VS ***
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -24,21 +17,55 @@ internal static partial class VEC_Collision3 {
     //
     //      WhichSideOfPlane(  Point,  Plane-Position,  Plane-Normal  )
     //
-    [Impl(AggressiveInlining)] internal static float WhichSideOfPlane(vec3 Pnt, vec3 Pp, vec3 Pn) => dot(Pn, Pnt-Pp);
+    [In(line)] internal static float WhichSideOfPlane(vec3 Pnt, vec3 Pp, vec3 Pn) => dot(Pn, Pnt-Pp);
+
+    //==========================================================================================================================================================
+    public static bool BoundsInFrontOfPlane(vec3 b0, vec3 b1, vec3 Pp, vec3 Pn) {
+        // Find the corner of the bounding box that extends furthest along the plane normal
+        vec3 FarthestPointInBounds = new vec3(
+            (Pn.x > 0f) ? b1.x : b0.x,
+            (Pn.y > 0f) ? b1.y : b0.y,
+            (Pn.z > 0f) ? b1.z : b0.z
+        );
+
+        // Calculate the signed distance from the plane to this furthest corner
+        // A positive result means the point (and thus part of the box) is in front of the plane
+        float distance = (FarthestPointInBounds.x - Pp.x) * Pn.x +
+                         (FarthestPointInBounds.y - Pp.y) * Pn.y +
+                         (FarthestPointInBounds.z - Pp.z) * Pn.z;
+        //float distance = dot(FarthestPointInBounds - Pp, Pn);
+
+        return distance > 0f;
+    }
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-  //[Impl(AggressiveInlining)] internal static bool PointVsPoint(vec3 Pa, vec3 Pb, float Tolerance) => PointVsSphere(Pa, Pb, Tolerance);
+    [In(line)] internal static bool PointVsPoint(vec3 Pa, vec3 Pb, float Tolerance) => PointVsSphere(Pa, Pb, Tolerance);
 
     //==========================================================================================================================================================
     //
     //      PointVsSphere(  Point,  Sphere-Position,  Sphere-Radius  )
     //
-    [Impl(AggressiveInlining)] internal static bool PointVsSphere(vec3 P, vec3 Sp, float Sr) => dot(Sp-P) <= (Sr*Sr);
+    [In(line)] internal static bool PointVsSphere(vec3 P, vec3 Sp, float Sr) => dot(Sp-P) <= (Sr*Sr);
+
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //
+    //  Axis-Aligned.
+    //
+    //      PointVsCylinder(  Point,  Cylinder-Position,  Cylinder-Radius,  Cylinder-Height  )
+    //
+    [In(line)] internal static bool PointVsCylinder(vec3 P, vec3 Cp, float Cr, float Ch) => (
+        #if Z_UP
+            P.z >= Cp.z  &&  P.z <= Cp.z+Ch //  Is Point in same vertical space as Cylinder?
+            && dot(P.xy - Cp.xy) <= (Cr*Cr) //  Is Point inside of Cylinder-Radius?
+        #else
+            P.y >= Cp.y  &&  P.y <= Cp.y+Ch
+            && dot(P.xz - Cp.xz) <= (Cr*Cr)
+        #endif
+    );
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -55,55 +82,51 @@ internal static partial class VEC_Collision3 {
     //
     //      PointVsBox(  Point,  Box-Position,  Box-Size  )
     //
-    [Impl(AggressiveInlining)] internal static bool PointVsBox( vec3 P,  vec3 Bp,  vec3 Bs) => (P >= Bp && P <= Bp+Bs);
-    [Impl(AggressiveInlining)] internal static bool PointVsBox(ivec3 P, ivec3 Bp, ivec3 Bs) => (P >= Bp && P <  Bp+Bs);
+    [In(line)] internal static bool PointVsBox( vec3 P,  vec3 Bp,  vec3 Bs) => (P >= Bp && P <= Bp+Bs);
+    [In(line)] internal static bool PointVsBox(ivec3 P, ivec3 Bp, ivec3 Bs) => (P >= Bp && P <  Bp+Bs);
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static bool PointVsBounds( vec3 P,  vec3 b0,  vec3 b1) => (P >= b0 && P <= b1);
-    [Impl(AggressiveInlining)] internal static bool PointVsBounds(ivec3 P, ivec3 b0, ivec3 b1) => (P >= b0 && P <  b1);
+    [In(line)] internal static bool PointVsBounds( vec3 P,  vec3 b0,  vec3 b1) => (P >= b0 && P <= b1);
+    [In(line)] internal static bool PointVsBounds(ivec3 P, ivec3 b0, ivec3 b1) => (P >= b0 && P <  b1);
 
-    //==========================================================================================================================================================
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //                                                                  Bounds VS ***
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
     //
     //  Axis-Aligned.
     //
     //      BoxVsBox(  Rectangle1-Position,  Rectangle1-Size,  Rectangle2-Position,  Rectangle2-Size)
     //
-    [Impl(AggressiveInlining)] internal static bool BoxVsBox( vec3 Bp1,  vec3 Bs1,  vec3 Bp2,  vec3 Bs2) => (Bp1+Bs1 >= Bp2  &&  Bp1 <= Bp2+Bs2);
-    [Impl(AggressiveInlining)] internal static bool BoxVsBox(ivec3 Bp1, ivec3 Bs1, ivec3 Bp2, ivec3 Bs2) => (Bp1+Bs1 >= Bp2  &&  Bp1 <  Bp2+Bs2);
+    [In(line)] internal static bool BoxVsBox( vec3 Bp1,  vec3 Bs1,  vec3 Bp2,  vec3 Bs2) => (Bp1+Bs1 >= Bp2  &&  Bp1 <= Bp2+Bs2);
+    [In(line)] internal static bool BoxVsBox(ivec3 Bp1, ivec3 Bs1, ivec3 Bp2, ivec3 Bs2) => (Bp1+Bs1 >= Bp2  &&  Bp1 <  Bp2+Bs2);
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static bool BoundsVsBounds( vec3 a0,  vec3 a1,  vec3 b0,  vec3 b1) => (a1 >= b0  &&  a0 <= b1);
-    [Impl(AggressiveInlining)] internal static bool BoundsVsBounds(ivec3 a0, ivec3 a1, ivec3 b0, ivec3 b1) => (a1 >= b0  &&  a0 <  b1);
-
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //
-    //  Axis-Aligned.
-    //
-    //      PointVsCylinder(  Point,  Cylinder-Position,  Cylinder-Radius,  Cylinder-Height  )
-    //
-    [Impl(AggressiveInlining)] internal static bool PointVsCylinder(vec3 P, vec3 Cp, float Cr, float Ch) => (
-         P.y >= Cp.y && P.y <= Cp.y+Ch  //  Is Point in same vertical space as Cylinder?
-        && dot(P.xz - Cp.xz) <= (Cr*Cr) //  Is Point inside of Cylinder-Radius?
-    );
+    [In(line)] internal static bool BoundsVsBounds( vec3 a0,  vec3 a1,  vec3 b0,  vec3 b1) => (a1 >= b0  &&  a0 <= b1);
+    [In(line)] internal static bool BoundsVsBounds(ivec3 a0, ivec3 a1, ivec3 b0, ivec3 b1) => (a1 >= b0  &&  a0 <  b1);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
+    //                                                                  Sphere VS ***
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
     //      SphereVsBox(  SpherePosition, SphereRadius,  BoxPosition, BoxSize  )
     //
-    [Impl(AggressiveInlining)] internal static bool SphereVsBox(vec3 Sp, float Sr, vec3 Bp, vec3 Bs)   => dot(min(0f,Sp-Bp) + max(0f,Sp-(Bp+Bs))) <= Sr*Sr;
+    [In(line)] internal static bool SphereVsBox(vec3 Sp, float Sr, vec3 Bp, vec3 Bs) => dot(min(0f,Sp-Bp) + max(0f,Sp-(Bp+Bs))) <= Sr*Sr;
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static bool SphereVsBounds(vec3 Sp, float Sr, vec3 b0, vec3 b1) => dot(min(0f,Sp-b0) + max(0f,Sp-b1)) <= Sr*Sr;
+    [In(line)] internal static bool SphereVsBounds(vec3 Sp, float Sr, vec3 b0, vec3 b1) => dot(min(0f,Sp-b0) + max(0f,Sp-b1)) <= Sr*Sr;
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
+    //                                                                    Line VS ***
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -126,7 +149,7 @@ internal static partial class VEC_Collision3 {
         float Denom = Dot11*Dot22 - Dot12*Dot12;
 
         //  Are the lines Parallel (or degenerate)?
-        if (abs(Denom) < EPS7)
+        if (abs(Denom) < EPS6)
             return new vec3(MISS);
 
         //  Distance from LinePointA to NearestPointOnLine, as multiple of DeltaAB:

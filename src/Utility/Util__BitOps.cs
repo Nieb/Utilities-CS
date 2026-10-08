@@ -5,25 +5,25 @@ internal static class BitOps {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] internal static u32 ExtractBit(u32 A, int i) => (A & (1u <<i));
-    [Impl(AggressiveInlining)] internal static u64 ExtractBit(u64 A, int i) => (A & (1UL<<i));
+    [In(line)] internal static u32 ExtractBit(u32 A, int i) => (A & (1u <<i));
+    [In(line)] internal static u64 ExtractBit(u64 A, int i) => (A & (1UL<<i));
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static bool GetBit(u32 A, int i) => (A & (1u <<i)) != 0u;
-    [Impl(AggressiveInlining)] internal static bool GetBit(u64 A, int i) => (A & (1UL<<i)) != 0UL;
+    [In(line)] internal static bool GetBit(u32 A, int i) => (A & (1u <<i)) != 0u;
+    [In(line)] internal static bool GetBit(u64 A, int i) => (A & (1UL<<i)) != 0UL;
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static u32 SetBit(u32 A, int i, int SetTo) => (A & ~(1u <<i)) | ((SetTo == 0 ? 0u  : 1u )<<i);
-    [Impl(AggressiveInlining)] internal static u64 SetBit(u64 A, int i, int SetTo) => (A & ~(1UL<<i)) | ((SetTo == 0 ? 0UL : 1UL)<<i);
+    [In(line)] internal static u32 SetBit(u32 A, int i, int SetTo) => (A & ~(1u <<i)) | ((SetTo == 0 ? 0u  : 1u )<<i);
+    [In(line)] internal static u64 SetBit(u64 A, int i, int SetTo) => (A & ~(1UL<<i)) | ((SetTo == 0 ? 0UL : 1UL)<<i);
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static u32 ToggleBit(u32 A, int i) => A ^ (1u <<i);
-    [Impl(AggressiveInlining)] internal static u64 ToggleBit(u64 A, int i) => A ^ (1UL<<i);
+    [In(line)] internal static u32 ToggleBit(u32 A, int i) => A ^ (1u <<i);
+    [In(line)] internal static u64 ToggleBit(u64 A, int i) => A ^ (1UL<<i);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] internal static int BitCount(u32 A) => System.Numerics.BitOperations.PopCount(A);
-    [Impl(AggressiveInlining)] internal static int BitCount(u64 A) => System.Numerics.BitOperations.PopCount(A);
+    [In(line)] internal static int BitCount(u32 A) => System.Numerics.BitOperations.PopCount(A);
+    [In(line)] internal static int BitCount(u64 A) => System.Numerics.BitOperations.PopCount(A);
 
     //==========================================================================================================================================================
     //
@@ -45,18 +45,18 @@ internal static class BitOps {
     //
     //  AB_CD_EF_12  -->  12_EF_CD_AB
     //
-    [Impl(AggressiveInlining)] internal static uint  ByteFlip(uint  A) => ((A & 0xFF000000) >> 24)|((A & 0x00FF0000) >>  8)|((A & 0x0000FF00) <<  8)|((A & 0x000000FF) << 24);
-    [Impl(AggressiveInlining)] internal static bvec4 ByteFlip(bvec4 A) => ((uint)A.x             )|((uint)A.y        <<  8)|((uint)A.z        << 16)|((uint)A.w        << 24);
+    [In(line)] internal static uint  ByteFlip(uint  A) => ((A & 0xFF000000) >> 24)|((A & 0x00FF0000) >>  8)|((A & 0x0000FF00) <<  8)|((A & 0x000000FF) << 24);
+  //[In(line)] internal static bvec4 ByteFlip(bvec4 A) => ((uint)A.x             )|((uint)A.y        <<  8)|((uint)A.z        << 16)|((uint)A.w        << 24);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] internal static float BitDec(float A) => System.MathF.BitDecrement(A);
-    [Impl(AggressiveInlining)] internal static float BitInc(float A) => System.MathF.BitIncrement(A);
+    [In(line)] internal static float BitDec(float A) => System.MathF.BitDecrement(A);
+    [In(line)] internal static float BitInc(float A) => System.MathF.BitIncrement(A);
 
-    [Impl(AggressiveInlining)] internal static float BitDec(float A, int I) {while(I-- > 0) System.MathF.BitDecrement(A); return A;}
-    [Impl(AggressiveInlining)] internal static float BitInc(float A, int I) {while(I-- > 0) System.MathF.BitIncrement(A); return A;}
+    [In(line)] internal static float BitDec(float A, int I) {while(I-- > 0) System.MathF.BitDecrement(A); return A;}
+    [In(line)] internal static float BitInc(float A, int I) {while(I-- > 0) System.MathF.BitIncrement(A); return A;}
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

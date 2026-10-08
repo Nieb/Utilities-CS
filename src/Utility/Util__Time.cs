@@ -85,8 +85,8 @@ internal struct TIME {
                 s64 DeltaNext = this.NextFrame - Stopwatch.GetTimestamp();
                 if (DeltaNext <= 0) break;
                 //if (DeltaNext > this.OneMillis) Thread.Sleep(1);       //  Sleep time-resolution is 1/64 (15.625 ms).  :(
-                //if (DeltaNext > this.OneMillis) Thread.Yield();        //  If there is no other process that wants to use the CPU core, Yield() will return immediately.
-                if (DeltaNext > this.OneMillis) Thread.SpinWait(64);     //  Parameter is "loop iterations".  Highly variable, dependent on CPU performance/speed.
+                if (DeltaNext > this.OneMillis) Thread.Yield();          //  If there is no other process that wants to use the CPU core, Yield() will return immediately.
+                //if (DeltaNext > this.OneMillis) Thread.SpinWait(64);   //  Parameter is "loop iterations".  Highly variable, dependent on CPU performance/speed.
             }
         #endif
 

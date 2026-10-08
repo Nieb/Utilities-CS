@@ -4,7 +4,7 @@ internal static class VEC_Collision {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //  Used in functions that return:  "HitPosition"                           if (HitPos == MISS) {...}
+    //  Used in functions that return:  "HitPosition"                           if (HitPos.x == MISS) {...}             if (HitPos == MISS) {...}
     //
     internal const float MISS = float.NegativeInfinity;
 

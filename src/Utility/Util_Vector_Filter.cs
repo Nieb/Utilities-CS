@@ -9,7 +9,7 @@ internal static partial class VEC_Filter {
     //
     //    out: 0 to 1
     //
-    [Impl(AggressiveInlining)] internal static float HardLimit(float V, float T) => (V > T) ? T : V;
+    [In(line)] internal static float HardLimit(float V, float T) => (V > T) ? T : V;
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -88,6 +88,9 @@ internal static partial class VEC_Filter {
     //
     //  https://www.desmos.com/calculator/7vp20jpmdc
     //
+    //  This doesn't work so great with small values (< 64).
+    //  This doesn't work at all with values (< 1).
+    //
     //  While the principle is similar, it's not really a "notch" anymore, more of a controlled "bell-curve"/"decay"/"falloff"/"s-curve" function.
     //
     //              |- - - - - - -'F'- - - - - - -| 'R'
@@ -106,7 +109,7 @@ internal static partial class VEC_Filter {
     //
     //      Notch(  x,  Radius, Falloff  )
     //
-    [Impl(AggressiveInlining)] internal static float Notch(float x, float R, float F) => pow(R, -pow(x/R, F));
+    [In(line)] internal static float Falloff(float x, float R, float F) => pow(R, -pow(x/R, F));
 
     //==========================================================================================================================================================
     //

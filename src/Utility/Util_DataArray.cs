@@ -10,8 +10,8 @@ internal readonly struct DataArray {
     [FieldOffset(0)] public readonly u8[] Data;
 
     public readonly u8 this[int i] {
-        [Impl(AggressiveInlining)] get => this.Data[i];
-        [Impl(AggressiveInlining)] set => this.Data[i] = value;
+        [In(line)] get => this.Data[i];
+        [In(line)] set => this.Data[i] = value;
     }
 
     //==========================================================================================================================================================
@@ -32,42 +32,41 @@ internal readonly struct DataArray {
     public readonly Span<u64> u64 => MemoryMarshal.Cast<u8,u64>(Data); //  "Span of ulongs"
 
     //==========================================================================================================================================================
-  //[Impl(AggressiveInlining)] public DataArray() => throw new System.InvalidOperationException("DataArray must be instantiated with Size.");
-
-    [Impl(AggressiveInlining)] public DataArray(int Size) => this.Data = new u8[Size];
+    [In(line)] public DataArray()         => this.Data = new u8[0];
+    [In(line)] public DataArray(int Size) => this.Data = new u8[Size];
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan< s8> B) => B.CopyTo(this. s8[I..]);
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan< u8> B) => B.CopyTo(this. u8[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan< s8> B) => B.CopyTo(this. s8[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan< u8> B) => B.CopyTo(this. u8[I..]);
 
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan<f16> B) => B.CopyTo(this.f16[I..]);
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan<s16> B) => B.CopyTo(this.s16[I..]);
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan<u16> B) => B.CopyTo(this.u16[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan<f16> B) => B.CopyTo(this.f16[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan<s16> B) => B.CopyTo(this.s16[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan<u16> B) => B.CopyTo(this.u16[I..]);
 
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan<f32> B) => B.CopyTo(this.f32[I..]);
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan<s32> B) => B.CopyTo(this.s32[I..]);
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan<u32> B) => B.CopyTo(this.u32[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan<f32> B) => B.CopyTo(this.f32[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan<s32> B) => B.CopyTo(this.s32[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan<u32> B) => B.CopyTo(this.u32[I..]);
 
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan<f64> B) => B.CopyTo(this.f64[I..]);
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan<s64> B) => B.CopyTo(this.s64[I..]);
-    [Impl(AggressiveInlining)] public readonly void SetFrom(int I, ReadOnlySpan<u64> B) => B.CopyTo(this.u64[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan<f64> B) => B.CopyTo(this.f64[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan<s64> B) => B.CopyTo(this.s64[I..]);
+    [In(line)] public readonly void SetFrom(int I, ReadOnlySpan<u64> B) => B.CopyTo(this.u64[I..]);
 
     //==========================================================================================================================================================
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params  s8[] B) => ((ReadOnlySpan< s8>)B).CopyTo(this. s8[I..]); //params ReadOnlySpan< s8> B
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params  u8[] B) => ((ReadOnlySpan< u8>)B).CopyTo(this. u8[I..]); //params ReadOnlySpan< u8> B
+    //[In(line)] public readonly void SetFrom(int I, params  s8[] B) => ((ReadOnlySpan< s8>)B).CopyTo(this. s8[I..]); //params ReadOnlySpan< s8> B
+    //[In(line)] public readonly void SetFrom(int I, params  u8[] B) => ((ReadOnlySpan< u8>)B).CopyTo(this. u8[I..]); //params ReadOnlySpan< u8> B
 
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params f16[] B) => ((ReadOnlySpan<f16>)B).CopyTo(this.f16[I..]); //params ReadOnlySpan<f16> B
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params s16[] B) => ((ReadOnlySpan<s16>)B).CopyTo(this.s16[I..]); //params ReadOnlySpan<s16> B
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params u16[] B) => ((ReadOnlySpan<u16>)B).CopyTo(this.u16[I..]); //params ReadOnlySpan<u16> B
+    //[In(line)] public readonly void SetFrom(int I, params f16[] B) => ((ReadOnlySpan<f16>)B).CopyTo(this.f16[I..]); //params ReadOnlySpan<f16> B
+    //[In(line)] public readonly void SetFrom(int I, params s16[] B) => ((ReadOnlySpan<s16>)B).CopyTo(this.s16[I..]); //params ReadOnlySpan<s16> B
+    //[In(line)] public readonly void SetFrom(int I, params u16[] B) => ((ReadOnlySpan<u16>)B).CopyTo(this.u16[I..]); //params ReadOnlySpan<u16> B
 
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params f32[] B) => ((ReadOnlySpan<f32>)B).CopyTo(this.f32[I..]); //params ReadOnlySpan<f32> B
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params s32[] B) => ((ReadOnlySpan<s32>)B).CopyTo(this.s32[I..]); //params ReadOnlySpan<s32> B  not available in C# 12.0
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params u32[] B) => ((ReadOnlySpan<u32>)B).CopyTo(this.u32[I..]); //params ReadOnlySpan<u32> B
+    //[In(line)] public readonly void SetFrom(int I, params f32[] B) => ((ReadOnlySpan<f32>)B).CopyTo(this.f32[I..]); //params ReadOnlySpan<f32> B
+    //[In(line)] public readonly void SetFrom(int I, params s32[] B) => ((ReadOnlySpan<s32>)B).CopyTo(this.s32[I..]); //params ReadOnlySpan<s32> B  not available in C# 12.0
+    //[In(line)] public readonly void SetFrom(int I, params u32[] B) => ((ReadOnlySpan<u32>)B).CopyTo(this.u32[I..]); //params ReadOnlySpan<u32> B
 
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params f64[] B) => ((ReadOnlySpan<f64>)B).CopyTo(this.f64[I..]); //params ReadOnlySpan<f64> B
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params s64[] B) => ((ReadOnlySpan<s64>)B).CopyTo(this.s64[I..]); //params ReadOnlySpan<s64> B
-    //[Impl(AggressiveInlining)] public readonly void SetFrom(int I, params u64[] B) => ((ReadOnlySpan<u64>)B).CopyTo(this.u64[I..]); //params ReadOnlySpan<u64> B
+    //[In(line)] public readonly void SetFrom(int I, params f64[] B) => ((ReadOnlySpan<f64>)B).CopyTo(this.f64[I..]); //params ReadOnlySpan<f64> B
+    //[In(line)] public readonly void SetFrom(int I, params s64[] B) => ((ReadOnlySpan<s64>)B).CopyTo(this.s64[I..]); //params ReadOnlySpan<s64> B
+    //[In(line)] public readonly void SetFrom(int I, params u64[] B) => ((ReadOnlySpan<u64>)B).CopyTo(this.u64[I..]); //params ReadOnlySpan<u64> B
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

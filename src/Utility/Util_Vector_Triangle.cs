@@ -6,26 +6,8 @@ internal static partial class VEC_Triangle {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //  https://www.desmos.com/calculator/9d31eb577f
-    //
     //  Returns 3 weights corresponding to a position relative to the 3 Points of a Triangle.
     //      Center == (1/3, 1/3, 1/3)
-    //
-    internal static vec3 Barycentric(vec2 P, vec2 Ta, vec2 Tb, vec2 Tc) {
-        vec2 dAB = Tb-Ta;
-        vec2 dAC = Tc-Ta;
-        vec2 dAP = P -Ta;
-
-        float Scaler = 1f / cross(dAB, dAC);
-
-        float wC = cross(dAB, dAP) * Scaler;
-        float wB = cross(dAP, dAC) * Scaler;
-        float wA = 1f - wB - wC;
-
-        return new vec3(wA, wB, wC);
-    }
-
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------
     //
     //     (0,1)
     //          C
@@ -35,39 +17,30 @@ internal static partial class VEC_Triangle {
     //          A------B
     //     (0,0)        (1,0)
     //
-    [Impl(AggressiveInlining)] internal static vec3 Barycentric(vec2 P) => new vec3(1f-P.x-P.y, P.x, P.y);
+    [In(line)] internal static vec3 Barycentric(vec2 P) => new vec3(1f-P.x-P.y, P.x, P.y);
 
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] internal static vec3 NormalizeBary(vec3 W) => W / (W.x + W.y + W.z);
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //
+    //  Arbitrary Triangle version.
+    //
+    //  https://www.desmos.com/calculator/9d31eb577f
+    //
+    internal static vec3 Barycentric(vec2 P, vec2 Ta, vec2 Tb, vec2 Tc) {
+        vec2 dAB = Tb-Ta;
+        vec2 dAC = Tc-Ta;
+        vec2 dAP = P -Ta;
 
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] internal static v1 WeightedSum(v1 A,v1 B,            v2 W) => (A*W.x + B*W.y);
-    [Impl(AggressiveInlining)] internal static v2 WeightedSum(v2 A,v2 B,            v2 W) => (A*W.x + B*W.y);
-    [Impl(AggressiveInlining)] internal static v3 WeightedSum(v3 A,v3 B,            v2 W) => (A*W.x + B*W.y);
-    [Impl(AggressiveInlining)] internal static v4 WeightedSum(v4 A,v4 B,            v2 W) => (A*W.x + B*W.y);
+        float TheyCallMeTheNormalizer = 1f / cross(dAB, dAC);
 
-    [Impl(AggressiveInlining)] internal static v1 WeightedSum(v1 A,v1 B,v1 C,       v3 W) => (A*W.x + B*W.y + C*W.z);
-    [Impl(AggressiveInlining)] internal static v2 WeightedSum(v2 A,v2 B,v2 C,       v3 W) => (A*W.x + B*W.y + C*W.z);
-    [Impl(AggressiveInlining)] internal static v3 WeightedSum(v3 A,v3 B,v3 C,       v3 W) => (A*W.x + B*W.y + C*W.z);
-    [Impl(AggressiveInlining)] internal static v4 WeightedSum(v4 A,v4 B,v4 C,       v3 W) => (A*W.x + B*W.y + C*W.z);
+        float wC = cross(dAB, dAP) * TheyCallMeTheNormalizer;
+        float wB = cross(dAP, dAC) * TheyCallMeTheNormalizer;
+        float wA = 1f - wB - wC;
 
-    [Impl(AggressiveInlining)] internal static v1 WeightedSum(v1 A,v1 B,v1 C,v1 D,  v4 W) => (A*W.x + B*W.y + C*W.z + D*W.w);
-    [Impl(AggressiveInlining)] internal static v2 WeightedSum(v2 A,v2 B,v2 C,v2 D,  v4 W) => (A*W.x + B*W.y + C*W.z + D*W.w);
-    [Impl(AggressiveInlining)] internal static v3 WeightedSum(v3 A,v3 B,v3 C,v3 D,  v4 W) => (A*W.x + B*W.y + C*W.z + D*W.w);
-    [Impl(AggressiveInlining)] internal static v4 WeightedSum(v4 A,v4 B,v4 C,v4 D,  v4 W) => (A*W.x + B*W.y + C*W.z + D*W.w);
+        return new vec3(wA, wB, wC);
+    }
 
     //==========================================================================================================================================================
-    [Impl(AggressiveInlining)] internal static v1 BaryLinear(v1 A,v1 B,v1 C,  v2 P)                    => WeightedSum(A,B,C,  Barycentric(P));
-    [Impl(AggressiveInlining)] internal static v2 BaryLinear(v2 A,v2 B,v2 C,  v2 P)                    => WeightedSum(A,B,C,  Barycentric(P));
-    [Impl(AggressiveInlining)] internal static v3 BaryLinear(v3 A,v3 B,v3 C,  v2 P)                    => WeightedSum(A,B,C,  Barycentric(P));
-    [Impl(AggressiveInlining)] internal static v4 BaryLinear(v4 A,v4 B,v4 C,  v2 P)                    => WeightedSum(A,B,C,  Barycentric(P));
-
-    [Impl(AggressiveInlining)] internal static v1 BaryLinear(v1 A,v1 B,v1 C,  v2 P, v2 Ta,v2 Tb,v2 Tc) => WeightedSum(A,B,C,  Barycentric(P, Ta,Tb,Tc));
-    [Impl(AggressiveInlining)] internal static v2 BaryLinear(v2 A,v2 B,v2 C,  v2 P, v2 Ta,v2 Tb,v2 Tc) => WeightedSum(A,B,C,  Barycentric(P, Ta,Tb,Tc));
-    [Impl(AggressiveInlining)] internal static v3 BaryLinear(v3 A,v3 B,v3 C,  v2 P, v2 Ta,v2 Tb,v2 Tc) => WeightedSum(A,B,C,  Barycentric(P, Ta,Tb,Tc));
-    [Impl(AggressiveInlining)] internal static v4 BaryLinear(v4 A,v4 B,v4 C,  v2 P, v2 Ta,v2 Tb,v2 Tc) => WeightedSum(A,B,C,  Barycentric(P, Ta,Tb,Tc));
+    [In(line)] internal static vec3 NormalizeBary(vec3 W) => W / sumof(W);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -78,19 +51,22 @@ internal static partial class VEC_Triangle {
     //
     //  Test if a Point is inside of a Triangle's CircumCircle.
     //
+    //      "Tolerance" is roughly a radian-angle threshold (less true as cross() value increases).
+    //          EPS6 radians  ==  0.000_057~ degrees    1/17453~ of a degree
+    //
     //      "Bias" is to prevent symmetrical triangles from getting stuck in an EdgeFlip loop.
     //          Value should be (B > 1.0) and (B < 1.1~)
     //
-    internal static bool Delaunay(vec2 P, vec2 Ta, vec2 Tb, vec2 Tc, float Bias = 1.0001f) {
+    internal static bool Delaunay(vec2 P, vec2 Ta, vec2 Tb, vec2 Tc, /*float Tolerance=EPS6,*/ float Bias = 1.0001f) {
         vec2 dAB = Tb-Ta;
         vec2 dAC = Tc-Ta;
 
-        float Determinant = cross(normalize(dAB), normalize(dAC)); //  Epsilon check only works if this is normalized.
+        float D = cross(normalize(dAB), normalize(dAC)); //  Epsilon check only works if this is normalized.
 
         vec2  Cp;   //  CircumCircle-Position
         float CrCr; //  CircumCircle-Radius   Squared
 
-        if (abs(Determinant) < 0.001f) {
+        if (abs(D) < EPS6) {
             //  Triangle points are Colinear, define CircumCircle by delta between furthest points.
             vec2 Tmin = min(Ta, Tb, Tc);
             vec2 Tmax = max(Ta, Tb, Tc);
@@ -100,7 +76,7 @@ internal static partial class VEC_Triangle {
             CrCr = dot(Cp-Tmin);
 
         } else {
-            Determinant = cross(dAB, dAC);
+            D = cross(dAB, dAC);
 
             float AB_AB = dot(dAB, Ta+Tb);
             float AC_AC = dot(dAC, Ta+Tc);
@@ -109,7 +85,7 @@ internal static partial class VEC_Triangle {
                 (dAC.y*AB_AB - dAB.y*AC_AC),
                 (dAB.x*AC_AC - dAC.x*AB_AB)
             );
-            Cp /= (2f * Determinant);
+            Cp /= (2f * D);
 
             CrCr = dot(Cp-Ta);
         }
