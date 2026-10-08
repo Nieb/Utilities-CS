@@ -3,7 +3,7 @@ namespace DEBUG;
 internal static class TESTING {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [Impl(AggressiveInlining)] internal static void TEST(string TestLabel, bool Result) {
+    [In(line)] internal static void TEST(string TestLabel, bool Result) {
         if (!Result) System.Console.WriteLine($"    {TestLabel,32}: FAIL");
       //else         System.Console.WriteLine($"    {TestLabel,32}: Pass");
     }
