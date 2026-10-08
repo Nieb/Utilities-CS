@@ -1,4 +1,7 @@
-﻿
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
+
 namespace UtilityTest;
 internal static partial class Program {
     //##########################################################################################################################################################
@@ -17,6 +20,9 @@ internal static partial class Program {
 
             //Gen__TurboColor();
 
+        #elif false
+            Test___();
+
         #else
             TESTOUTC($"                                 ~~~ START ~~~");
             PROFILE_Start();
@@ -30,6 +36,8 @@ internal static partial class Program {
             Test__Matrix();
           //Test__MatrixOps();
 
+            Test__Quaternion();
+
             Test__Vector();
             Test__VectorArray();
             Test__VectorBasicOps();
@@ -41,8 +49,10 @@ internal static partial class Program {
             Test__Vector_Generate();
             Test__Vector_Geometry();
             Test__Vector_Interpolation();
+            Test__Vector_Interpolation2();
             Test__Vector_Miscellaneous();
             Test__Vector_Rotation();
+            Test__Vector_Triangle();
 
             PROFILE_End();
             TESTOUT($"\n                                 ~~~ FINISH ~~~");
@@ -79,6 +89,28 @@ internal static partial class Program {
     internal static bool IsRoughly(this v2 A, v2 B)       => abs(B-A) < EPS4;
     internal static bool IsRoughly(this v3 A, v3 B)       => abs(B-A) < EPS4;
     internal static bool IsRoughly(this v4 A, v4 B)       => abs(B-A) < EPS4;
+
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //
+    //  Just use the stdlib, they say,
+    //  why reinvent the wheel, they say...
+    //
+    internal static bool HasImplicitConversion(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type SourceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type TargetType)
+        =>  SourceType.GetMethods(BindingFlags.Public | BindingFlags.Static).Any(
+                m => m.Name == "op_Implicit" && m.ReturnType == TargetType && m.GetParameters().FirstOrDefault()?.ParameterType == SourceType)
+        ||  TargetType.GetMethods(BindingFlags.Public | BindingFlags.Static).Any(
+                m => m.Name == "op_Implicit" && m.ReturnType == TargetType && m.GetParameters().FirstOrDefault()?.ParameterType == SourceType);
+
+    internal static bool HasExplicitConversion(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type SourceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type TargetType)
+        =>  SourceType.GetMethods(BindingFlags.Public | BindingFlags.Static).Any(
+                m => m.Name == "op_Explicit" && m.ReturnType == TargetType && m.GetParameters().FirstOrDefault()?.ParameterType == SourceType)
+        ||  TargetType.GetMethods(BindingFlags.Public | BindingFlags.Static).Any(
+                m => m.Name == "op_Explicit" && m.ReturnType == TargetType && m.GetParameters().FirstOrDefault()?.ParameterType == SourceType);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
