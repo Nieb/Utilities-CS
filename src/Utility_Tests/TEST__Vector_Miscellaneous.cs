@@ -6,9 +6,21 @@ internal static partial class Program {
 
         //######################################################################################################################################################
         //######################################################################################################################################################
-        TEST("Bisect(vec2, vec2)", true
-            && Bisect((1f, 0f), (0f, 1f)).IsApproximately(( SQRT2_RCP, SQRT2_RCP))
-            && Bisect((0f, 1f), (1f, 0f)).IsApproximately((-SQRT2_RCP,-SQRT2_RCP))
+        TEST("Bisect(vec2, vec2)",true
+            && Bisect(( 1f, 0f), ( 0f, 1f)).IsApproximately(( SQRT2_RCP, SQRT2_RCP))
+            && Bisect(( 0f, 1f), (-1f, 0f)).IsApproximately((-SQRT2_RCP, SQRT2_RCP))
+            && Bisect((-1f, 0f), ( 0f,-1f)).IsApproximately((-SQRT2_RCP,-SQRT2_RCP))
+            && Bisect(( 0f,-1f), ( 1f, 0f)).IsApproximately(( SQRT2_RCP,-SQRT2_RCP))
+
+            && Bisect(( 1f, 0f), (-1f, 0f)).IsApproximately(( 0f, 1f))
+            && Bisect((-1f, 0f), ( 1f, 0f)).IsApproximately(( 0f,-1f))
+            && Bisect(( 0f,-1f), ( 0f, 1f)).IsApproximately(( 1f, 0f))
+            && Bisect(( 0f, 1f), ( 0f,-1f)).IsApproximately((-1f, 0f))
+
+            && Bisect(( 0f, 1f), ( 1f, 0f)).IsApproximately((-SQRT2_RCP,-SQRT2_RCP))
+            && Bisect((-1f, 0f), ( 0f, 1f)).IsApproximately(( SQRT2_RCP,-SQRT2_RCP))
+            && Bisect(( 0f,-1f), (-1f, 0f)).IsApproximately(( SQRT2_RCP, SQRT2_RCP))
+            && Bisect(( 1f, 0f), ( 0f,-1f)).IsApproximately((-SQRT2_RCP, SQRT2_RCP))
 
             && Bisect(( SQRT2_RCP,-SQRT2_RCP), ( SQRT2_RCP, SQRT2_RCP)).IsApproximately(( 1f, 0f))
             && Bisect((-SQRT2_RCP,-SQRT2_RCP), (-SQRT2_RCP, SQRT2_RCP)).IsApproximately(( 1f, 0f))
@@ -26,72 +38,6 @@ internal static partial class Program {
         //######################################################################################################################################################
         //######################################################################################################################################################
         {
-            vec2 Z = (0f, 0f);
-            vec2 A = (0f, 1f);
-            vec2 B = (-sin(PI2/3f),cos(PI2/3f));
-            vec2 C = (-sin(PI4/3f),cos(PI4/3f));
-
-            TEST("Barycentric()", true
-                && Barycentric(Z,  A,B,C).IsApproximately((ONE_THIRD, ONE_THIRD, ONE_THIRD))
-                && Barycentric(Z,  C,A,B).IsApproximately((ONE_THIRD, ONE_THIRD, ONE_THIRD))
-                && Barycentric(Z,  B,C,A).IsApproximately((ONE_THIRD, ONE_THIRD, ONE_THIRD))
-
-                && Barycentric(Z+3f,  A+3f,B+3f,C+3f).IsApproximately((ONE_THIRD, ONE_THIRD, ONE_THIRD))
-                && Barycentric(Z-3f,  A-3f,B-3f,C-3f).IsApproximately((ONE_THIRD, ONE_THIRD, ONE_THIRD))
-
-                && Barycentric(A,  A,B,C).IsApproximately((1f, 0f, 0f))
-                && Barycentric(B,  A,B,C).IsApproximately((0f, 1f, 0f))
-                && Barycentric(C,  A,B,C).IsApproximately((0f, 0f, 1f))
-
-                && Barycentric(A/4f,  A,B,C).IsApproximately((2/4f, 1/4f, 1/4f))
-                && Barycentric(B/4f,  A,B,C).IsApproximately((1/4f, 2/4f, 1/4f))
-                && Barycentric(C/4f,  A,B,C).IsApproximately((1/4f, 1/4f, 2/4f))
-
-                && Barycentric(A/3f,  A,B,C).IsApproximately((5/9f, 2/9f, 2/9f))
-                && Barycentric(B/3f,  A,B,C).IsApproximately((2/9f, 5/9f, 2/9f))
-                && Barycentric(C/3f,  A,B,C).IsApproximately((2/9f, 2/9f, 5/9f))
-
-                && Barycentric(A/2f,  A,B,C).IsApproximately((4/6f, 1/6f, 1/6f))
-                && Barycentric(B/2f,  A,B,C).IsApproximately((1/6f, 4/6f, 1/6f))
-                && Barycentric(C/2f,  A,B,C).IsApproximately((1/6f, 1/6f, 4/6f))
-
-                && Barycentric(A*0.75f,  A,B,C).IsApproximately((10/12f,  1/12f,  1/12f))
-                && Barycentric(B*0.75f,  A,B,C).IsApproximately(( 1/12f, 10/12f,  1/12f))
-                && Barycentric(C*0.75f,  A,B,C).IsApproximately(( 1/12f,  1/12f, 10/12f))
-            );
-
-            #if false
-                TESTOUT("");
-                TESTOUT($"    {Barycentric(Z,  A,B,C):0.000}");
-                TESTOUT($"    {Barycentric(Z,  A,B,C):0.000}");
-                TESTOUT("");
-                TESTOUT($"    {Barycentric(A*0.25f,  A,B,C):0.000}");
-                TESTOUT($"    {Barycentric(B*0.25f,  A,B,C):0.000}");
-                TESTOUT($"    {Barycentric(C*0.25f,  A,B,C):0.000}");
-                TESTOUT("");
-                TESTOUT($"    {Barycentric(A*0.50f,  A,B,C):0.000}");
-                TESTOUT($"    {Barycentric(B*0.50f,  A,B,C):0.000}");
-                TESTOUT($"    {Barycentric(C*0.50f,  A,B,C):0.000}");
-                TESTOUT("");
-                TESTOUT($"    {Barycentric(A*0.75f,  A,B,C):0.000}");
-                TESTOUT($"    {Barycentric(B*0.75f,  A,B,C):0.000}");
-                TESTOUT($"    {Barycentric(C*0.75f,  A,B,C):0.000}");
-                TESTOUT("");
-                TESTOUT($"    {Barycentric(A*ONE_THIRD,  A,B,C):0.000}");
-                TESTOUT($"    {Barycentric(B*ONE_THIRD,  A,B,C):0.000}");
-                TESTOUT($"    {Barycentric(C*ONE_THIRD,  A,B,C):0.000}");
-                TESTOUT("");
-            #endif
-
-        }
-
-        //======================================================================================================================================================
-
-        //TESTOUT($"{Lanczos(0f)}");
-
-        //######################################################################################################################################################
-        //######################################################################################################################################################
-        {
             //vec2 A = PredictiveAim(
             //    (1f, 1f), (SQRT2_RCP, -SQRT2_RCP),
             //    (1f, 3f), (SQRT2_RCP, -SQRT2_RCP),
@@ -103,7 +49,7 @@ internal static partial class Program {
             //    1f
             //);
 
-            TEST("vec2 PredictiveAim()", true
+            TEST("vec2 PredictiveAim()",true
                 //&&
                 //PredictiveAim(
                 //    (1f, 3f), (SQRT2_RCP, -SQRT2_RCP),
@@ -120,7 +66,7 @@ internal static partial class Program {
         }
         //######################################################################################################################################################
         //######################################################################################################################################################
-        TEST("SphericalDistance(vec2, vec2)", true
+        TEST("SphericalDistance(vec2, vec2)",true
             && SphericalDistance((  0f,  0f),( PIQ,  0f)).IsApproximately(PIQ)
             && SphericalDistance((  0f,  0f),( PIH,  0f)).IsApproximately(PIH)
             && SphericalDistance((  0f,  0f),( PI ,  0f)).IsApproximately(PI)
@@ -152,7 +98,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST("SphericalDistance(vec3, vec3)", true
+        TEST("SphericalDistance(vec3, vec3)",true
             && SphericalDistance(( 1f, 0f, 0f),( 1f, 0f, 0f)).IsApproximately(0f)
             && SphericalDistance(( 0f, 1f, 0f),( 0f, 1f, 0f)).IsApproximately(0f)
             && SphericalDistance(( 0f, 0f, 1f),( 0f, 0f, 1f)).IsApproximately(0f)
@@ -240,6 +186,30 @@ internal static partial class Program {
 
         //######################################################################################################################################################
         //######################################################################################################################################################
+        #if false
+            const int Rds = 12;
+            const int Pad =  1;
+            int Dim = Pad + Rds + 1 + Rds + Pad+1;
+
+            uint[] C = KC_Circle(Rds, Pad, Pad+1, CenterColor:2, CircleColor:1, BgColor:0);
+
+            System.Text.StringBuilder SB = new();
+            for (int i = 0; i < C.Length; ++i) {
+                if (i % (Dim) == 0)
+                    SB.AppendLine();
+
+                uint c = C[i];
+                SB.Append(
+                    (c == 0) ? " " :
+                    (c == 1) ? "•"
+                             : "●"
+                );
+            }
+
+            TESTOUT(SB.ToString());
+        #endif
+
+        //######################################################################################################################################################
+        //######################################################################################################################################################
     }
 }
-

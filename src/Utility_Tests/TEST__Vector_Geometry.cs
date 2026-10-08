@@ -6,7 +6,7 @@ internal static partial class Program {
 
         //######################################################################################################################################################
         //######################################################################################################################################################
-        TEST("Circle_SurfaceArea()", true
+        TEST("Circle_SurfaceArea()",true
             && Circle_SurfaceArea(1f/4f).IsApproximately(PI/16f)
             && Circle_SurfaceArea(1f/2f).IsApproximately(PI/ 4f)
             && Circle_SurfaceArea(1f   ).IsApproximately(PI)
@@ -16,7 +16,7 @@ internal static partial class Program {
 
         //######################################################################################################################################################
         //######################################################################################################################################################
-        TEST("Cylinder_SurfaceArea()", true
+        TEST("Cylinder_SurfaceArea()",true
             && Cylinder_SurfaceArea(Rds: 1f/2f, Height: 1f).IsApproximately(PI* 1.5f)
             && Cylinder_SurfaceArea(Rds: 1f   , Height: 2f).IsApproximately(PI* 6f)
             && Cylinder_SurfaceArea(Rds: 2f   , Height: 4f).IsApproximately(PI*24f)
@@ -29,7 +29,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST("Cylinder_Volume()", true
+        TEST("Cylinder_Volume()",true
             && Cylinder_Volume(Rds: 1f/2f, Height: 1f).IsApproximately(PI/ 4f)
             && Cylinder_Volume(Rds: 1f   , Height: 2f).IsApproximately(PI* 2f)
             && Cylinder_Volume(Rds: 2f   , Height: 4f).IsApproximately(PI*16f)
@@ -37,7 +37,7 @@ internal static partial class Program {
 
         //######################################################################################################################################################
         //######################################################################################################################################################
-        TEST("Sphere_SurfaceArea()", true
+        TEST("Sphere_SurfaceArea()",true
             && Sphere_SurfaceArea(1f/8f).IsApproximately(PI/16f)
             && Sphere_SurfaceArea(1f/4f).IsApproximately(PI/ 4f)
             && Sphere_SurfaceArea(1f/2f).IsApproximately(PI)
@@ -46,7 +46,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST("Sphere_Volume()", true
+        TEST("Sphere_Volume()",true
             && Sphere_Volume(1f/2f).IsApproximately(PI*4f/3f / 4f)
             && Sphere_Volume(1f   ).IsApproximately(PI*4f/3f)
             && Sphere_Volume(2f   ).IsApproximately(PI*4f/3f * 4f)

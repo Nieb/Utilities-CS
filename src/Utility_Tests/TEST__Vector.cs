@@ -6,52 +6,14 @@ internal static partial class Program {
 
         //######################################################################################################################################################
         //######################################################################################################################################################
-        /*
-        TEST("iVec2 has Value/Magnitude/Length", true
-            && !new ivec2(0, 0)  &&  new ivec2(1, 0)
-            &&  new ivec2(0, 1)  &&  new ivec2(1, 1)
-        );
-        TEST("Vec2 has Value/Magnitude/Length", true
-            && !new vec2(0f, 0f)  &&  new vec2(1f, 0f)
-            &&  new vec2(0f, 1f)  &&  new vec2(1f, 1f)
-        );
+        TEST("ImplicitCast -- ivec2 to vec2",  HasImplicitConversion(typeof(ivec2),typeof(vec2)) );
+        TEST("ImplicitCast -- ivec3 to vec3",  HasImplicitConversion(typeof(ivec3),typeof(vec3)) );
+        TEST("ImplicitCast -- ivec4 to vec4",  HasImplicitConversion(typeof(ivec4),typeof(vec4)) );
 
-        //======================================================================================================================================================
-        TEST("iVec3 has Value/Magnitude/Length", true
-            && !new ivec3(0, 0, 0)  &&  new ivec3(1, 0, 0)
-            &&  new ivec3(0, 0, 1)  &&  new ivec3(1, 0, 1)
-            &&  new ivec3(0, 1, 0)  &&  new ivec3(1, 1, 0)
-            &&  new ivec3(0, 1, 1)  &&  new ivec3(1, 1, 1)
-        );
-        TEST("Vec3 has Value/Magnitude/Length", true
-            && !new vec3(0f, 0f, 0f)  &&  new vec3(1f, 0f, 0f)
-            &&  new vec3(0f, 0f, 1f)  &&  new vec3(1f, 0f, 1f)
-            &&  new vec3(0f, 1f, 0f)  &&  new vec3(1f, 1f, 0f)
-            &&  new vec3(0f, 1f, 1f)  &&  new vec3(1f, 1f, 1f)
-        );
+        TEST("ImplicitCast -- vec2 to ivec2", !HasImplicitConversion(typeof(vec2),typeof(ivec2)) );
+        TEST("ImplicitCast -- vec3 to ivec3", !HasImplicitConversion(typeof(vec3),typeof(ivec3)) );
+        TEST("ImplicitCast -- vec4 to ivec4", !HasImplicitConversion(typeof(vec4),typeof(ivec4)) );
 
-        //======================================================================================================================================================
-        TEST("iVec4 has Value/Magnitude/Length", true
-            && !new ivec4(0, 0, 0, 0)  &&  new ivec4(1, 0, 0, 0)
-            &&  new ivec4(0, 0, 0, 1)  &&  new ivec4(1, 0, 0, 1)
-            &&  new ivec4(0, 0, 1, 0)  &&  new ivec4(1, 0, 1, 0)
-            &&  new ivec4(0, 0, 1, 1)  &&  new ivec4(1, 0, 1, 1)
-            &&  new ivec4(0, 1, 0, 0)  &&  new ivec4(1, 1, 0, 0)
-            &&  new ivec4(0, 1, 0, 1)  &&  new ivec4(1, 1, 0, 1)
-            &&  new ivec4(0, 1, 1, 0)  &&  new ivec4(1, 1, 1, 0)
-            &&  new ivec4(0, 1, 1, 1)  &&  new ivec4(1, 1, 1, 1)
-        );
-        TEST("Vec4 has Value/Magnitude/Length", true
-            && !new vec4(0f, 0f, 0f, 0f)  &&  new vec4(1f, 0f, 0f, 0f)
-            &&  new vec4(0f, 0f, 0f, 1f)  &&  new vec4(1f, 0f, 0f, 1f)
-            &&  new vec4(0f, 0f, 1f, 0f)  &&  new vec4(1f, 0f, 1f, 0f)
-            &&  new vec4(0f, 0f, 1f, 1f)  &&  new vec4(1f, 0f, 1f, 1f)
-            &&  new vec4(0f, 1f, 0f, 0f)  &&  new vec4(1f, 1f, 0f, 0f)
-            &&  new vec4(0f, 1f, 0f, 1f)  &&  new vec4(1f, 1f, 0f, 1f)
-            &&  new vec4(0f, 1f, 1f, 0f)  &&  new vec4(1f, 1f, 1f, 0f)
-            &&  new vec4(0f, 1f, 1f, 1f)  &&  new vec4(1f, 1f, 1f, 1f)
-        );
-        */
         //######################################################################################################################################################
         //######################################################################################################################################################
         {
@@ -66,7 +28,7 @@ internal static partial class Program {
             bvec4 G = default;  G.r=0x12; G.g=0x34; G.b=0x56; G.a=0x78;
             bvec4 H = default;  H.x=0x9A; H.y=0xBC; H.z=0xDE; H.w=0xF0;
 
-            TEST("bvec4", true
+            TEST("bvec4",true
                 && A == D
                 && B == E
                 && C == F
@@ -74,7 +36,7 @@ internal static partial class Program {
                 && H == 0x9ABC_DEF0u
             );
         }
-        //======================================================================================================================================================
+
         #if false
         {
             bvec4 A = 0xFF_CC_99_33u;
@@ -121,15 +83,15 @@ internal static partial class Program {
 
             bvec8 B = 0x_1234_5678_9ABC_DEF0u;
 
-            TEST("bvec8", true
+            TEST("bvec8",true
                 && A.b0 == 0x12 && A.b1 == 0x34 && A.b2 == 0x56 && A.b3 == 0x78 && A.b4 == 0x9A && A.b5 == 0xBC && A.b6 == 0xDE && A.b7 == 0xF0
-                && A.s0 == 0x1234 && A.s1 == 0x5678 && A.s2 == 0x9ABC && A.s3 == 0xDEF0
-                && A.i0 == 0x_1234_5678u && A.i1 == 0x9ABC_DEF0u
+                && A.s0 == 0x1234               && A.s1 == 0x5678               && A.s2 == 0x9ABC               && A.s3 == 0xDEF0
+                && A.i0 == 0x_1234_5678u                                        && A.i1 == 0x9ABC_DEF0u
                 && A    == 0x_1234_5678_9ABC_DEF0u
 
                 && B.b0 == 0x12 && B.b1 == 0x34 && B.b2 == 0x56 && B.b3 == 0x78 && B.b4 == 0x9A && B.b5 == 0xBC && B.b6 == 0xDE && B.b7 == 0xF0
-                && B.s0 == 0x1234 && B.s1 == 0x5678 && B.s2 == 0x9ABC && B.s3 == 0xDEF0
-                && B.i0 == 0x_1234_5678u && B.i1 == 0x9ABC_DEF0u
+                && B.s0 == 0x1234               && B.s1 == 0x5678               && B.s2 == 0x9ABC               && B.s3 == 0xDEF0
+                && B.i0 == 0x_1234_5678u                                        && B.i1 == 0x9ABC_DEF0u
                 && B    == 0x_1234_5678_9ABC_DEF0u
             );
 

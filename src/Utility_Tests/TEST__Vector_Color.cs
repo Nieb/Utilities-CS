@@ -31,7 +31,7 @@ internal static partial class Program {
         }
 
         //======================================================================================================================================================
-        TEST("HSV_to_RGB()", true
+        TEST("HSV_to_RGB()",true
             && RGB_to_HSV(1f, 0f, 0f).IsApproximately((0f, 1f, 1f))  &&  RGB_to_HSV(1.0f, 0.5f, 0.0f).IsApproximately((0.5f, 1f, 1f))
             && RGB_to_HSV(1f, 1f, 0f).IsApproximately((1f, 1f, 1f))  &&  RGB_to_HSV(0.5f, 1.0f, 0.0f).IsApproximately((1.5f, 1f, 1f))
 
@@ -43,7 +43,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST("HSV_to_RGB()", true
+        TEST("HSV_to_RGB()",true
             && HSV_to_RGB(-6f, 1, 1).IsApproximately((1, 0, 0))  &&  HSV_to_RGB(-5.5f, 1f, 1f).IsApproximately((1.0f, 0.5f, 0.0f))
             && HSV_to_RGB(-5f, 1, 1).IsApproximately((1, 1, 0))  &&  HSV_to_RGB(-4.5f, 1f, 1f).IsApproximately((0.5f, 1.0f, 0.0f))
             && HSV_to_RGB(-4f, 1, 1).IsApproximately((0, 1, 0))  &&  HSV_to_RGB(-3.5f, 1f, 1f).IsApproximately((0.0f, 1.0f, 0.5f))
@@ -67,7 +67,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        //TEST("Wavelength_to_RGB()", true
+        //TEST("Wavelength_to_RGB()",true
         //    //
         //);
 
@@ -97,7 +97,7 @@ internal static partial class Program {
         */
 
         //======================================================================================================================================================
-        TEST("ColorMap.Turbo()", true
+        TEST("ColorMap.Turbo()",true
             && ColorMap.Turbo(  0f/255f) == (0.18995f,0.07176f,0.23217f) && ColorMap.Turbo(  1f/255f) == (0.19483f,0.08339f,0.26149f)
             && ColorMap.Turbo(  2f/255f) == (0.19956f,0.09498f,0.29024f) && ColorMap.Turbo(  3f/255f) == (0.20415f,0.10652f,0.31844f)
             && ColorMap.Turbo(  4f/255f) == (0.20860f,0.11802f,0.34607f) && ColorMap.Turbo(  5f/255f) == (0.21291f,0.12947f,0.37314f)

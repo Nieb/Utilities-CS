@@ -14,9 +14,9 @@ internal static partial class Program {
             //float D = C.x;        //  error: Use of possibly unassigned field 'x'
 
             vec3[] J = new vec3[8]; //  Arrays are allocated, then all bytes zeroed.
-            float K = J[4].x;
+            float  K = J[4].x;
 
-            TEST("Array Allocation & Initialization", true
+            TEST("Array Allocation & Initialization",true
                 && J[0].x == 0f
                 && J[1].y == 0f
                 && J[2].z == 0f
@@ -38,7 +38,7 @@ internal static partial class Program {
             float[] B = A.ToFloatArray();
             B[15] = 99f;
 
-            TEST("Mat4.ToFloatArray()", true
+            TEST("Mat4.ToFloatArray()",true
                 &&  A.xx  ==  1f  &&  A.yx  ==  2f &&  A.zx  ==  3f  &&  A.wx  ==  4f
                 &&  A.xy  ==  5f  &&  A.yy  ==  6f &&  A.zy  ==  7f  &&  A.wy  ==  8f
                 &&  A.xz  ==  9f  &&  A.yz  == 10f &&  A.zz  == 11f  &&  A.wz  == 12f

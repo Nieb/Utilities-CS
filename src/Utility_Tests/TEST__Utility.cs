@@ -13,8 +13,7 @@ internal static partial class Program {
         //      System.Runtime.InteropServices.Marshal.SizeOf<T>()   determines the size for unmanaged memory interoperability (P/Invoke)
         //
         //======================================================================================================================================================
-        TEST("bool is 1|4 bytes", sizeof(bool) == 1
-            &&  CompilerServices.Unsafe.SizeOf<bool>() == 1
+        TEST("bool is 1-ish bytes", sizeof(bool) == 1  &&  CompilerServices.Unsafe.SizeOf<bool>() == 1
             #if DEBUG
                 &&  InteropServices.Marshal.SizeOf<bool>() == 4
             #else
@@ -63,30 +62,30 @@ internal static partial class Program {
         //======================================================================================================================================================
         #if false
             TESTOUT($"""
-              Tuples appear to use 8 byte packing.  Alignment as well?
+                Tuples appear to use 8 byte packing.  Alignment as well?
 
-                (int,int)             is {CompilerServices.Unsafe.SizeOf<(int,int)            >(),3} bytes
-                (int,int,int)         is {CompilerServices.Unsafe.SizeOf<(int,int,int)        >(),3} bytes
-                (int,int,int,int)     is {CompilerServices.Unsafe.SizeOf<(int,int,int,int)    >(),3} bytes
-                (int,int,int,int,int) is {CompilerServices.Unsafe.SizeOf<(int,int,int,int,int)>(),3} bytes
+                                                     (int,int) is {CompilerServices.Unsafe.SizeOf<(int,int)            >(),3} bytes
+                                                 (int,int,int) is {CompilerServices.Unsafe.SizeOf<(int,int,int)        >(),3} bytes
+                                             (int,int,int,int) is {CompilerServices.Unsafe.SizeOf<(int,int,int,int)    >(),3} bytes
+                                         (int,int,int,int,int) is {CompilerServices.Unsafe.SizeOf<(int,int,int,int,int)>(),3} bytes
 
-                (float,float)                   is {CompilerServices.Unsafe.SizeOf<(float,float)                  >(),3} bytes
-                (float,float,float)             is {CompilerServices.Unsafe.SizeOf<(float,float,float)            >(),3} bytes
-                (float,float,float,float)       is {CompilerServices.Unsafe.SizeOf<(float,float,float,float)      >(),3} bytes
-                (float,float,float,float,float) is {CompilerServices.Unsafe.SizeOf<(float,float,float,float,float)>(),3} bytes
+                                                 (float,float) is {CompilerServices.Unsafe.SizeOf<(float,float)                  >(),3} bytes
+                                           (float,float,float) is {CompilerServices.Unsafe.SizeOf<(float,float,float)            >(),3} bytes
+                                     (float,float,float,float) is {CompilerServices.Unsafe.SizeOf<(float,float,float,float)      >(),3} bytes
+                               (float,float,float,float,float) is {CompilerServices.Unsafe.SizeOf<(float,float,float,float,float)>(),3} bytes
 
-              Well, they use 8 byte packing after the first 4.
+                Well, they use 8 byte packing after the first 4.
 
-                (short,short)                   is {CompilerServices.Unsafe.SizeOf<(short,short)                  >(),3} bytes
-                (short,short,short)             is {CompilerServices.Unsafe.SizeOf<(short,short,short)            >(),3} bytes
-                (short,short,short,short)       is {CompilerServices.Unsafe.SizeOf<(short,short,short,short)      >(),3} bytes
-                (short,short,short,short,short) is {CompilerServices.Unsafe.SizeOf<(short,short,short,short,short)>(),3} bytes
+                                                 (short,short) is {CompilerServices.Unsafe.SizeOf<(short,short)                  >(),3} bytes
+                                           (short,short,short) is {CompilerServices.Unsafe.SizeOf<(short,short,short)            >(),3} bytes
+                                     (short,short,short,short) is {CompilerServices.Unsafe.SizeOf<(short,short,short,short)      >(),3} bytes
+                               (short,short,short,short,short) is {CompilerServices.Unsafe.SizeOf<(short,short,short,short,short)>(),3} bytes
 
-                (byte,byte)                is {CompilerServices.Unsafe.SizeOf<(byte,byte)               >(),3} bytes
-                (byte,byte,byte)           is {CompilerServices.Unsafe.SizeOf<(byte,byte,byte)          >(),3} bytes
-                (byte,byte,byte,byte)      is {CompilerServices.Unsafe.SizeOf<(byte,byte,byte,byte)     >(),3} bytes
-                (byte,byte,byte,byte,byte) is {CompilerServices.Unsafe.SizeOf<(byte,byte,byte,byte,byte)>(),3} bytes
-                (byte,byte,byte,byte,byte,byte,byte,byte,byte) is {CompilerServices.Unsafe.SizeOf<(byte,byte,byte,byte,byte,byte,byte,byte,byte)>(),3} bytes    9 "byte"s
+                                                   (byte,byte) is {CompilerServices.Unsafe.SizeOf<(byte,byte)               >(),3} bytes
+                                              (byte,byte,byte) is {CompilerServices.Unsafe.SizeOf<(byte,byte,byte)          >(),3} bytes
+                                         (byte,byte,byte,byte) is {CompilerServices.Unsafe.SizeOf<(byte,byte,byte,byte)     >(),3} bytes
+                                    (byte,byte,byte,byte,byte) is {CompilerServices.Unsafe.SizeOf<(byte,byte,byte,byte,byte)>(),3} bytes
+                (byte,byte,byte,byte,byte,byte,byte,byte,byte) is {CompilerServices.Unsafe.SizeOf<(byte,byte,byte,byte,byte,byte,byte,byte,byte)>(),3} bytes    (9 bytes)
             """);
             /*
                 {InteropServices.Marshal.SizeOf<I3>()}
@@ -182,11 +181,12 @@ internal static partial class Program {
             //for (int i = 0; i < 64; ++i) {View[i] = (float)i;}
 
             TEST("DataArray",true
-                && A.u32[ 0] ==  0  &&  A.u16[ 0] ==  0  &&  A.u8[ 0] ==  0  &&  A.u64[ 0] == 0x_0000_0001_0000_0000
-                && A.u32[12] == 12  &&  A.u16[12] ==  6  &&  A.u8[12] ==  3  &&  A.u64[ 6] == 0x_0000_000D_0000_000C
-                && A.u32[24] == 24  &&  A.u16[24] == 12  &&  A.u8[24] ==  6  &&  A.u64[12] == 0x_0000_0019_0000_0018
-                && A.u32[36] == 36  &&  A.u16[36] == 18  &&  A.u8[36] ==  9  &&  A.u64[18] == 0x_0000_0025_0000_0024
-                && A.u32[48] == 48  &&  A.u16[48] == 24  &&  A.u8[48] == 12  &&  A.u64[24] == 0x_0000_0031_0000_0030
+                &&  A.u64[ 0]==0x_0000_0001_0000_0000  &&  A.u32[ 0]== 0  &&  A.u16[ 0]== 0  &&  A.u8[ 0]== 0
+                &&  A.u64[ 6]==0x_0000_000D_0000_000C  &&  A.u32[12]==12  &&  A.u16[12]== 6  &&  A.u8[12]== 3
+                &&  A.u64[12]==0x_0000_0019_0000_0018  &&  A.u32[24]==24  &&  A.u16[24]==12  &&  A.u8[24]== 6
+                &&  A.u64[18]==0x_0000_0025_0000_0024  &&  A.u32[36]==36  &&  A.u16[36]==18  &&  A.u8[36]== 9
+                &&  A.u64[24]==0x_0000_0031_0000_0030  &&  A.u32[48]==48  &&  A.u16[48]==24  &&  A.u8[48]==12
+
                 && A. u8.Length == 256
                 && A.u16.Length == 128
                 && A.u32.Length ==  64
@@ -353,7 +353,7 @@ internal static partial class Program {
             uint C = 0b_10001000_10001000_10001000_10001000u;
             uint D = 0b_11111111_00000000_11111111_00000000u;
 
-            TEST("BitFlip(uint)", true
+            TEST("BitFlip(uint)",true
                 && BitFlip(BitFlip(A)) == A
                 && BitFlip(BitFlip(B)) == B
                 && BitFlip(BitFlip(C)) == C
@@ -365,7 +365,7 @@ internal static partial class Program {
             bvec4 vC = C;
             bvec4 vD = D;
 
-            TEST("ByteFlip(bvec4)", true
+            TEST("ByteFlip(bvec4)",true
                 && ByteFlip(ByteFlip(A)) == A
                 && ByteFlip(ByteFlip(B)) == B
                 && ByteFlip(ByteFlip(C)) == C

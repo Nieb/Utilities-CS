@@ -25,13 +25,13 @@ internal static partial class Program {
             #endif
             bool xyEx3 = false;  try {float Test = A[ 0, 4];}  catch (System.IndexOutOfRangeException) {xyEx3 = true;}
 
-            TEST("Mat4.component", true
+            TEST("Mat4.component",true
                 &&  A.xx   ==  1f  &&  A.yx   ==  2f &&  A.zx   ==  3f  &&  A.wx   ==  4f
                 &&  A.xy   ==  5f  &&  A.yy   ==  6f &&  A.zy   ==  7f  &&  A.wy   ==  8f
                 &&  A.xz   ==  9f  &&  A.yz   == 10f &&  A.zz   == 11f  &&  A.wz   == 12f
                 &&  A.xw   == 13f  &&  A.yw   == 14f &&  A.zw   == 15f  &&  A.ww   == 16f
             );
-            TEST("Mat4[i]", true
+            TEST("Mat4[i]",true
                 &&  A[ 0]  ==  1f  &&  A[ 1]  ==  2f &&  A[ 2]  ==  3f  &&  A[ 3]  ==  4f
                 &&  A[ 4]  ==  5f  &&  A[ 5]  ==  6f &&  A[ 6]  ==  7f  &&  A[ 7]  ==  8f
                 &&  A[ 8]  ==  9f  &&  A[ 9]  == 10f &&  A[10]  == 11f  &&  A[11]  == 12f
@@ -39,7 +39,7 @@ internal static partial class Program {
 
                 && iEx0 && iEx1
             );
-            TEST("Mat4[x,y]", true
+            TEST("Mat4[x,y]",true
                 &&  A[0,0] ==  1f  &&  A[1,0] ==  2f &&  A[2,0] ==  3f  &&  A[3,0] ==  4f
                 &&  A[0,1] ==  5f  &&  A[1,1] ==  6f &&  A[2,1] ==  7f  &&  A[3,1] ==  8f
                 &&  A[0,2] ==  9f  &&  A[1,2] == 10f &&  A[2,2] == 11f  &&  A[3,2] == 12f
@@ -68,7 +68,7 @@ internal static partial class Program {
                 13f, 14f, 15f, 16f
             );
 
-            TEST("Mat4.Col#", true
+            TEST("Mat4.Col#",true
                 &&  A == B
             );
         }
@@ -88,7 +88,7 @@ internal static partial class Program {
                 13f, 14f, 15f, 16f
             );
 
-            TEST("Mat4.Row#", true
+            TEST("Mat4.Row#",true
                 &&  A == B
             );
         }
@@ -111,7 +111,7 @@ internal static partial class Program {
                 13f, 14f, 15f, 16f
             );
 
-            TEST("mat4 * mat4", true
+            TEST("mat4 * mat4",true
                 &&  A*B == B
                 &&  B*A == B
             );

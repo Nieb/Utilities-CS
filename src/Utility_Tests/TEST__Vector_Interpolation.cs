@@ -5,7 +5,7 @@ internal static partial class Program {
         TESTOUT("\n[Utility.VEC -- Interpolation]");
 
         //======================================================================================================================================================
-        TEST("Mix()", true
+        TEST("Mix()",true
             && Mix(0.0f, 1.7f, 3.4f).IsApproximately(1.7f)
             && Mix(0.5f, 1.7f, 3.4f).IsApproximately(2.55f)
             && Mix(1.0f, 1.7f, 3.4f).IsApproximately(3.4f)
@@ -32,7 +32,7 @@ internal static partial class Program {
             && Mix(new vec4(1.0f), new vec4(1.7f), new vec4(3.4f)).IsApproximately(new vec4(3.40f))
         );
 
-        TEST("BiMix()", true
+        TEST("BiMix()",true
             && BiMix((0f, 0f), 0f, 1f, 2f, 3f).IsApproximately(0f)
             && BiMix((1f, 0f), 0f, 1f, 2f, 3f).IsApproximately(1f)
             && BiMix((0f, 1f), 0f, 1f, 2f, 3f).IsApproximately(2f)
@@ -64,7 +64,7 @@ internal static partial class Program {
             && BiMix((1f, 1f), new vec4(0f), new vec4(1f), new vec4(2f), new vec4(3f)).IsApproximately(new vec4(3f))
         );
 
-        TEST("SmoothMix()", true
+        TEST("SmoothMix()",true
             && SmoothMix(0.0f , 1.7f, 3.4f).IsApproximately(1.7f)
             && SmoothMix(0.25f, 1.7f, 3.4f).IsApproximately(1.965625f)
             && SmoothMix(0.5f , 1.7f, 3.4f).IsApproximately(2.55f)
@@ -91,7 +91,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST("Step()", true
+        TEST("Step()",true
             && Step(-2.00f, -1f) == 0f
             && Step(-1.50f, -1f) == 0f
             && Step(-1.01f, -1f) == 0f
@@ -109,7 +109,7 @@ internal static partial class Program {
             && Step(2.00f, 1f) == 1f
         );
 
-        TEST("LinearStep()", true
+        TEST("LinearStep()",true
             && LinearStep(1.70f , 1.7f, 3.4f).IsApproximately(0.0f)
             && LinearStep(2.125f, 1.7f, 3.4f).IsApproximately(0.25f)
             && LinearStep(2.55f , 1.7f, 3.4f).IsApproximately(0.5f)
@@ -117,7 +117,7 @@ internal static partial class Program {
             && LinearStep(3.40f , 1.7f, 3.4f).IsApproximately(1.0f)
         );
 
-        TEST("SmoothStep()", true
+        TEST("SmoothStep()",true
             && SmoothStep(1.70f , 1.7f, 3.4f).IsApproximately(0.0f)
             && SmoothStep(2.125f, 1.7f, 3.4f).IsApproximately(0.15625f) //   5/32
             && SmoothStep(2.55f , 1.7f, 3.4f).IsApproximately(0.5f)
@@ -126,7 +126,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST("QuadStep() & PowerStep()", true
+        TEST("QuadStep() & PowerStep()",true
             && QuadStep(-0.2f).IsApproximately(PowerStep(-0.2f, 2f))
             && QuadStep(-0.1f).IsApproximately(PowerStep(-0.1f, 2f))
             && QuadStep( 0.0f).IsApproximately(PowerStep( 0.0f, 2f))

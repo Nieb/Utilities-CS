@@ -5,13 +5,13 @@ internal static partial class Program {
         TESTOUT("\n[Utility.STR]");
 
         //======================================================================================================================================================
-        TEST("RandomDigits()", true
+        TEST("RandomDigits()",true
             && RandomDigits(5).Length      == 5
             && RandomDigits(5).IsNumeric() == true
         );
 
         //======================================================================================================================================================
-        TEST(".ToBool()", true
+        TEST(".ToBool()",true
             && "true".ToBool() == true
             && "True".ToBool() == true
             && "TRUE".ToBool() == true
@@ -28,11 +28,11 @@ internal static partial class Program {
             && "blarg".ToBool() == false
         );
 
-        //TEST(".ToDateTime()", true
+        //TEST(".ToDateTime()",true
         //    && "".ToDateTime() == System.DateTime.MinValue
         //);
 
-        TEST(".ToIpAddress()", true
+        TEST(".ToIpAddress()",true
             && ""               .ToIpAddress().Equals(new System.Net.IPAddress(0))
             && " "              .ToIpAddress().Equals(new System.Net.IPAddress(0))
             && "blarg"          .ToIpAddress().Equals(new System.Net.IPAddress(0))
@@ -43,7 +43,7 @@ internal static partial class Program {
             && "255.255.255.255".ToIpAddress().Equals(new System.Net.IPAddress(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF }))
         );
 
-        TEST(".ToNameValueCollection()", true
+        TEST(".ToNameValueCollection()",true
             && "ABC=123, def=Xyz, G=456, H=1.414, i=0, ABC=789".ToNameValueCollection()["ABC"] == "123,789"
             && "ABC=123, def=Xyz, G=456, H=1.414, i=0, ABC=789".ToNameValueCollection()["def"] == "Xyz"
             && "ABC=123, def=Xyz, G=456, H=1.414, i=0, ABC=789".ToNameValueCollection()["G"]   == "456"
@@ -52,18 +52,18 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST("ByteArrayToString()", true
+        TEST("ByteArrayToString()",true
             && ByteArrayToString(new byte[] { 0xFF, 0xCC, 0xAA })                                  == "FF CC AA "
             && ByteArrayToString(new byte[] { 0xFF, 0xCC, 0xAA, 0x99, 0x77, 0x55, 0x33, 0x11 }, 3) == "FF CC AA \n99 77 55 \n33 11 "
         );
 
-        TEST("EnumerableToString()", true
+        TEST("EnumerableToString()",true
             && EnumerableToString(["Aa", "Bb", "Cc", "Dd", "Ee", "Ff", "Gg", "Hh", "Ii"]) == "Aa, Bb, Cc, Dd, Ee, Ff, Gg, Hh, Ii"
             && EnumerableToString("AaBbCcDdEeFfGgHhIi")                                   == "A, a, B, b, C, c, D, d, E, e, F, f, G, g, H, h, I, i"
             && EnumerableToString([1, 2, 3])                                              == "1, 2, 3"
         );
 
-        TEST("IntToBinString()", true
+        TEST("IntToBinString()",true
             && IntToBinString((sbyte )                 0x7F) ==                                                                "01111111"
             && IntToBinString((short )               0x7FFF) ==                                                       "01111111_11111111"
             && IntToBinString((int   )          0x7FFF_FFFF) ==                                     "01111111_11111111_11111111_11111111"
@@ -75,7 +75,7 @@ internal static partial class Program {
             && IntToBinString((ulong )0xFFFF_FFFF_FFFF_FFFF) == "11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111"
         );
 
-        TEST("IntToHexString()", true
+        TEST("IntToHexString()",true
             && IntToHexString((sbyte )                 0x7F) ==                  "7F"
             && IntToHexString((short )               0x7FFF) ==                "7FFF"
             && IntToHexString((int   )          0x1234_5678) ==           "1234_5678"
@@ -92,7 +92,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST("CommaDelimit()", true
+        TEST("CommaDelimit()",true
             && CommaDelimit(s16(-12_345)) == "-12,345"
             && CommaDelimit(s16( -2_345)) ==  "-2,345"
             && CommaDelimit(s16(   -345)) ==    "-345"
@@ -152,7 +152,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST(".IsNumeric()", true
+        TEST(".IsNumeric()",true
             && "123".IsNumeric() == true
 
             && "-123".IsNumeric()     == false
@@ -167,7 +167,7 @@ internal static partial class Program {
             && "123 ".IsNumeric() == false
         );
 
-        TEST(".IsValidEmailAddress()", true
+        TEST(".IsValidEmailAddress()",true
             && "user@sub.domain.top".IsValidEmailAddress()                         == true
             && "user@sub.domain.top".IsValidEmailAddress("top", "domain", "sub"  ) == true
             && "user@sub.domain.top".IsValidEmailAddress("top", "domain"         ) == true
@@ -177,7 +177,7 @@ internal static partial class Program {
             && "user@sub.domain.top".IsValidEmailAddress("blarg"                 ) == false
         );
 
-        TEST(".IsVoid()", true
+        TEST(".IsVoid()",true
             && "blarg".IsVoid() == false
 
             && "     ".IsVoid() == true
@@ -191,39 +191,39 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST(".ContainsAny()", true
+        TEST(".ContainsAny()",true
             && "blarg".ContainsAny( new string[] {"ugh", "arg"} ) == true
         );
 
-        TEST(".ContainsAny_GetMatches()", true
+        TEST(".ContainsAny_GetMatches()",true
             && "blarg".ContainsAny_GetMatches( new string[] {"bla", "ugh", "arg"} )[0] == "bla"
             && "blarg".ContainsAny_GetMatches( new string[] {"bla", "ugh", "arg"} )[1] == "arg"
         );
 
         //======================================================================================================================================================
-        TEST(".Indent()", true
+        TEST(".Indent()",true
             && "blarg\nblarg\nblarg".Indent() == "    blarg\n    blarg\n    blarg"
         );
 
-        TEST(".InsertEvery()", true
+        TEST(".InsertEvery()",true
             && "blargblargblarg".InsertEvery(5, ", ") == "blarg, blarg, blarg"
         );
 
-        TEST(".Pad()", true
+        TEST(".Pad()",true
             && "blarg".Pad(-10) == "     blarg"
             && "blarg".Pad( 10) == "blarg     "
         );
 
-        TEST(".Prepend()", true
+        TEST(".Prepend()",true
             && "blarg\nblarg\nblarg".Prepend(" ~~ ") == " ~~ blarg\n ~~ blarg\n ~~ blarg"
         );
 
-        TEST(".Repeat()", true
+        TEST(".Repeat()",true
             && $"{"blarg".Repeat(3)}{"  ".Repeat(4)}{"blarg".Repeat(3)}" == "blargblargblarg        blargblargblarg"
             && $"{"blarg".Repeat(3)}{"\n".Repeat(4)}{"blarg".Repeat(3)}" == "blargblargblarg\n\n\n\nblargblargblarg"
         );
 
-        TEST(".ToTitleCase()", true
+        TEST(".ToTitleCase()",true
             && "blarg BLARG bLaRg".ToTitleCase() == "Blarg Blarg Blarg"
         );
 
