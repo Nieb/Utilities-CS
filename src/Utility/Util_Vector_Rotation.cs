@@ -8,11 +8,19 @@ internal static class VEC_Rotation {
     //                                                                   "Rotate Left"
     //  Rotate 90 degrees Anti-Clockwise.
     //
-    [In(line)] internal static vec2 rot_lf(vec2 P) => new vec2(-P.y, P.x);
+    [In(line)] internal static ivec2 rot_lf(ivec2 P) => new ivec2(-P.y, P.x);
+    [In(line)] internal static  vec2 rot_lf( vec2 P) => new  vec2(-P.y, P.x);
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [In(line)] internal static vec3 pch_lf(vec3 P) => new vec3( P.x,  P.z, -P.y);
+    [In(line)] internal static ivec3 pch_lf(ivec3 P) => new ivec3( P.x,  P.z, -P.y);
+    [In(line)] internal static  vec3 pch_lf( vec3 P) => new  vec3( P.x,  P.z, -P.y);
 
+    [In(line)] internal static ivec3 yaw_lf(ivec3 P)
+        #if Z_UP
+            => new ivec3( P.y, -P.x,  P.z);
+        #else
+            => new ivec3(-P.z,  P.y,  P.x);
+        #endif
     [In(line)] internal static vec3 yaw_lf(vec3 P)
         #if Z_UP
             => new vec3( P.y, -P.x,  P.z);
@@ -20,6 +28,12 @@ internal static class VEC_Rotation {
             => new vec3(-P.z,  P.y,  P.x);
         #endif
 
+    [In(line)] internal static ivec3 rol_lf(ivec3 P)
+        #if Z_UP
+            => new ivec3(-P.z,  P.y,  P.x);
+        #else
+            => new ivec3( P.y, -P.x,  P.z);
+        #endif
     [In(line)] internal static vec3 rol_lf(vec3 P)
         #if Z_UP
             => new vec3(-P.z,  P.y,  P.x);
@@ -31,11 +45,19 @@ internal static class VEC_Rotation {
     //                                                                   "Rotate Right"
     //   Rotate 90 degrees Clockwise.
     //
-    [In(line)] internal static vec2 rot_rt(vec2 P) => new vec2(P.y, -P.x);
+    [In(line)] internal static ivec2 rot_rt(ivec2 P) => new ivec2(P.y, -P.x);
+    [In(line)] internal static  vec2 rot_rt( vec2 P) => new  vec2(P.y, -P.x);
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [In(line)] internal static vec3 pch_rt(vec3 P) => new vec3( P.x, -P.z,  P.y);
+    [In(line)] internal static ivec3 pch_rt(ivec3 P) => new ivec3( P.x, -P.z,  P.y);
+    [In(line)] internal static  vec3 pch_rt( vec3 P) => new  vec3( P.x, -P.z,  P.y);
 
+    [In(line)] internal static ivec3 yaw_rt(ivec3 P)
+        #if Z_UP
+            => new ivec3(-P.y,  P.x,  P.z);
+        #else
+            => new ivec3( P.z,  P.y, -P.x);
+        #endif
     [In(line)] internal static vec3 yaw_rt(vec3 P)
         #if Z_UP
             => new vec3(-P.y,  P.x,  P.z);
@@ -43,6 +65,12 @@ internal static class VEC_Rotation {
             => new vec3( P.z,  P.y, -P.x);
         #endif
 
+    [In(line)] internal static ivec3 rol_rt(ivec3 P)
+        #if Z_UP
+            => new ivec3( P.z,  P.y, -P.x);
+        #else
+            => new ivec3(-P.y,  P.x,  P.z);
+        #endif
     [In(line)] internal static vec3 rol_rt(vec3 P)
         #if Z_UP
             => new vec3( P.z,  P.y, -P.x);
