@@ -127,7 +127,7 @@ internal static partial class VEC_Color {
         return new vec3(Hue, Sat, Val);
     }
 
-    [In(line)] internal static vec3 RGB_to_HSV(vec3 RGB) => HSV_to_RGB(RGB.r,RGB.g,RGB.b);
+    [In(line)] internal static vec3 RGB_to_HSV(vec3 RGB) => RGB_to_HSV(RGB.r,RGB.g,RGB.b);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
