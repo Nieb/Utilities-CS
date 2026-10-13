@@ -30,6 +30,9 @@ internal struct ivec4 : System.IFormattable {
 
     public ivec4 xyz_ => new ivec4(x,y,z,0);
 
+    public ivec4 xyz1 => new ivec4(x,y,z,1);
+    public ivec4 xzy1 => new ivec4(x,z,y,1);
+
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     [In(line)] public ivec4() {}
@@ -38,9 +41,10 @@ internal struct ivec4 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator Vector4(       ivec4 V) => new Vector4(  V.x,  V.y,  V.z,  V.w); //              ivec4  to  Vector4
-
     [In(line)] public static implicit operator   ivec4(       int[] V) => new   ivec4( V[0], V[1], V[2], V[3]); //             int[4]  to  ivec4
+  //[In(line)] public static implicit operator   int[](       ivec4 V) =>            [  V.x,  V.y,  V.z,  V.w]; //              ivec4  to  int[4]
+
+    [In(line)] public static implicit operator Vector4(       ivec4 V) => new Vector4(  V.x,  V.y,  V.z,  V.w); //              ivec4  to  Vector4
 
     [In(line)] public static implicit operator   ivec4(        int4 T) => new   ivec4(  T.x,  T.y,  T.z,  T.w); //  (int,int,int,int)  to  ivec4
   //[In(line)] public static implicit operator    int4(        vec4 V) =>            (  V.x,  V.y,  V.z,  V.w); //              ivec4  to  (int,int,int,int)

@@ -42,6 +42,8 @@ internal struct vec4 : System.IFormattable {
     //==========================================================================================================================================================
     //                                                                  Directly Assign
     [In(line)] public static implicit operator    vec4(     float[] V) => new    vec4( V[0], V[1], V[2], V[3]); //                   float[4]  to  vec4
+  //[In(line)] public static implicit operator float[](        vec4 V) =>            [  V.x,  V.y,  V.z,  V.w]; //                       vec4  to  float[4]
+
     [In(line)] public static implicit operator    vec4(       ivec4 V) => new    vec4(  V.x,  V.y,  V.z,  V.w); //                      ivec4  to  vec4
     [In(line)] public static implicit operator Vector4(        vec4 V) => new Vector4(  V.x,  V.y,  V.z,  V.w); //                       vec4  to  Vector4
     [In(line)] public static implicit operator    vec4(     Vector4 v) => new    vec4(  v.X,  v.Y,  v.Z,  v.W); //                    Vector4  to  vec4

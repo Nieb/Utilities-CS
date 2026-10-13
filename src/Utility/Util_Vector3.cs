@@ -40,6 +40,8 @@ internal struct vec3 : System.IFormattable {
     //==========================================================================================================================================================
     //                                                                  Directly Assign
     [In(line)] public static implicit operator    vec3(     float[] V) => new    vec3( V[0], V[1], V[2]); //             float[3]  to  vec3
+  //[In(line)] public static implicit operator float[](        vec3 V) =>            [  V.x,  V.y,  V.z]; //                 vec3  to  float[3]
+
     [In(line)] public static implicit operator    vec3(       ivec3 V) => new    vec3(  V.x,  V.y,  V.z); //                ivec3  to  vec3
     [In(line)] public static implicit operator Vector3(        vec3 V) => new Vector3(  V.x,  V.y,  V.z); //                 vec3  to  Vector3
     [In(line)] public static implicit operator    vec3(     Vector3 v) => new    vec3(  v.X,  v.Y,  v.Z); //              Vector3  to  vec3

@@ -29,6 +29,8 @@ internal struct ivec2 : System.IFormattable {
     //==========================================================================================================================================================
     //                                                                  Directly Assign
     [In(line)] public static implicit operator   ivec2(int[] V) => new   ivec2(V[0],V[1]); //     int[2]  to  ivec2
+  //[In(line)] public static implicit operator   int[](ivec2 V) =>            [ V.x, V.y]; //      ivec2  to  int[2]
+
     [In(line)] public static implicit operator Vector2(ivec2 V) => new Vector2( V.x, V.y); //      ivec2  to  Vector2
 
     [In(line)] public static implicit operator   ivec2( int2 T) => new   ivec2( T.x, T.y); //  (int,int)  to  ivec2
