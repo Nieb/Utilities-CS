@@ -52,7 +52,6 @@ internal static partial class QUAT {
 
         float Theta = acos(CosT);
         float SinT  = sin(Theta);
-
         return A * (sin(Theta * (1f-w)) / SinT)
              + B * (sin(Theta *     w ) / SinT);
     }

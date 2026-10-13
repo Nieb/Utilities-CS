@@ -5,6 +5,9 @@ internal static class Array {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
+    //
+    //  https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.inlinearrayattribute?view=net-8.0
+    //
     [System.Runtime.CompilerServices.InlineArray( 2)] internal struct  InlineArray2_Float {private float i;}
     [System.Runtime.CompilerServices.InlineArray( 3)] internal struct  InlineArray3_Float {private float i;}
     [System.Runtime.CompilerServices.InlineArray( 4)] internal struct  InlineArray4_Float {private float i;}
@@ -21,11 +24,11 @@ internal static class Array {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //  Is NULL or Empty.   (A == null || A.Length == 0);
+    //  Is NULL or Empty.
     //
     //      Blarg.IsVoid()
     //
-    [In(line)] internal static bool IsVoid<T>(this T[] A) => (A?.Length ?? 0) == 0;
+    [In(line)] internal static bool IsVoid<T>(this T[] A) => (A == null || A.Length == 0);
 
     //==========================================================================================================================================================
     //
@@ -38,11 +41,11 @@ internal static class Array {
     //      Blarg.Count()  == 3      0 is empty.
     //      Blarg.Length() == 2     -1 is empty.
     //
-    [In(line)] internal static int Count<T>(this T[] A)  => (A == null           ) ?  0 : A.Length;
-    [In(line)] internal static int Count(this string A)  => (A == null || A == "") ?  0 : A.Length;
-
-    [In(line)] internal static int Length<T>(this T[] A) => (A == null           ) ? -1 : A.Length-1;
-    [In(line)] internal static int Length(this string A) => (A == null || A == "") ? -1 : A.Length-1;
+  //[In(line)] internal static int Count<T>(this T[] A)  => (A == null           ) ?  0 : A.Length;
+  //[In(line)] internal static int Count(this string A)  => (A == null || A == "") ?  0 : A.Length;
+  //
+  //[In(line)] internal static int Length<T>(this T[] A) => (A == null           ) ? -1 : A.Length-1;    As much as I would prefer this,
+  //[In(line)] internal static int Length(this string A) => (A == null || A == "") ? -1 : A.Length-1;    I don't want two co-existing things that behave differently.
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
