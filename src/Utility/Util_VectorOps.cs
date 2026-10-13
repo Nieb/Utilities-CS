@@ -151,7 +151,7 @@ internal static partial class VEC {
     //
     [In(line)] internal static v2 length(v2 A, v1 NewLength) => (A == 0f) ? A : A*(NewLength / sqrt(A.x*A.x + A.y*A.y));
     [In(line)] internal static v3 length(v3 A, v1 NewLength) => (A == 0f) ? A : A*(NewLength / sqrt(A.x*A.x + A.y*A.y + A.z*A.z));
-    [In(line)] internal static v4 length(v4 A, v1 NewLength) => (A == 0f) ? A : A*(NewLength / sqrt(A.x*A.x + A.y*A.y + A.z*A.z));
+    [In(line)] internal static v4 length(v4 A, v1 NewLength) => (A == 0f) ? A : A*(NewLength / sqrt(A.x*A.x + A.y*A.y + A.z*A.z + A.w*A.w));
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     //                                                                    "Normalize"

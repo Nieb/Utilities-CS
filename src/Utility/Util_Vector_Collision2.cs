@@ -211,7 +211,7 @@ internal static class VEC_Collision2 {
     //
     //      CircleVsCircle(  Circle1-Position,  Circle1-Radius,  Circle2-Position,  Circle2-Radius  )
     //
-    [In(line)] internal static bool CircleVsCircle(vec2 Cp1, float Cr1, vec2 Cp2, float Cr2) => dot(Cp1-Cp2) <= (Cr1*Cr1 + Cr2*Cr2);
+    [In(line)] internal static bool CircleVsCircle(vec2 Cp1, float Cr1, vec2 Cp2, float Cr2) => dot(Cp1-Cp2) <= sq(Cr1 + Cr2);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
