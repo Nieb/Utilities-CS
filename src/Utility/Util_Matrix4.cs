@@ -172,14 +172,14 @@ internal struct mat4 {
     //                                  ----+----------------------
     //                                      |  Rx   Ry   Rz   Rw
     //
-    public static vec4 operator *(mat4 M, vec4 V) => new vec4(V.x*M.xx + V.x*M.xy + V.x*M.xz + V.x*M.xw,
-                                                              V.y*M.yx + V.y*M.yy + V.y*M.yz + V.y*M.yw,
-                                                              V.z*M.zx + V.z*M.zy + V.z*M.zz + V.z*M.zw,
-                                                              V.w*M.wx + V.w*M.wy + V.w*M.wz + V.w*M.ww );
+    public static vec4 operator *(mat4 M, vec4 V) => new vec4(V.x*M.xx + V.y*M.xy + V.z*M.xz + V.w*M.xw,
+                                                              V.x*M.yx + V.y*M.yy + V.z*M.yz + V.w*M.yw,
+                                                              V.x*M.zx + V.y*M.zy + V.z*M.zz + V.w*M.zw,
+                                                              V.x*M.wx + V.y*M.wy + V.z*M.wz + V.w*M.ww );
 
-    public static vec3 operator *(mat4 M, vec3 V) => new vec3(V.x*M.xx + V.x*M.xy + V.x*M.xz,
-                                                              V.y*M.yx + V.y*M.yy + V.y*M.yz,
-                                                              V.z*M.zx + V.z*M.zy + V.z*M.zz );
+    public static vec3 operator *(mat4 M, vec3 V) => new vec3(V.x*M.xx + V.y*M.xy + V.z*M.xz,
+                                                              V.x*M.yx + V.y*M.yy + V.z*M.yz,
+                                                              V.x*M.zx + V.y*M.zy + V.z*M.zz );
 
     //==========================================================================================================================================================
     //  Operators Logical:  ==  !=  <  >  <=  >=     ( ! && || )
