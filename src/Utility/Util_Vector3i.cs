@@ -3,7 +3,6 @@ using Vector3 = System.Numerics.Vector3;    using float3 = (float x, float y, fl
 using Vector4 = System.Numerics.Vector4;    using float4 = (float x, float y, float z, float w);    using int4 = (int x, int y, int z, int w);
 
 namespace Utility;
-internal static partial class VEC {
 [StructLayout(LayoutKind.Explicit, Pack=4)]
 internal struct ivec3 : System.IFormattable {
     //##########################################################################################################################################################
@@ -144,4 +143,4 @@ internal struct ivec3 : System.IFormattable {
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-}}
+}

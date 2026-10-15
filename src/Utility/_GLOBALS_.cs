@@ -66,22 +66,22 @@ global using d64 = Utility.DATA.Data64;
 //#pragma warning restore CS8981
 
 //==============================================================================================================================================================
-global using b4 = Utility.VEC.bvec4;
-global using b8 = Utility.VEC.bvec8;
+global using b4 = Utility.bvec4;
+global using b8 = Utility.bvec8;
 
 global using i1 = int;
-global using i2 = Utility.VEC.ivec2;
-global using i3 = Utility.VEC.ivec3;
-global using i4 = Utility.VEC.ivec4;
+global using i2 = Utility.ivec2;
+global using i3 = Utility.ivec3;
+global using i4 = Utility.ivec4;
 
 global using v1 = float;
-global using v2 = Utility.VEC.vec2;
-global using v3 = Utility.VEC.vec3;
-global using v4 = Utility.VEC.vec4;
+global using v2 = Utility.vec2;
+global using v3 = Utility.vec3;
+global using v4 = Utility.vec4;
 
-global using m2 = Utility.MAT.mat2;
-global using m3 = Utility.MAT.mat3;
-global using m4 = Utility.MAT.mat4;
+global using m2 = Utility.mat2;
+global using m3 = Utility.mat3;
+global using m4 = Utility.mat4;
 
 //##############################################################################################################################################################
 //##############################################################################################################################################################
