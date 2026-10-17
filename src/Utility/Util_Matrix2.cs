@@ -25,7 +25,7 @@ internal struct mat2 {
     [FieldOffset(8)] public vec2 Row1;    [FieldOffset(8)] public vec2 RowY;
 
     //==========================================================================================================================================================
-    [FieldOffset(0)] private InlineArray4_Float index;
+    [FieldOffset(0)] private InlineArray4<float> index;
 
     public float this[int i] {
         [In(line)] get => this.index[i];

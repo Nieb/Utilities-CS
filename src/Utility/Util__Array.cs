@@ -8,18 +8,21 @@ internal static class Array {
     //
     //  https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.inlinearrayattribute?view=net-8.0
     //
-    [System.Runtime.CompilerServices.InlineArray( 2)] internal struct  InlineArray2_Float {private float i;}
-    [System.Runtime.CompilerServices.InlineArray( 3)] internal struct  InlineArray3_Float {private float i;}
-    [System.Runtime.CompilerServices.InlineArray( 4)] internal struct  InlineArray4_Float {private float i;}
-    [System.Runtime.CompilerServices.InlineArray( 6)] internal struct  InlineArray6_Float {private float i;}
-    [System.Runtime.CompilerServices.InlineArray( 8)] internal struct  InlineArray8_Float {private float i;}
-    [System.Runtime.CompilerServices.InlineArray( 9)] internal struct  InlineArray9_Float {private float i;}
-    [System.Runtime.CompilerServices.InlineArray(12)] internal struct InlineArray12_Float {private float i;}
-    [System.Runtime.CompilerServices.InlineArray(16)] internal struct InlineArray16_Float {private float i;}
-
-    [System.Runtime.CompilerServices.InlineArray( 4)] internal struct  InlineArray4_Short {private short i;}
-
-  //[System.Runtime.CompilerServices.InlineArray( 4)] internal struct  InlineArray4_ivec3 {private ivec3 i;}
+    [System.Runtime.CompilerServices.InlineArray( 2)] internal struct  InlineArray2<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray( 3)] internal struct  InlineArray3<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray( 4)] internal struct  InlineArray4<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray( 5)] internal struct  InlineArray5<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray( 6)] internal struct  InlineArray6<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray( 7)] internal struct  InlineArray7<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray( 8)] internal struct  InlineArray8<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray( 9)] internal struct  InlineArray9<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray(10)] internal struct InlineArray10<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray(11)] internal struct InlineArray11<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray(12)] internal struct InlineArray12<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray(13)] internal struct InlineArray13<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray(14)] internal struct InlineArray14<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray(15)] internal struct InlineArray15<T>{private T i;}
+    [System.Runtime.CompilerServices.InlineArray(16)] internal struct InlineArray16<T>{private T i;}
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

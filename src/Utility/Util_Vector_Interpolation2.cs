@@ -29,7 +29,7 @@ internal static class VEC_Interpolation2 {
     //
     internal static float CatchUp(float Pos, float PosTarget,
                                   float CatchUpFactor=0.2f, float CloseEnough=0.001f) {
-        float dPos = (PosTarget - Pos /*   "* Time_Delta" here?   */) * CatchUpFactor; //   "* Time_Delta" here?
+        float dPos = (PosTarget - Pos) * CatchUpFactor;
 
         return (abs(dPos) <= CloseEnough) ? PosTarget
                                           : Pos + dPos;

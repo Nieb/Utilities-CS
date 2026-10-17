@@ -15,30 +15,13 @@ internal static partial class VEC_Collision3 {
     //
     //                        ●      < 0
     //
-    //      WhichSideOfPlane(  Point,  Plane-Position,  Plane-Normal  )
+    //      WhichSideOfPlane(  Point,  PlanePos,  PlaneNrm  )
     //
     [In(line)] internal static float WhichSideOfPlane(vec3 Pnt, vec3 Pp, vec3 Pn) => dot(Pn, Pnt-Pp);
 
     //==========================================================================================================================================================
-    public static bool BoundsInFrontOfPlane(vec3 b0, vec3 b1, vec3 Pp, vec3 Pn) {
-        // Find the corner of the bounding box that extends furthest along the plane normal
-        vec3 FarthestPointInBounds = new vec3(
-            (Pn.x > 0f) ? b1.x : b0.x,
-            (Pn.y > 0f) ? b1.y : b0.y,
-            (Pn.z > 0f) ? b1.z : b0.z
-        );
+    public static bool BoundsInFrontOfPlane(vec3 b0, vec3 b1, vec3 Pp, vec3 Pn) => dot(Pn, FarthestPointInDirection(Pn,b0,b1)-Pp) > 0f;
 
-        // Calculate the signed distance from the plane to this furthest corner
-        // A positive result means the point (and thus part of the box) is in front of the plane
-        float distance = (FarthestPointInBounds.x - Pp.x) * Pn.x +
-                         (FarthestPointInBounds.y - Pp.y) * Pn.y +
-                         (FarthestPointInBounds.z - Pp.z) * Pn.z;
-        //float distance = dot(FarthestPointInBounds - Pp, Pn);
-
-        return distance > 0f;
-    }
-
-    //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -46,16 +29,15 @@ internal static partial class VEC_Collision3 {
 
     //==========================================================================================================================================================
     //
-    //      PointVsSphere(  Point,  Sphere-Position,  Sphere-Radius  )
+    //      PointVsSphere(  Point,  SpherePos,  SphereRds  )
     //
     [In(line)] internal static bool PointVsSphere(vec3 P, vec3 Sp, float Sr) => dot(Sp-P) <= (Sr*Sr);
 
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
+    //==========================================================================================================================================================
     //
     //  Axis-Aligned.
     //
-    //      PointVsCylinder(  Point,  Cylinder-Position,  Cylinder-Radius,  Cylinder-Height  )
+    //      PointVsCylinder(  Point,  CylinderPos,  CylinderRds,  CylinderHeight  )
     //
     [In(line)] internal static bool PointVsCylinder(vec3 P, vec3 Cp, float Cr, float Ch) => (
         #if Z_UP
@@ -67,8 +49,7 @@ internal static partial class VEC_Collision3 {
         #endif
     );
 
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
+    //==========================================================================================================================================================
     //
     //  Axis-Aligned.
     //
@@ -85,7 +66,6 @@ internal static partial class VEC_Collision3 {
     [In(line)] internal static bool PointVsBox( vec3 P,  vec3 Bp,  vec3 Bs) => (P >= Bp && P <= Bp+Bs);
     [In(line)] internal static bool PointVsBox(ivec3 P, ivec3 Bp, ivec3 Bs) => (P >= Bp && P <  Bp+Bs);
 
-    //==========================================================================================================================================================
     [In(line)] internal static bool PointVsBounds( vec3 P,  vec3 b0,  vec3 b1) => (P >= b0 && P <= b1);
     [In(line)] internal static bool PointVsBounds(ivec3 P, ivec3 b0, ivec3 b1) => (P >= b0 && P <  b1);
 
@@ -99,12 +79,11 @@ internal static partial class VEC_Collision3 {
     //
     //  Axis-Aligned.
     //
-    //      BoxVsBox(  Rectangle1-Position,  Rectangle1-Size,  Rectangle2-Position,  Rectangle2-Size)
+    //      BoxVsBox(  RectPos1,  RectSize1,  RectPos2,  RectSize2  )
     //
     [In(line)] internal static bool BoxVsBox( vec3 Bp1,  vec3 Bs1,  vec3 Bp2,  vec3 Bs2) => (Bp1+Bs1 >= Bp2  &&  Bp1 <= Bp2+Bs2);
     [In(line)] internal static bool BoxVsBox(ivec3 Bp1, ivec3 Bs1, ivec3 Bp2, ivec3 Bs2) => (Bp1+Bs1 >= Bp2  &&  Bp1 <  Bp2+Bs2);
 
-    //==========================================================================================================================================================
     [In(line)] internal static bool BoundsVsBounds( vec3 a0,  vec3 a1,  vec3 b0,  vec3 b1) => (a1 >= b0  &&  a0 <= b1);
     [In(line)] internal static bool BoundsVsBounds(ivec3 a0, ivec3 a1, ivec3 b0, ivec3 b1) => (a1 >= b0  &&  a0 <  b1);
 
@@ -116,12 +95,17 @@ internal static partial class VEC_Collision3 {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //      SphereVsBox(  SpherePosition, SphereRadius,  BoxPosition, BoxSize  )
+    //      SphereVsSphere(  SpherePos, SphereRds,  SpherePos, SphereRds  )
     //
-    [In(line)] internal static bool SphereVsBox(vec3 Sp, float Sr, vec3 Bp, vec3 Bs) => dot(min(0f,Sp-Bp) + max(0f,Sp-(Bp+Bs))) <= Sr*Sr;
+    [In(line)] internal static bool SphereVsSphere(vec2 Sp1, float Sr1, vec2 Sp2, float Sr2) => dot(Sp1 - Sp2) <= sq(Sr1 + Sr2);
 
     //==========================================================================================================================================================
-    [In(line)] internal static bool SphereVsBounds(vec3 Sp, float Sr, vec3 b0, vec3 b1) => dot(min(0f,Sp-b0) + max(0f,Sp-b1)) <= Sr*Sr;
+    //
+    //      SphereVsBox(  SpherePos, SphereRds,  BoxPos, BoxSize  )
+    //
+    [In(line)] internal static bool SphereVsBox(vec3 Sp, float Sr, vec3 Bp, vec3 Bs) => dot(Sp - clamp(Sp, Bp, Bp+Bs)) <= Sr*Sr;
+
+    [In(line)] internal static bool SphereVsBounds(vec3 Sp, float Sr, vec3 b0, vec3 b1) => dot(Sp - clamp(Sp, b0, b1)) <= Sr*Sr;
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -169,9 +153,6 @@ internal static partial class VEC_Collision3 {
                                                    : new vec3(MISS);
     }
 
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################

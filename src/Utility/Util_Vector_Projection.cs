@@ -90,6 +90,22 @@ internal static partial class VEC_Projection {
                                                                                                                 (P.y > bC.y) ? b0.y : b1.y,
                                                                                                                 (P.z > bC.z) ? b0.z : b1.z );
 
+    //==========================================================================================================================================================
+    //
+    //      FarthestPointInDirection(  Direction,  BoundsMin,  BoundsMax  )
+    //
+    [In(line)] internal static  vec2 FarthestPointInDirection(vec2 D,  vec2 b0,  vec2 b1) => new  vec2( (D.x < 0f) ? b0.x : b1.x,
+                                                                                                        (D.y < 0f) ? b0.y : b1.y );
+    [In(line)] internal static ivec2 FarthestPointInDirection(vec2 D, ivec2 b0, ivec2 b1) => new ivec2( (D.x < 0f) ? b0.x : b1.x,
+                                                                                                        (D.y < 0f) ? b0.y : b1.y );
+
+    [In(line)] internal static  vec3 FarthestPointInDirection(vec3 D,  vec3 b0,  vec3 b1) => new  vec3( (D.x < 0f) ? b0.x : b1.x,
+                                                                                                        (D.y < 0f) ? b0.y : b1.y,
+                                                                                                        (D.z < 0f) ? b0.z : b1.z );
+    [In(line)] internal static ivec3 FarthestPointInDirection(vec3 D, ivec3 b0, ivec3 b1) => new ivec3( (D.x < 0f) ? b0.x : b1.x,
+                                                                                                        (D.y < 0f) ? b0.y : b1.y,
+                                                                                                        (D.z < 0f) ? b0.z : b1.z );
+
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################

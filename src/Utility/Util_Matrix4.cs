@@ -33,7 +33,7 @@ internal struct mat4 {
     [FieldOffset(48)] public vec4 Row3;    [FieldOffset(48)] public vec4 RowW;
 
     //==========================================================================================================================================================
-    [FieldOffset(0)] private InlineArray16_Float index;
+    [FieldOffset(0)] private InlineArray16<float> index;
 
     public float this[int i] {
         [In(line)] get => this.index[i];

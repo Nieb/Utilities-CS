@@ -260,18 +260,16 @@ internal static partial class Program {
 
             TEST("PolyLine()",true
                 &&  Poly.Length == 10
-
-                &&  Poly[0] == (-1, 1)
-                &&  Poly[2] == (-2, 0)
-                &&  Poly[4] == (-1,-1)
-                &&  Poly[5] == ( 1,-1)
-                &&  Poly[7] == ( 2, 0)
-                &&  Poly[9] == ( 1, 1)
-
-                &&  Poly[1] == (-1-SQRT2_RCP, SQRT2_RCP)
-                &&  Poly[3] == (-1-SQRT2_RCP,-SQRT2_RCP)
-                &&  Poly[6] == ( 1+SQRT2_RCP,-SQRT2_RCP)
-                &&  Poly[8] == ( 1+SQRT2_RCP, SQRT2_RCP)
+                &&  Poly[0] == (          -1,         1)
+                &&  Poly[1] == (-SQRT2_RCP-1, SQRT2_RCP)
+                &&  Poly[2] == (          -2,         0)
+                &&  Poly[3] == (-SQRT2_RCP-1,-SQRT2_RCP)
+                &&  Poly[4] == (          -1,        -1)
+                &&  Poly[5] == (           1,        -1)
+                &&  Poly[6] == ( SQRT2_RCP+1,-SQRT2_RCP)
+                &&  Poly[7] == (           2,         0)
+                &&  Poly[8] == ( SQRT2_RCP+1, SQRT2_RCP)
+                &&  Poly[9] == (           1,         1)
             );
         }
 

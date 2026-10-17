@@ -6,48 +6,56 @@ internal static partial class VEC_Generate {
     //
     //  https://www.desmos.com/calculator/ct29koavbu
     //
-    internal static vec2[] Phyllotaxis2(int Count, float CircleCoverage = 1f, bool CenterPoint = true) {
-        int iStart = (CenterPoint) ? 0 : 1;  //  WTF: empty vec at index-0 ???
-        int iEnd   = Count;
+    internal static vec2[] Phyllotaxis2(int Count, float Radius=1f) {
+        vec2[] P = new vec2[Count+1];
 
-        vec2[] Result = new vec2[Count];
+        for (int i = 1; i <= Count; ++i) {
+            float Theta = i * PHI_RAD;
+            float Rds = Radius * sqrt((float)i / (float)Count);
 
-        for (int i = iStart; i < Count; ++i) {
-            float Ang = i * PHI_RAD;
-            float Rds = CircleCoverage * sqrt((float)i / (float)Count);
+            (float SinT, float CosT) = sincos(Theta);
 
-            Result[i].x = Rds * cos(Ang);
-            Result[i].y = Rds * sin(Ang);
+            P[i] = new vec2(CosT, SinT) * Rds;
         }
 
-        return Result;
+        return P;
     }
 
     //==========================================================================================================================================================
     //
     //  https://www.desmos.com/3d/nrzvi76avc
     //
-    internal static vec3[] Phyllotaxis3(int Count, float SphereCoverage = 1f, bool Poles = true) {
+    internal static vec3[] Phyllotaxis3(int Count, float Radius=1f, float SphereCoverage = 1f) {
         SphereCoverage = 1f - cos(SphereCoverage*PI);
 
-        int iStart = (Poles) ?       0 :     1;  //  WTF: empty vec at index-0 ???
-        int iEnd   = (Poles) ? Count+1 : Count;
+        vec3[] P = new vec3[Count+1];
 
-        vec3[] Result = new vec3[iEnd];
+        for (int i = 0; i <= Count; ++i) {
+            float Pch = asin(1f - (SphereCoverage*i / Count));
+            float Yaw = i * PI2_PHI;
 
-        for (int i = iStart; i < iEnd; ++i) {
-            float    Pch = asin(1f - (SphereCoverage*(float)i / (float)Count));
-            float CosPch = cos(Pch);
-            float    Yaw = i * PI2_PHI;
+            (float SinPch, float CosPch) = sincos(Pch);
+            (float SinYaw, float CosYaw) = sincos(Yaw);
 
-            Result[i].x = sin(Yaw) *  CosPch;
-            Result[i].y = sin(Pch);
-            Result[i].z = cos(Yaw) * -CosPch;
+            #if Z_UP
+                P[i] = (
+                    CosPch * SinYaw,
+                   -CosPch * CosYaw,
+                    SinPch
+                );
+            #else
+                P[i] = (
+                    CosPch * SinYaw,
+                    SinPch,
+                   -CosPch * CosYaw
+                );
+            #endif
 
-            Result[i] = normalize(Result[i]);
+            //P[i] = normalize(P[i]);
+            P[i] *= Radius;
         }
 
-        return Result;
+        return P;
     }
 
     //##########################################################################################################################################################

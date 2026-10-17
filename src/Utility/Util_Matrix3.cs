@@ -29,7 +29,7 @@ internal struct mat3 {
     [FieldOffset(24)] public vec3 Row2;    [FieldOffset(24)] public vec3 RowZ;
 
     //==========================================================================================================================================================
-    [FieldOffset(0)] private InlineArray9_Float index;
+    [FieldOffset(0)] private InlineArray9<float> index;
 
     public float this[int i] {
         [In(line)] get => this.index[i];
