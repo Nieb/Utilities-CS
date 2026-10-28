@@ -25,7 +25,7 @@ internal static partial class VEC_Generate {
     //
     //  https://www.desmos.com/3d/nrzvi76avc
     //
-    internal static vec3[] Phyllotaxis3(int Count, float Radius=1f, float SphereCoverage = 1f) {
+    internal static vec3[] Phyllotaxis3(int Count, float Radius=1f, float SphereCoverage=1f) {
         SphereCoverage = 1f - cos(SphereCoverage*PI);
 
         vec3[] P = new vec3[Count+1];

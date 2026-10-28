@@ -36,6 +36,24 @@ internal static partial class VEC_Miscellaneous {
         return new vec2(mCos, mSin);
     }*/
 
+    //==========================================================================================================================================================
+    //
+    //  Includes the boundaries A and B.
+    //  All vectors must be nonzero; normalization is unnecessary.
+    //
+    internal static bool IsBetween(vec2 V, vec2 A, vec2 B) {
+        float AB = cross(A,B);
+        float AV = cross(A,V);
+        float VB = cross(V,B);
+
+        // Same direction: treat the interval as a single direction.
+        if (AB == 0f && dot(A,B) > 0f)
+            return AV == 0f && dot(A,V) > 0f;
+
+        return (AB >= 0f) ? (AV >= 0f && VB >= 0f)
+                          : (AV >= 0f || VB >= 0f);
+    }
+
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -43,8 +61,6 @@ internal static partial class VEC_Miscellaneous {
     //
     //  ViewAspectX == ViewSizeX/ViewSizeY      16/9  == 1.777~
     //  ViewAspectY == ViewSizeY/ViewSizeX       9/16 == 0.5625
-    //
-    //  NOTE:  This is for a Planar-Projection Camera!  Not a Radial-Projection.
     //
     [In(line)] internal static float FovX_FromY(float FovY, float ViewAspectX)               => 2f * atan2(tan(FovY/2f) * ViewAspectX, 1f);
     [In(line)] internal static float FovY_FromX(float FovX, float ViewAspectY)               => 2f * atan2(tan(FovX/2f) * ViewAspectY, 1f);

@@ -71,32 +71,32 @@ internal static partial class VEC_Collision3 {
     //       B0 ●--``
     //
 #if Z_UP
-    internal static float RayVsQuad(vec3 Rp, vec3 Rn,    vec3 A0, float A1_z, vec3 B0, float B1_z,  vec3 Wn) {
+    internal static float RayVsQuad(vec3 Rp, vec3 Rn,    vec3 A0, vec3 B0, float A1_z, float B1_z,  vec3 Qn) {
         //  RayVsPlane:
-        float denom = dot(Wn, Rn);
-        if (abs(denom) < EPS6) return RAY_MISS; //  Are Ray & Plane co-planar?
+        float Denom = dot(Qn, Rn);
+        if (abs(Denom) < EPS6) return RAY_MISS;                                 //  Are Ray & Plane co-planar?
 
-        float HitDist = dot(Wn, (A0 - Rp)) / denom;
-        if (HitDist < 0f) return RAY_MISS; //  Is Plane in front of us?
+        float HitDist = dot(Qn, (A0 - Rp)) / Denom;
+        if (HitDist < 0f) return RAY_MISS;                                      //  Is Plane in front of us?
 
         vec3 HitPos = Rp + (Rn * HitDist);
 
-        //----------------------------------------------------------------------------------------------------------------------------------------------------------
-        //  Signed XY projection along wall:
+        //------------------------------------------------------------------------------------------------------------------------------------------------------
+        //  Signed XY projection along Line:
         vec2  dAB    = B0.xy - A0.xy;
         float dAB_LL = dot(dAB, dAB);
-      //if (dAB_LL < EPS6) return RAY_MISS; //  Does Quad exist!?
+      //if (dAB_LL < EPS6) return RAY_MISS;                                     //  Does Quad exist!?
 
         //  Distance from LinePointA to HitPos, as multiple of DeltaAB.Length:
         float Dist = dot(HitPos.xy - A0.xy, dAB) / dAB_LL;
-        if (Dist < 0f || Dist > 1f) return RAY_MISS; //  Is HitPos laterally on Quad?
+        if (Dist < 0f || Dist > 1f) return RAY_MISS;                            //  Is HitPos laterally on Quad?
 
-        //----------------------------------------------------------------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------------------------------------------------------
         //  Z bounds at this XY position:
         float zBtm = Lerp(Dist, A0.z, B0.z);
         float zTop = Lerp(Dist, A1_z, B1_z);
 
-        if (HitPos.z < zBtm || HitPos.z > zTop) return RAY_MISS;  //  Is HitPos vertically on Quad?
+        if (HitPos.z < zBtm || HitPos.z > zTop) return RAY_MISS;                //  Is HitPos vertically on Quad?
 
         return HitDist;
     }
@@ -106,40 +106,57 @@ internal static partial class VEC_Collision3 {
     //
     //  Weinding is Anti-Clockwise.
     //
-    //      RayVsTriangle(  RayPos,  RayNrm,    Triangle-PointA,  Triangle-PointB,  Triangle-PointC,    BackFaceTest  )
+    //      RayVsTriangle(  RayPos,  RayNrm,    TriPointA,  TriPointB,  TriPointC,    BackFaceTest  )
     //
     internal static float RayVsTriangle(vec3 Rp, vec3 Rn,   vec3 Ta, vec3 Tb, vec3 Tc,   bool BackFaceTest=false) {
         vec3 dAB = Tb - Ta;
         vec3 dAC = Tc - Ta;
 
         vec3 H = cross(Rn, dAC);
-        float Determinant = dot(dAB, H);
-
-        //  Is Ray pointing in the same direction as SurfaceNormal?
-        if (Determinant < 0f && !BackFaceTest)
-            return RAY_MISS;
-
-        //  Is Ray coplanar with Triangle Surface?
-        //if (abs(Determinant) < EPS6)
-        if (Determinant == 0f)
-            return RAY_MISS;
+        float Denom = dot(dAB, H);
+        if (Denom == 0f ||                                                      //  Is Ray coplanar with Triangle Surface?
+           (!BackFaceTest && Denom < 0f)) return RAY_MISS;                      //  Is Ray pointing in the same direction as SurfaceNormal?
 
         vec3 dAP = Rp - Ta;
-        float DtrRcp = 1f/Determinant;
-        float U = dot(dAP, H) * DtrRcp;
-
-        //  Will intersection be inside of triangle?
-        if (U < 0f || U > 1f)
-            return RAY_MISS;
+        float DnmRcp = 1f/Denom;
+        float U = dot(dAP, H) * DnmRcp;
+        if (U < 0f || U > 1f) return RAY_MISS;                                  //  Will intersection be inside of Triangle?
 
         vec3 Q = cross(dAP, dAB);
-        float V = dot(Rn, Q) * DtrRcp;
+        float V = dot(Rn, Q) * DnmRcp;
+        if (V < 0f || U+V > 1f) return RAY_MISS;                                //  Will intersection be inside of Triangle?
 
-        //  Will intersection be inside of triangle?
-        if (V < 0f || U+V > 1f)
-            return RAY_MISS;
+        return dot(dAC, Q) * DnmRcp;
+    }
 
-        return dot(dAC, Q) * DtrRcp;
+    //==========================================================================================================================================================
+    //
+    //  XY projection of Triangle must have a non-zero area.
+    //
+    //      RayVsTriangleXY(  RayPos,  RayNrm,    TriPointA, TriPointB, TriPointC, TriSurfaceNormal,    BackFaceTest  )
+    //
+    internal static float RayVsTriangleXY(vec3 Rp, vec3 Rn,    vec3 Ta, vec3 Tb, vec3 Tc, vec3 Tn,    bool BackFaceTest = false) {
+        //  3D RayVsPlane:
+        float Denom = dot(Rn, Tn);
+        if (Denom == 0f ||                                                      //  Is Ray coplanar with Triangle Surface?
+           (!BackFaceTest && Denom > 0f)) return RAY_MISS;                      //  Is Ray pointing in the same direction as SurfaceNormal?
+
+        float HitDist = dot(Tn, Ta-Rp) / Denom;
+        if (HitDist < 0f) return RAY_MISS;                                      //  Is Surface in front of Ray?
+
+        //  2D PointVsTriangle:
+        vec2 P = Rp.xy + Rn.xy * HitDist;
+        vec2 dPA = Ta.xy - P;
+        vec2 dPB = Tb.xy - P;
+        vec2 dPC = Tc.xy - P;
+
+        if (Tn.z < 0f)
+            (dPB, dPC) = (dPC, dPB);
+
+        return (dPA.x*dPB.y >= dPA.y*dPB.x                                      //  Is HitPos inside Triangle?
+            &&  dPB.x*dPC.y >= dPB.y*dPC.x
+            &&  dPC.x*dPA.y >= dPC.y*dPA.x) ? HitDist
+                                            : RAY_MISS;
     }
 
     //##########################################################################################################################################################

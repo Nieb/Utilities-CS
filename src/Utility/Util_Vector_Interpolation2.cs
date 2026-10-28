@@ -22,23 +22,51 @@ internal static class VEC_Interpolation2 {
     //##########################################################################################################################################################
     //                                                                Asymptotic Catch Up
     //  CatchUpFactor:  0 to 1
-    //    CloseEnough:  An epsilon value, relative to the magnitude of "Pos" values.
+    //    CloseEnough:  Absolute distance from the target at which to snap.
     //                  A lower-bounds on "DeltaPos" to prevent infinite interpolation.
-    //
-    //  NOTE:  This may not be capable of working properly with "Time.Delta"......
     //
     internal static float CatchUp(float Pos, float PosTarget,
                                   float CatchUpFactor=0.2f, float CloseEnough=0.001f) {
-        float dPos = (PosTarget - Pos) * CatchUpFactor;
+        float dPos = (PosTarget - Pos);
 
         return (abs(dPos) <= CloseEnough) ? PosTarget
-                                          : Pos + dPos;
+                                          : Pos + dPos*CatchUpFactor;
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     internal static vec2 CatchUp(vec2 P, vec2 Pt, float F=0.2f, float C=0.001f) => new vec2(CatchUp(P.x,Pt.x, F,C), CatchUp(P.y,Pt.y, F,C));
     internal static vec3 CatchUp(vec3 P, vec3 Pt, float F=0.2f, float C=0.001f) => new vec3(CatchUp(P.x,Pt.x, F,C), CatchUp(P.y,Pt.y, F,C), CatchUp(P.z,Pt.z, F,C));
     internal static vec4 CatchUp(vec4 P, vec4 Pt, float F=0.2f, float C=0.001f) => new vec4(CatchUp(P.x,Pt.x, F,C), CatchUp(P.y,Pt.y, F,C), CatchUp(P.z,Pt.z, F,C), CatchUp(P.w,Pt.w, F,C));
+
+    //==========================================================================================================================================================
+    //
+    //  Version that works with "DeltaTime".
+    //
+    internal static float KatchUp(float Pos, float PosTarget, float dTime,
+                                  float CatchUpRate=12f, float CloseEnough=0.001f) {
+        float dPos = PosTarget - Pos;
+
+        return (abs(dPos) <= CloseEnough) ? PosTarget
+                                          : Pos + dPos*(1f - exp(-CatchUpRate * dTime));
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    internal static vec2 KatchUp(vec2 P, vec2 Pt, float dT, float R=12f, float C=0.001f) => new vec2(KatchUp(P.x,Pt.x,dT,R,C), KatchUp(P.y,Pt.y,dT,R,C));
+    internal static vec3 KatchUp(vec3 P, vec3 Pt, float dT, float R=12f, float C=0.001f) => new vec3(KatchUp(P.x,Pt.x,dT,R,C), KatchUp(P.y,Pt.y,dT,R,C), KatchUp(P.z,Pt.z,dT,R,C));
+    internal static vec4 KatchUp(vec4 P, vec4 Pt, float dT, float R=12f, float C=0.001f) => new vec4(KatchUp(P.x,Pt.x,dT,R,C), KatchUp(P.y,Pt.y,dT,R,C), KatchUp(P.z,Pt.z,dT,R,C), KatchUp(P.w,Pt.w,dT,R,C));
+
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //
+    //  ...
+    //
+    internal static vec3      Drag(vec3 Vel, float dTime, float Rate) => Vel * (1f - exp(-Rate * dTime));
+    internal static vec3 ApplyDrag(vec3 Vel, float dTime, float Rate) => Vel * exp(-Rate * dTime);
+
+    internal static vec3      Drag_(vec3 Vel, float dTime, float K) {float Amount = K * length(Vel) * dTime;  return Vel * (Amount / (1f + Amount));}
+    internal static vec3 ApplyDrag_(vec3 Vel, float dTime, float K) => Vel / (1f + K * length(Vel) * dTime);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -83,13 +111,13 @@ internal static class VEC_Interpolation2 {
 
     //==========================================================================================================================================================
     //
-    //  Sigmoid centered at (0,0)
+    //  https://www.desmos.com/calculator/7c7d5564b0
     //
-    //  https://www.desmos.com/calculator/b6f0ca1hhh
+    //  Sigmoid centered at (Px,Py)
     //
     //      Sigmoidish(  X,  PositionXY,  ScaleXY  )
     //
-    internal static float Sigmoidish(float x, float Px, float Py, float Sx, float Sy) => Py-1f + (  Sy / (1f + (exp(-x * Sx)) * (exp(Px * Sx)))  );
+    internal static float Sigmoidish(float x, float Px, float Py, float Sx, float Sy) => Py - Sy*0.5f + (  Sy / (1f + exp(-x/Sx) * exp(Px/Sx))  );
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -109,22 +137,18 @@ internal static class VEC_Interpolation2 {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    [In(line)] internal static float LerpX(vec2 P, vec3 A, vec3 B) {vec2 dAB = B.yz-A.yz;  float W = dot(P-A.yz,dAB)/dot(dAB);  return Lerp(W, A.x, B.x);}
-    [In(line)] internal static float LerpY(vec2 P, vec3 A, vec3 B) {vec2 dAB = B.xz-A.xz;  float W = dot(P-A.xz,dAB)/dot(dAB);  return Lerp(W, A.y, B.y);}
-    [In(line)] internal static float LerpZ(vec2 P, vec3 A, vec3 B) {vec2 dAB = B.xy-A.xy;  float W = dot(P-A.xy,dAB)/dot(dAB);  return Lerp(W, A.z, B.z);}
+    internal static float LerpX(vec2 P, vec3 A, vec3 B) => Lerp(LineCoord(P,A.xy,B.xy), A.x,B.x); //{vec2 dAB = B.yz-A.yz;  float W = dot(P-A.yz,dAB)/dot(dAB);  return Lerp(W, A.x, B.x);}
+    internal static float LerpY(vec2 P, vec3 A, vec3 B) => Lerp(LineCoord(P,A.xy,B.xy), A.y,B.y); //{vec2 dAB = B.xz-A.xz;  float W = dot(P-A.xz,dAB)/dot(dAB);  return Lerp(W, A.y, B.y);}
+    internal static float LerpZ(vec2 P, vec3 A, vec3 B) => Lerp(LineCoord(P,A.xy,B.xy), A.z,B.z); //{vec2 dAB = B.xy-A.xy;  float W = dot(P-A.xy,dAB)/dot(dAB);  return Lerp(W, A.z, B.z);}
 
-    [In(line)] internal static float  MixX(vec2 P, vec3 A, vec3 B) {vec2 dAB = B.yz-A.yz;  float W = dot(P-A.yz,dAB)/dot(dAB);  return  Mix(W, A.x, B.x);}
-    [In(line)] internal static float  MixY(vec2 P, vec3 A, vec3 B) {vec2 dAB = B.xz-A.xz;  float W = dot(P-A.xz,dAB)/dot(dAB);  return  Mix(W, A.y, B.y);}
-    [In(line)] internal static float  MixZ(vec2 P, vec3 A, vec3 B) {vec2 dAB = B.xy-A.xy;  float W = dot(P-A.xy,dAB)/dot(dAB);  return  Mix(W, A.z, B.z);}
+    internal static float  MixX(vec2 P, vec3 A, vec3 B) =>  Mix(LineCoord(P,A.xy,B.xy), A.x,B.x); //{vec2 dAB = B.yz-A.yz;  float W = dot(P-A.yz,dAB)/dot(dAB);  return  Mix(W, A.x, B.x);}
+    internal static float  MixY(vec2 P, vec3 A, vec3 B) =>  Mix(LineCoord(P,A.xy,B.xy), A.y,B.y); //{vec2 dAB = B.xz-A.xz;  float W = dot(P-A.xz,dAB)/dot(dAB);  return  Mix(W, A.y, B.y);}
+    internal static float  MixZ(vec2 P, vec3 A, vec3 B) =>  Mix(LineCoord(P,A.xy,B.xy), A.z,B.z); //{vec2 dAB = B.xy-A.xy;  float W = dot(P-A.xy,dAB)/dot(dAB);  return  Mix(W, A.z, B.z);}
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [In(line)] internal static float LerpX(vec2 P, vec3 A, vec3 B, vec3 C) => BaryLinear(A.x,B.x,C.x,  P,A.yz,B.yz,C.yz);
-    [In(line)] internal static float LerpY(vec2 P, vec3 A, vec3 B, vec3 C) => BaryLinear(A.y,B.y,C.y,  P,A.xz,B.xz,C.xz);
-    [In(line)] internal static float LerpZ(vec2 P, vec3 A, vec3 B, vec3 C) => BaryLinear(A.z,B.z,C.z,  P,A.xy,B.xy,C.xy);
-
-  //[In(line)] internal static float  MixX(vec2 P, vec3 A, vec3 B, vec3 C) => BaryLinear(A.x,B.x,C.x,  P, A.yz,B.yz,C.yz);
-  //[In(line)] internal static float  MixY(vec2 P, vec3 A, vec3 B, vec3 C) => BaryLinear(A.y,B.y,C.y,  P, A.xz,B.xz,C.xz);
-  //[In(line)] internal static float  MixZ(vec2 P, vec3 A, vec3 B, vec3 C) => BaryLinear(A.z,B.z,C.z,  P, A.xy,B.xy,C.xy);
+    internal static float LerpX(vec2 P, vec3 A, vec3 B, vec3 C) => BaryLinear(A.x,B.x,C.x,  P,A.yz,B.yz,C.yz);
+    internal static float LerpY(vec2 P, vec3 A, vec3 B, vec3 C) => BaryLinear(A.y,B.y,C.y,  P,A.xz,B.xz,C.xz);
+    internal static float LerpZ(vec2 P, vec3 A, vec3 B, vec3 C) => BaryLinear(A.z,B.z,C.z,  P,A.xy,B.xy,C.xy);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

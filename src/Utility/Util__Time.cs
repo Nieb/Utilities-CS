@@ -1,3 +1,4 @@
+//#define DEBUG_TIME
 using Stopwatch = System.Diagnostics.Stopwatch;
 using Thread    = System.Threading.Thread;
 
@@ -38,19 +39,14 @@ internal struct TIME {
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     private f64 FloatFreq = 0d;
 
-    private s64 DeltaFrame = 0;
-
     private s64 PrevFrame = 0;
     private s64 ThisFrame = 0;
-    private s64 NextFrame = 0;
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     public bool LimitFrameRateEnabled = false;
     public s32 TargetFrameRate {get; private set;} = 240;
 
-    private s32 SpinCycle  = 0;
     private s64 FrameStep  = 0;
-    private s64 OneMillis  = 0;
     private s64 NearThresh = 0;
 
     //##########################################################################################################################################################
@@ -68,9 +64,7 @@ internal struct TIME {
         this.PrevFrame = this.Beginning;
         this.ThisFrame = this.Beginning;
 
-        this.NextFrame = this.Beginning;
         this.FrameStep = (Stopwatch.Frequency/this.TargetFrameRate);
-        this.OneMillis = (Stopwatch.Frequency/1000);
         this.NearThresh = (Stopwatch.Frequency/10000);
     }
 
@@ -83,27 +77,26 @@ internal struct TIME {
 
     public void LimitFrameRate(bool B) {
         this.LimitFrameRateEnabled = B;
-        this.NextFrame = Stopwatch.GetTimestamp();
-        this.SpinCycle = 2400;                                                  //  TODO:  Dynamically derive to keep SpinWait approximately 1ms.
+        //this.SpinCycle = 2400;                                                //  TODO:  Dynamically derive to keep SpinWait approximately 0.1 ms ??
     }
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    //public void Update(f64 Speed = 1d) {
+    //public void Update(f64 Speed=1d) {
     public void Update() {
-        this.NextFrame += max(this.DeltaFrame, this.FrameStep);                                       //  TODO:  max(???, this.FrameStep);        if FrameRate is lesser than TargetFrameRate...
+        s64 NextFrame = this.PrevFrame + this.FrameStep;
     #if DEBUG_TIME
-        PRINT($"LimitFrameRateEnabled: {this.LimitFrameRateEnabled}    {TargetFrameRate,3}FPS    {this.NextFrame}    {this.NearThresh}");
+        PRINT($"LimitFrameRateEnabled: {this.LimitFrameRateEnabled}    {TargetFrameRate,3}FPS    {NextFrame}    {this.NearThresh}");
         for (int i = 0; this.LimitFrameRateEnabled; ++i) {
     #else
         while (this.LimitFrameRateEnabled) {
     #endif
-            s64 DeltaNext = this.NextFrame - Stopwatch.GetTimestamp();
+            s64 DeltaNext = NextFrame - Stopwatch.GetTimestamp();
             if (DeltaNext <= 0) break;
             //if (DeltaNext > this.NearThresh) Thread.Sleep(1);       //  Sleep time-resolution is 1/64 (15.625 ms).  :(
-            //if (DeltaNext > this.NearThresh) Thread.Yield();        //  If there is no other process that wants to use the CPU core, Yield() will return immediately.
-            //if (DeltaNext > this.NearThresh) Thread.SpinWait(64);   //  Parameter is "loop iterations".  Highly variable, dependent on CPU performance/speed.
-            if (DeltaNext > this.NearThresh) Thread.SpinWait(this.SpinCycle);
+            //if (DeltaNext > this.NearThresh) Thread.Yield();        //  If there are no other processes that want to use the CPU core, Yield() will return immediately.
+            if (DeltaNext > this.NearThresh) Thread.SpinWait(512);    //  Parameter is "loop iterations".  Highly variable, dependent on CPU performance/speed.
+            //if (DeltaNext > this.NearThresh) Thread.SpinWait(this.SpinCycle);
 
             #if DEBUG_TIME
                 PRINT($"  [{i,3}]  {DeltaNext,6}/{this.FrameStep,6}");
@@ -113,9 +106,7 @@ internal struct TIME {
         this.ThisFrame = Stopwatch.GetTimestamp();
         ++this.Frame;
 
-        this.DeltaFrame = this.ThisFrame - this.PrevFrame;
-
-        this.Delta64 = this.DeltaFrame / this.FloatFreq;
+        this.Delta64 = (this.ThisFrame - this.PrevFrame) / this.FloatFreq;
         if (this.DeltaClamp > 0d) {this.Delta64 = min(this.DeltaClamp, this.Delta64);}
         this.Delta = f32(this.Delta64);
 

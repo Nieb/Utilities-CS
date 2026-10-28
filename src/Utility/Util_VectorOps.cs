@@ -40,26 +40,26 @@ internal static partial class VEC {
     //
 #if false
     [In(line)] internal static v1 clamp(v1 A, v1 L=0f, v1 U=1f) => (A < L) ? L : (A > U) ? U : A;
+
     [In(line)] internal static v2 clamp(v2 A, v1 L=0f, v1 U=1f) => new v2(clamp(A.x,L  ,U  ), clamp(A.y,L  ,U  ));
-    [In(line)] internal static v2 clamp(v2 A, v2 L=0f, v2 U=1f) => new v2(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y));
+    [In(line)] internal static v2 clamp(v2 A, v2 L   , v2 U   ) => new v2(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y));
+
     [In(line)] internal static v3 clamp(v3 A, v1 L=0f, v1 U=1f) => new v3(clamp(A.x,L  ,U  ), clamp(A.y,L  ,U  ), clamp(A.z,L  ,U  ));
-    [In(line)] internal static v3 clamp(v3 A, v3 L=0f, v3 U=1f) => new v3(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y), clamp(A.z,L.z,U.z));
+    [In(line)] internal static v3 clamp(v3 A, v3 L   , v3 U   ) => new v3(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y), clamp(A.z,L.z,U.z));
+
     [In(line)] internal static v4 clamp(v4 A, v1 L=0f, v1 U=1f) => new v4(clamp(A.x,L  ,U  ), clamp(A.y,L  ,U  ), clamp(A.z,L  ,U  ), clamp(A.w,L  ,U  ));
-    [In(line)] internal static v4 clamp(v4 A, v4 L=0f, v4 U=1f) => new v4(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y), clamp(A.z,L.z,U.z), clamp(A.w,L.w,U.w));
+    [In(line)] internal static v4 clamp(v4 A, v4 L   , v4 U   ) => new v4(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y), clamp(A.z,L.z,U.z), clamp(A.w,L.w,U.w));
 #else
     [In(line)] internal static v1 clamp(v1 A, v1 L=0f, v1 U=1f) =>    Math.Clamp(A,L,U);
 
-    [In(line)] internal static v2 clamp(v2 A                  ) => Vector2.Clamp(A,new Vector2(0f),new Vector2(1f));
-    [In(line)] internal static v2 clamp(v2 A, v1 L   , v1 U   ) => Vector2.Clamp(A,new Vector2( L),new Vector2( U));
-    [In(line)] internal static v2 clamp(v2 A, v2 L   , v2 U   ) => Vector2.Clamp(A,             L ,             U );
+    [In(line)] internal static v2 clamp(v2 A, v1 L=0f, v1 U=1f) => Vector2.Clamp(A,new Vector2(L),new Vector2(U));
+    [In(line)] internal static v2 clamp(v2 A, v2 L   , v2 U   ) => Vector2.Clamp(A,            L ,            U );
 
-    [In(line)] internal static v3 clamp(v3 A                  ) => Vector3.Clamp(A,new Vector3(0f),new Vector3(1f));
-    [In(line)] internal static v3 clamp(v3 A, v1 L   , v1 U   ) => Vector3.Clamp(A,new Vector3( L),new Vector3( U));
-    [In(line)] internal static v3 clamp(v3 A, v3 L   , v3 U   ) => Vector3.Clamp(A,             L ,             U );
+    [In(line)] internal static v3 clamp(v3 A, v1 L=0f, v1 U=1f) => Vector3.Clamp(A,new Vector3(L),new Vector3(U));
+    [In(line)] internal static v3 clamp(v3 A, v3 L   , v3 U   ) => Vector3.Clamp(A,            L ,            U );
 
-    [In(line)] internal static v4 clamp(v4 A                  ) => Vector4.Clamp(A,new Vector4(0f),new Vector4(1f));
-    [In(line)] internal static v4 clamp(v4 A, v1 L   , v1 U   ) => Vector4.Clamp(A,new Vector4( L),new Vector4( U));
-    [In(line)] internal static v4 clamp(v4 A, v4 L   , v4 U   ) => Vector4.Clamp(A,             L ,             U );
+    [In(line)] internal static v4 clamp(v4 A, v1 L=0f, v1 U=1f) => Vector4.Clamp(A,new Vector4(L),new Vector4(U));
+    [In(line)] internal static v4 clamp(v4 A, v4 L   , v4 U   ) => Vector4.Clamp(A,            L ,            U );
 #endif
 
     //==========================================================================================================================================================
@@ -67,7 +67,7 @@ internal static partial class VEC {
     //               *Inclusive*  *Exclusive*
     //      wrap( A, LowerBounds, UpperBounds )
     //
-    [In(line)] internal static v1 wrap(v1 A, v1 L, v1 U) {v1 Domain = U-L;  v1 R = (A-L)%Domain;  return R+L + ((R < 0f) ? Domain : 0f);} //=> L + (A-L) % (U-L);    if only "%" wasn't dumb...
+    [In(line)] internal static v1 wrap(v1 A, v1 L, v1 U) {v1 Domain = U-L;  v1 R = (A-L)%Domain;  return L+R + ((R < 0f) ? Domain : 0f);} //=> L + (A-L) % (U-L);    if only "%" wasn't dumb...
     [In(line)] internal static v2 wrap(v2 A, v1 L, v1 U) => new v2(wrap(A.x, L, U), wrap(A.y, L, U));
     [In(line)] internal static v3 wrap(v3 A, v1 L, v1 U) => new v3(wrap(A.x, L, U), wrap(A.y, L, U), wrap(A.z, L, U));
     [In(line)] internal static v4 wrap(v4 A, v1 L, v1 U) => new v4(wrap(A.x, L, U), wrap(A.y, L, U), wrap(A.z, L, U), wrap(A.w, L, U));
@@ -80,7 +80,7 @@ internal static partial class VEC {
 #if true
     [In(line)] internal static v3 cross(v3 A, v3 B) => new v3((A.y*B.z - A.z*B.y),  (A.z*B.x - A.x*B.z),  (A.x*B.y - A.y*B.x));
 #else
-    [In(line)] internal static v3 cross(v3 A, v3 B) => System.Numerics.Vector3.Cross(A,B);
+    [In(line)] internal static v3 cross(v3 A, v3 B) => Vector3.Cross(A,B); //  This appears to be slower.  Could be the type cast...
 #endif
 
     //==========================================================================================================================================================
@@ -97,7 +97,7 @@ internal static partial class VEC {
     [In(line)] internal static v1 dot(v4 A)       => (A.x*A.x + A.y*A.y + A.z*A.z + A.w*A.w);
     [In(line)] internal static v1 dot(v4 A, v4 B) => (A.x*B.x + A.y*B.y + A.z*B.z + A.w*B.w);
 #else
-    [In(line)] internal static v1 dot(v2 A)       => Vector2.Dot(A,A);
+    [In(line)] internal static v1 dot(v2 A)       => Vector2.Dot(A,A); //  These appear to be slower.  Could be the type cast...
     [In(line)] internal static v1 dot(v2 A, v2 B) => Vector2.Dot(A,B);
 
     [In(line)] internal static v1 dot(v3 A)       => Vector3.Dot(A,A);
@@ -173,12 +173,13 @@ internal static partial class VEC {
     //  A * B + C
     //
     //  NOTE:  Often not worth the bother.
-    //         As it just gets in the way of compiler optimizations.
+    //         As it just gets in the way of compiler-optimizations or CPU pipe-lining or something...
+    //         Though, it could be because "MathF.FusedMultiplyAdd()" is introducing overhead.
     //
-    [In(line)] internal static v1 fma(v1 A, v1 B, v1 C) => MathF.FusedMultiplyAdd(A, B, C);
-    [In(line)] internal static v2 fma(v2 A, v2 B, v2 C) => new v2(fma(A.x, B.x, C.x), fma(A.y, B.y, C.y));
-    [In(line)] internal static v3 fma(v3 A, v3 B, v3 C) => new v3(fma(A.x, B.x, C.x), fma(A.y, B.y, C.y), fma(A.z, B.z, C.z));
-    [In(line)] internal static v4 fma(v4 A, v4 B, v4 C) => new v4(fma(A.x, B.x, C.x), fma(A.y, B.y, C.y), fma(A.z, B.z, C.z), fma(A.w, B.w, C.w));
+  //[In(line)] internal static v1 fma(v1 A, v1 B, v1 C) => MathF.FusedMultiplyAdd(A, B, C);
+  //[In(line)] internal static v2 fma(v2 A, v2 B, v2 C) => new v2(fma(A.x, B.x, C.x), fma(A.y, B.y, C.y));
+  //[In(line)] internal static v3 fma(v3 A, v3 B, v3 C) => new v3(fma(A.x, B.x, C.x), fma(A.y, B.y, C.y), fma(A.z, B.z, C.z));
+  //[In(line)] internal static v4 fma(v4 A, v4 B, v4 C) => new v4(fma(A.x, B.x, C.x), fma(A.y, B.y, C.y), fma(A.z, B.z, C.z), fma(A.w, B.w, C.w));
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -218,9 +219,9 @@ internal static partial class VEC {
   //[In(line)] internal static v4 rcp(v4 A) => 1f/A;
 
   //[In(line)] internal static v1 rcpz(v1 A) => (abs(A) < EPS6) ? 0f : 1f/A;
-  //[In(line)] internal static v2 rcpz(v2 A) => new v2(rcp0(A.x), rcp0(A.y));
-  //[In(line)] internal static v3 rcpz(v3 A) => new v3(rcp0(A.x), rcp0(A.y), rcp0(A.z));
-  //[In(line)] internal static v4 rcpz(v4 A) => new v4(rcp0(A.x), rcp0(A.y), rcp0(A.z), rcp0(A.w));
+  //[In(line)] internal static v2 rcpz(v2 A) => new v2(rcpz(A.x), rcpz(A.y));
+  //[In(line)] internal static v3 rcpz(v3 A) => new v3(rcpz(A.x), rcpz(A.y), rcpz(A.z));
+  //[In(line)] internal static v4 rcpz(v4 A) => new v4(rcpz(A.x), rcpz(A.y), rcpz(A.z), rcpz(A.w));
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

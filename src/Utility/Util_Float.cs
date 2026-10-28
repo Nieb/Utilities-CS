@@ -18,10 +18,14 @@ internal static class FLT {
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
+
     [In(line)] internal static f64   abs(f64 A)               => System.Math.Abs(A);
 
     [In(line)] internal static f64 clamp(f64 A, f64 L, f64 U) => System.Math.Clamp(A,L,U);
     [In(line)] internal static f64  wrap(f64 A, f64 L, f64 U) {f64 Domain = U-L;  A = (A-L) % Domain;  return A+L + ((A < 0f) ? Domain : 0f);}
+
+    [In(line)] internal static f64 fract(f64 A)               => (A - System.Math.Floor(A));
+    [In(line)] internal static f64 trunc(f64 A)               => System.Math.Truncate(A);
 
     [In(line)] internal static f64   min(f64 A, f64 B)        => System.Math.Min(A,B);
     [In(line)] internal static f64   max(f64 A, f64 B)        => System.Math.Max(A,B);
@@ -33,8 +37,8 @@ internal static class FLT {
     [In(line)] internal static f64    sq(f64 A)               => (A * A);
     [In(line)] internal static f64  sqrt(f64 A)               => System.Math.Sqrt(A);
 
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
+    //==========================================================================================================================================================
+
     [In(line)] internal static f64 ToDeg(f64 Radians) => Radians * (180d / 3.14159265358979323846264338327950288419716939937511d);
     [In(line)] internal static f64 ToRad(f64 Degrees) => Degrees * (3.14159265358979323846264338327950288419716939937511d / 180d);
 

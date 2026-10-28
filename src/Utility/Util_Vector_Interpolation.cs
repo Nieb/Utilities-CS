@@ -72,11 +72,6 @@ internal static class VEC_Interpolation {
     internal static v3 BiMix(v2 w,  v3 A,v3 B,v3 C,v3 D) {w=clamp(w);  v2 iw=(1f-w);  return A*(iw.x*iw.y) + B*(w.x*iw.y)   +   C*(iw.x* w.y) + D*(w.x* w.y);}
     internal static v4 BiMix(v2 w,  v4 A,v4 B,v4 C,v4 D) {w=clamp(w);  v2 iw=(1f-w);  return A*(iw.x*iw.y) + B*(w.x*iw.y)   +   C*(iw.x* w.y) + D*(w.x* w.y);}
 
-    [In(line)] internal static v1 Bilinear(v2 w,  v1 A,v1 B,v1 C,v1 D) => BiMix(w, A,B,C,D);
-    [In(line)] internal static v2 Bilinear(v2 w,  v2 A,v2 B,v2 C,v2 D) => BiMix(w, A,B,C,D);
-    [In(line)] internal static v3 Bilinear(v2 w,  v3 A,v3 B,v3 C,v3 D) => BiMix(w, A,B,C,D);
-    [In(line)] internal static v4 Bilinear(v2 w,  v4 A,v4 B,v4 C,v4 D) => BiMix(w, A,B,C,D);
-
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     internal static v1 Blerp(v2 w,  v1 A,v1 B,v1 C,v1 D) {             v2 iw=(1f-w);  return A*(iw.x*iw.y) + B*(w.x*iw.y)   +   C*(iw.x* w.y) + D*(w.x* w.y);}
     internal static v2 Blerp(v2 w,  v2 A,v2 B,v2 C,v2 D) {             v2 iw=(1f-w);  return A*(iw.x*iw.y) + B*(w.x*iw.y)   +   C*(iw.x* w.y) + D*(w.x* w.y);}

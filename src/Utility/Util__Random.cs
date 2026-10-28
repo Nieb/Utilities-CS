@@ -8,7 +8,7 @@ internal static class Random {
     //
     //                   *Inclusive*  *Exclusive*
     //           R.Next( LowerBounds, UpperBounds );
-    //      R.NextInt64( LowerBounds, UpperBounds );        Upon testing, ".NextInt64()" seems to be a bit faster than ".Next()".
+    //      R.NextInt64( LowerBounds, UpperBounds );        Upon testing, ".NextInt64()" appears to be a bit faster than ".Next()".
     //
     //     R.NextSingle();      These have bias issues.
     //     R.NextDouble();      Also, not inclusive of "1.0".
@@ -92,11 +92,6 @@ internal static class Random {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //                                                              Random Normalized Vector
-    //
-    //  Pitch  |  RotX  |  PosY  |  TexV  |   Latitude (South  –90   +90  North)
-    //  Yaw    |  RotY  |  PosX  |  TexU  |  Longitude (West  -180  +180  East )
-    //
-    //==========================================================================================================================================================
     internal static v2 Random2n() {
         float Theta = Random1() * PI;
         return new vec2(cos(Theta), sin(Theta));

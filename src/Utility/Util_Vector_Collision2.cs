@@ -142,8 +142,9 @@ internal static class VEC_Collision2 {
     //  "Irregular Convex|Concave Polygon"
     //
     //      float fuzz...   this should probably be ivec2 only...
+    //          using "<=" may fix float fuzz, but it will break integer...
     //
-    internal static bool PointVsPolygon_(vec2 P, vec2[] Poly) {
+    internal static bool PointVsPolygon_(ivec2 P, ivec2[] Poly) {
         #if DEBUG
             if (Poly.Length < 3) throw new System.ArgumentException("Derp?");
         #endif
@@ -156,6 +157,30 @@ internal static class VEC_Collision2 {
                 (Poly[iA].y > P.y)  !=  (Poly[iB].y > P.y)
                 &&
                 (P.x   <   (Poly[iA].x-Poly[iB].x) * (P.y-Poly[iB].y) / (Poly[iA].y-Poly[iB].y)  +  Poly[iB].x)
+            );
+
+            if (DewIt)
+                Inside = !Inside;
+
+            iA = iB;
+        }
+
+        return Inside;
+    }
+
+    internal static bool PointVsPolygon_(vec2 P, vec2[] Poly) {
+        #if DEBUG
+            if (Poly.Length < 3) throw new System.ArgumentException("Derp?");
+        #endif
+
+        bool Inside = false;
+        int iA = Poly.Length-1;
+
+        for (int iB = 0; iB < Poly.Length; iB++) {
+            bool DewIt = (
+                (Poly[iA].y > P.y)  !=  (Poly[iB].y > P.y)
+                &&
+                (P.x   <=  (Poly[iA].x-Poly[iB].x) * (P.y-Poly[iB].y) / (Poly[iA].y-Poly[iB].y)  +  Poly[iB].x)
             );
 
             if (DewIt)
@@ -191,6 +216,8 @@ internal static class VEC_Collision2 {
     //
     [In(line)] internal static bool RectVsCircle(vec2 Rp, vec2 Rs, vec2 Cp, float Cr) => CircleVsRect(Cp, Cr, Rp, Rs);
 
+    [In(line)] internal static bool BoundsVsCircle(vec2 b0, vec2 b1, vec2 Cp, float Cr) => CircleVsBounds(Cp, Cr, b0, b1);
+
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -220,7 +247,7 @@ internal static class VEC_Collision2 {
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [In(line)] internal static vec2 CircleVsLine(vec2 Cp, float Cr, vec2 La, vec2 Lb, bool ReturnHitPos) {
+    [In(line)] internal static vec2 CircleVsLine_(vec2 Cp, float Cr, vec2 La, vec2 Lb) {
         vec2 dAP = Cp - La;
         vec2 dAB = Lb - La;
 
@@ -240,23 +267,28 @@ internal static class VEC_Collision2 {
     );
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    internal static vec2 CircleVsTriangle(vec2 Cp, float Cr, vec2 Ta, vec2 Tb, vec2 Tc, bool ReturnHitPos) {
-        if (PointVsTriangle(Cp, Ta, Tb, Tc))
+    internal static vec2 CircleVsTriangle_(vec2 Cp, float Cr, vec2 Ta, vec2 Tb, vec2 Tc) {
+        vec2 dAP = Cp - Ta;
+        vec2 dBP = Cp - Tb;
+        vec2 dCP = Cp - Tc;
+
+        //  PointVsTriangle:
+        if ((dAP.x*dBP.y <= dAP.y*dBP.x) && (dBP.x*dCP.y <= dBP.y*dCP.x) && (dCP.x*dAP.y <= dCP.y*dAP.x))
             return Cp;
 
-        // CircleVsLine AB:
+        //  CircleVsLine AB:
         vec2 dAB = Tb - Ta;
-        vec2  HitPosA  = Ta + dAB*clamp(dot(Cp - Ta, dAB) / dot(dAB));
+        vec2  HitPosA  = Ta + dAB*clamp(dot(dAP, dAB) / dot(dAB));
         float HitDistA = dot(Cp - HitPosA);
 
-        // CircleVsLine BC:
+        //  CircleVsLine BC:
         vec2 dBC = Tc - Tb;
-        vec2  HitPosB  = Tb + dBC*clamp(dot(Cp - Tb, dBC) / dot(dBC));
+        vec2  HitPosB  = Tb + dBC*clamp(dot(dBP, dBC) / dot(dBC));
         float HitDistB = dot(Cp - HitPosB);
 
-        // CircleVsLine CA:
+        //  CircleVsLine CA:
         vec2 dCA = Ta - Tc;
-        vec2  HitPosC  = Tc + dCA*clamp(dot(Cp - Tc, dCA) / dot(dCA));
+        vec2  HitPosC  = Tc + dCA*clamp(dot(dCP, dCA) / dot(dCA));
         float HitDistC = dot(Cp - HitPosC);
 
         float NearestDist = HitDistA;
@@ -287,12 +319,12 @@ internal static class VEC_Collision2 {
         vec2 dL2 = L2b - L2a;
         vec2 dAA = L1a - L2a;
 
-        float d = cross(dL1, dL2);
-        float r = cross(dL1, dAA) / d;
-        float s = cross(dL2, dAA) / d;
+        float Denom = cross(dL1, dL2);
+        float Dist1 = cross(dL1, dAA) / Denom;
+        float Dist2 = cross(dL2, dAA) / Denom;
 
-        return (r >= 0f && r <= 1f)
-            && (s >= 0f && s <= 1f);
+        return (Dist1 >= 0f && Dist1 <= 1f)
+            && (Dist2 >= 0f && Dist2 <= 1f);
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -310,15 +342,15 @@ internal static class VEC_Collision2 {
     ////if (abs(Denom) < EPS6)
     ////    return new vec2(MISS); //  Lines are Parallel.   Test if colinear ???
 
-        float Dist1 = cross(dL2, dAA) / Denom;
-        float Dist2 = cross(dL1, dAA) / Denom;
+        float Dist1 = cross(dL1, dAA) / Denom;
+        float Dist2 = cross(dL2, dAA) / Denom;
 
         //  Are nearest points between A & B?
     ////if (Dist1 < 0f || Dist1 > 1f || Dist2 < 0f || Dist2 > 1f)
     ////    return new vec2(MISS);
 
-        vec2  P1 = L1a + (dL1 * Dist1);
-        vec2  P2 = L2a + (dL2 * Dist2);
+        vec2 P1 = L1a + (dL1 * Dist1);
+        vec2 P2 = L2a + (dL2 * Dist2);
 
         return (dot(P1-P2) <= Tolerance*Tolerance) ? avg(P1, P2)
                                                    : new vec2(MISS);

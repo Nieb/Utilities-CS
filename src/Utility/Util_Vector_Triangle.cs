@@ -51,6 +51,57 @@ internal static partial class VEC_Triangle {
     //
     //  Test if a Point is inside of a Triangle's CircumCircle.
     //
+    //      "Tolerance" is to prevent symmetrical triangles from getting stuck in an EdgeFlip loop.
+    //
+    internal static bool Delaunay(vec2 P, vec2 Ta, vec2 Tb, vec2 Tc, float Tolerance=1.0f) {
+        vec2 dAB = Tb-Ta;
+        vec2 dAC = Tc-Ta;
+
+        float D = cross(dAB, dAC);
+
+        vec2  Cp; //  CircumCircle-Position
+        float Cr; //  CircumCircle-Radius
+
+        if (D == 0f) {
+            //  Triangle points are Colinear, define CircumCircle by delta between furthest points.
+            vec2 Tmin = min(Ta, Tb, Tc);
+            vec2 Tmax = max(Ta, Tb, Tc);
+
+            Cp = avg(Tmin, Tmax);
+
+            Cr = distance(Tmin, Cp);
+
+        } else {
+            float AB_AB = dot(dAB, Ta+Tb);
+            float AC_AC = dot(dAC, Ta+Tc);
+
+            Cp = new vec2(
+                (dAC.y*AB_AB - dAB.y*AC_AC),
+                (dAB.x*AC_AC - dAC.x*AB_AB)
+            );
+            Cp /= (2f * D);
+
+            Cr = distance(Ta, Cp);
+        }
+
+        return distance(P, Cp) + Tolerance < Cr;
+    }
+
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+}
+
+
+
+
+#if false
+    //
+    //  https://www.desmos.com/calculator/2uan3xr9qq
+    //
+    //  Test if a Point is inside of a Triangle's CircumCircle.
+    //
     //      "Tolerance" is roughly a radian-angle threshold (less true as cross() value increases).
     //          EPS6 radians  ==  0.000_057~ degrees    1/17453~ of a degree
     //
@@ -95,9 +146,4 @@ internal static partial class VEC_Triangle {
         //  All of this to avoid a couple of pesky sqrts.  :P
         return dot((Cp-P) * Bias) < CrCr;
     }
-
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-}
+#endif

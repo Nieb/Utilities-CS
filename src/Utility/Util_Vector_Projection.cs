@@ -5,7 +5,26 @@ internal static partial class VEC_Projection {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    //                                                                    "Projection"
+    //
+    //  This returns the ""Distance from LinePointA to NearestPointOnLine, as multiple of DeltaAB"" that every projection uses.
+    //
+    //  This is almost something like a 2D|3D "LinearStep()" function.    (not a "vec2 LinearStep()", which is 2 separate 1D "LinearStep()"s)
+    //
+    //   < 0.0       0.0        0.5        1.0     > 1.0
+    //      ----------●----------|----------●----------
+    //                A                     B
+    //
+    [In(line)] internal static float LineCoord(vec2 P, vec2 A, vec2 B) {vec2 dAB = B-A;  return dot(P-A,dAB)/dot(dAB);}
+    [In(line)] internal static float LineCoord(vec3 P, vec3 A, vec3 B) {vec3 dAB = B-A;  return dot(P-A,dAB)/dot(dAB);}
+
+    [In(line)] internal static float LineCoord_(vec2 P, vec2 A, vec2 dAB) => dot(P-A, dAB) / dot(dAB);
+    [In(line)] internal static float LineCoord_(vec3 P, vec3 A, vec3 dAB) => dot(P-A, dAB) / dot(dAB);
+
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //
     //  Get Nearest-Point-On-Line from Point.
     //
     //      project(  Point,  Line-Position,  Line-Normal  )
@@ -17,7 +36,7 @@ internal static partial class VEC_Projection {
     //
     //  Arbitrary-Line version.
     //
-    //  NOTE:  Does not tell you if ProjectedPoint is inbetween A & B.
+    //  NOTE:  Does not tell you if ProjectedPoint is in between A & B.
     //              SEE: PointVsLine()
     //
     //      projectAB(  Point,  Line-PointA,  Line-PointB  )
@@ -66,7 +85,7 @@ internal static partial class VEC_Projection {
 
     //==========================================================================================================================================================
     //
-    //  Furthest? Farthest? Farest?    FairestPointInBounds?
+    //  Furthest? Farthest? Farest?    FairestPointInBounds?    TheMostDistantPointInBounds...
     //
     //      FarthestPointInBounds(  Point,  BoundsMin,               BoundsMax  )
     //      FarthestPointInBounds(  Point,  BoundsMin, BoundsCenter, BoundsMax  )
