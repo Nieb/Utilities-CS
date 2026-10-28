@@ -32,25 +32,18 @@ internal static class Casting {
     //  All BYTE,SHORT operations result in an INT.  :(
     //
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [In(line)] internal static  u8 ClampToByte  (f32 A) =>  (u8)clamp(round(A), (f32)MIN_u8,  (f32)MAX_u8);
-    [In(line)] internal static  u8 ClampToByte  (s32 A) =>  (u8)clamp(      A , (s32)MIN_u8,  (s32)MAX_u8);
-    [In(line)] internal static  u8 ClampToByte  (s64 A) =>  (u8)clamp(      A , (s64)MIN_u8,  (s64)MAX_u8);
+    [In(line)] internal static u8    ClampToByte(f32 A) =>  (u8)clamp(round(A), (f32)MIN_u8,  (f32)MAX_u8);
+    [In(line)] internal static u8    ClampToByte(s32 A) =>  (u8)clamp(      A , (s32)MIN_u8,  (s32)MAX_u8);
+    [In(line)] internal static u8    ClampToByte(s64 A) =>  (u8)clamp(      A , (s64)MIN_u8,  (s64)MAX_u8);
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
-    [In(line)] internal static s16 ClampToShort (f32 A) => (s16)clamp(round(A), (f32)MIN_s16, (f32)MAX_s16);
-    [In(line)] internal static s16 ClampToShort (s32 A) => (s16)clamp(      A , (s32)MIN_s16, (s32)MAX_s16);
-    [In(line)] internal static s16 ClampToShort (s64 A) => (s16)clamp(      A , (s64)MIN_s16, (s64)MAX_s16);
+    [In(line)] internal static s16  ClampToShort(f32 A) => (s16)clamp(round(A), (f32)MIN_s16, (f32)MAX_s16);
+    [In(line)] internal static s16  ClampToShort(s32 A) => (s16)clamp(      A , (s32)MIN_s16, (s32)MAX_s16);
+    [In(line)] internal static s16  ClampToShort(s64 A) => (s16)clamp(      A , (s64)MIN_s16, (s64)MAX_s16);
 
     [In(line)] internal static u16 ClampToUshort(f32 A) => (u16)clamp(round(A), (f32)MIN_u16, (f32)MAX_u16);
     [In(line)] internal static u16 ClampToUshort(s32 A) => (u16)clamp(      A , (s32)MIN_u16, (s32)MAX_u16);
     [In(line)] internal static u16 ClampToUshort(s64 A) => (u16)clamp(      A , (s64)MIN_u16, (s64)MAX_u16);
-
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------
-  //[In(line)] internal static s32 ClampToInt   (f32 A) => (s32)clamp(round(A), (f32)MIN_s32, (f32)MAX_s32);
-  //[In(line)] internal static s32 ClampToInt   (s64 A) => (s32)clamp(      A , (s64)MIN_s32, (s64)MAX_s32);
-
-  //[In(line)] internal static u32 ClampToUint  (s32 A) => (u32)clamp(      A , (s32)MIN_u32,      MAX_s32);
-  //[In(line)] internal static u32 ClampToUint  (s64 A) => (u32)clamp(      A , (s64)MIN_u32, (s64)MAX_u32);
 
     //==========================================================================================================================================================
     [In(line)] internal static i1 FloorToInt(v1 A) => (int)floor(A);
@@ -68,18 +61,27 @@ internal static class Casting {
     [In(line)] internal static i3 RoundToInt(v3 A) => new ivec3(RoundToInt(A.x), RoundToInt(A.y), RoundToInt(A.z));
     [In(line)] internal static i4 RoundToInt(v4 A) => new ivec4(RoundToInt(A.x), RoundToInt(A.y), RoundToInt(A.z), RoundToInt(A.w));
 
-    [In(line)] internal static i1  SnapToInt(v1 A) {int rA = RoundToInt(A);  return (abs(A - rA) < EPS6) ? rA : FloorToInt(A);} //  Damn floats and their fuzzy edges... :[
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //
+    //  Floor-To-Int, without the fuzz.  Damn floats and their fuzzy edges... :[
+    //
+    [In(line)] internal static i1  SnapToInt(v1 A) {int rA = RoundToInt(A);  return (abs(A - rA) < EPS6) ? rA : FloorToInt(A);}
     [In(line)] internal static i2  SnapToInt(v2 A) => new ivec2(SnapToInt(A.x), SnapToInt(A.y));
     [In(line)] internal static i3  SnapToInt(v3 A) => new ivec3(SnapToInt(A.x), SnapToInt(A.y), SnapToInt(A.z));
     [In(line)] internal static i4  SnapToInt(v4 A) => new ivec4(SnapToInt(A.x), SnapToInt(A.y), SnapToInt(A.z), SnapToInt(A.w));
 
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //==========================================================================================================================================================
     [In(line)] internal static s32 FloorToInt(f64 A) => (s32)floor(A);
     [In(line)] internal static s32  CeilToInt(f64 A) => (s32)ceil(A);
     [In(line)] internal static s32 RoundToInt(f64 A) => (s32)round(A);
 
   //[In(line)] internal static s64 RoundToLong(f32 A) => (s64)round(A);
   //[In(line)] internal static s64 RoundToLong(f64 A) => (s64)round(A);
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+  //[In(line)] internal static s32 ClampToInt   (s64 A) => (s32)clamp(      A , (s64)MIN_s32, (s64)MAX_s32);
+  //[In(line)] internal static u32 ClampToUint  (s32 A) => (u32)clamp(      A , (s32)MIN_u32,      MAX_s32);
+  //[In(line)] internal static u32 ClampToUint  (s64 A) => (u32)clamp(      A , (s64)MIN_u32, (s64)MAX_u32);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
