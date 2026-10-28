@@ -6,13 +6,13 @@ internal static partial class Program {
 
         //######################################################################################################################################################
         //######################################################################################################################################################
-        TEST("ImplicitCast -- ivec2 to vec2",  HasImplicitConversion(typeof(ivec2),typeof(vec2)) );
-        TEST("ImplicitCast -- ivec3 to vec3",  HasImplicitConversion(typeof(ivec3),typeof(vec3)) );
-        TEST("ImplicitCast -- ivec4 to vec4",  HasImplicitConversion(typeof(ivec4),typeof(vec4)) );
+        TEST("ImplicitCast -- ivec2 to vec2",  HasImplicitConversion(typeof(ivec2),typeof(vec2)));
+        TEST("ImplicitCast -- ivec3 to vec3",  HasImplicitConversion(typeof(ivec3),typeof(vec3)));
+        TEST("ImplicitCast -- ivec4 to vec4",  HasImplicitConversion(typeof(ivec4),typeof(vec4)));
 
-        TEST("ImplicitCast -- vec2 to ivec2", !HasImplicitConversion(typeof(vec2),typeof(ivec2)) );
-        TEST("ImplicitCast -- vec3 to ivec3", !HasImplicitConversion(typeof(vec3),typeof(ivec3)) );
-        TEST("ImplicitCast -- vec4 to ivec4", !HasImplicitConversion(typeof(vec4),typeof(ivec4)) );
+        TEST("ImplicitCast -- vec2 to ivec2", !HasImplicitConversion(typeof(vec2),typeof(ivec2)));
+        TEST("ImplicitCast -- vec3 to ivec3", !HasImplicitConversion(typeof(vec3),typeof(ivec3)));
+        TEST("ImplicitCast -- vec4 to ivec4", !HasImplicitConversion(typeof(vec4),typeof(ivec4)));
 
         //######################################################################################################################################################
         //######################################################################################################################################################

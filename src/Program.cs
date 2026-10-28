@@ -57,8 +57,6 @@ internal static partial class Program {
             PROFILE_End();
             TESTOUT($"\n                                 ~~~ FINISH ~~~");
             TESTOUT($"\n                                   {PROFILE_Result():N12}\n");
-
-            Test___();
         #endif
 
         #if RELEASE
@@ -69,6 +67,9 @@ internal static partial class Program {
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
+    //
+    //  "CONOUT()" is striped from Release-Builds.
+    //
     internal static void  TESTOUT()               => System.Console.WriteLine();
     internal static void  TESTOUT(string PrintMe) => System.Console.WriteLine(PrintMe);
     internal static void TESTOUTC(string PrintMe) => System.Console.Write    (PrintMe);
@@ -93,24 +94,20 @@ internal static partial class Program {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //
-    //  Just use the stdlib, they say,
-    //  why reinvent the wheel, they say...
+    //  Just use the stdlib, they say.
+    //  Why reinvent the wheel, they say...
     //
     internal static bool HasImplicitConversion(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type SourceType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type TargetType)
-        =>  SourceType.GetMethods(BindingFlags.Public | BindingFlags.Static).Any(
-                m => m.Name == "op_Implicit" && m.ReturnType == TargetType && m.GetParameters().FirstOrDefault()?.ParameterType == SourceType)
-        ||  TargetType.GetMethods(BindingFlags.Public | BindingFlags.Static).Any(
-                m => m.Name == "op_Implicit" && m.ReturnType == TargetType && m.GetParameters().FirstOrDefault()?.ParameterType == SourceType);
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods|DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type SourceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods|DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type TargetType)
+        =>  SourceType.GetMethods(BindingFlags.Public|BindingFlags.Static).Any(m => m.Name=="op_Implicit" && m.ReturnType==TargetType && m.GetParameters().FirstOrDefault()?.ParameterType==SourceType)
+        ||  TargetType.GetMethods(BindingFlags.Public|BindingFlags.Static).Any(m => m.Name=="op_Implicit" && m.ReturnType==TargetType && m.GetParameters().FirstOrDefault()?.ParameterType==SourceType);
 
     internal static bool HasExplicitConversion(
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type SourceType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type TargetType)
-        =>  SourceType.GetMethods(BindingFlags.Public | BindingFlags.Static).Any(
-                m => m.Name == "op_Explicit" && m.ReturnType == TargetType && m.GetParameters().FirstOrDefault()?.ParameterType == SourceType)
-        ||  TargetType.GetMethods(BindingFlags.Public | BindingFlags.Static).Any(
-                m => m.Name == "op_Explicit" && m.ReturnType == TargetType && m.GetParameters().FirstOrDefault()?.ParameterType == SourceType);
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods|DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type SourceType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods|DynamicallyAccessedMemberTypes.NonPublicMethods)] System.Type TargetType)
+        =>  SourceType.GetMethods(BindingFlags.Public|BindingFlags.Static).Any(m => m.Name=="op_Explicit" && m.ReturnType==TargetType && m.GetParameters().FirstOrDefault()?.ParameterType==SourceType)
+        ||  TargetType.GetMethods(BindingFlags.Public|BindingFlags.Static).Any(m => m.Name=="op_Explicit" && m.ReturnType==TargetType && m.GetParameters().FirstOrDefault()?.ParameterType==SourceType);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

@@ -15,51 +15,57 @@ static void Test___() {
 //##############################################################################################################################################################
 //##############################################################################################################################################################
 //##############################################################################################################################################################
-#if false
+#if true
 {
     TESTOUT("\nTesting \"VectorOps\"...");
 
     const int I = (1 << 24);
-    double[] Sum    = new double[15];
-    double[] Result = new double[15];
+    double[] Sum    = new double[18];
+    double[] Result = new double[18];
 
     PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 0] +=       clamp(Random1(),-Random1u(), Random1u());     PROFILE_End(); Result[ 0]=PROFILE_Result();
     PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 1] +=       clamp(Random1());                             PROFILE_End(); Result[ 1]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 2] += sumof(clamp(Random2(),-Random1u(), Random1u()));    PROFILE_End(); Result[ 2]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 3] += sumof(clamp(Random2())                        );    PROFILE_End(); Result[ 3]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 4] += sumof(clamp(Random3(),-Random1u(), Random1u()));    PROFILE_End(); Result[ 4]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 5] += sumof(clamp(Random3())                        );    PROFILE_End(); Result[ 5]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 6] += sumof(clamp(Random4(),-Random1u(), Random1u()));    PROFILE_End(); Result[ 6]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 7] += sumof(clamp(Random4())                        );    PROFILE_End(); Result[ 7]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 2] += sumof(clamp(Random2(),-Random2u(), Random2u()));    PROFILE_End(); Result[ 2]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 3] += sumof(clamp(Random2(),-Random1u(), Random1u()));    PROFILE_End(); Result[ 3]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 4] += sumof(clamp(Random2())                        );    PROFILE_End(); Result[ 4]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 5] += sumof(clamp(Random3(),-Random3u(), Random3u()));    PROFILE_End(); Result[ 5]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 6] += sumof(clamp(Random3(),-Random1u(), Random1u()));    PROFILE_End(); Result[ 6]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 7] += sumof(clamp(Random3())                        );    PROFILE_End(); Result[ 7]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 8] += sumof(clamp(Random4(),-Random4u(), Random4u()));    PROFILE_End(); Result[ 8]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 9] += sumof(clamp(Random4(),-Random1u(), Random1u()));    PROFILE_End(); Result[ 9]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[10] += sumof(clamp(Random4())                        );    PROFILE_End(); Result[10]=PROFILE_Result();
 
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 8] += sumof(cross(Random3(),Random3()));                  PROFILE_End(); Result[ 8]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[11] += sumof(cross(Random3(),Random3()));                  PROFILE_End(); Result[11]=PROFILE_Result();
 
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[ 9] +=         dot(Random2(),Random2());                   PROFILE_End(); Result[ 9]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[10] +=         dot(Random2());                             PROFILE_End(); Result[10]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[11] +=         dot(Random3(),Random3());                   PROFILE_End(); Result[11]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[12] +=         dot(Random3());                             PROFILE_End(); Result[12]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[13] +=         dot(Random4(),Random4());                   PROFILE_End(); Result[13]=PROFILE_Result();
-    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[14] +=         dot(Random4());                             PROFILE_End(); Result[14]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[12] +=         dot(Random2(),Random2());                   PROFILE_End(); Result[12]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[13] +=         dot(Random2());                             PROFILE_End(); Result[13]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[14] +=         dot(Random3(),Random3());                   PROFILE_End(); Result[14]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[15] +=         dot(Random3());                             PROFILE_End(); Result[15]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[16] +=         dot(Random4(),Random4());                   PROFILE_End(); Result[16]=PROFILE_Result();
+    PROFILE_Start();    for(int i=0;i<I;++i)  Sum[17] +=         dot(Random4());                             PROFILE_End(); Result[17]=PROFILE_Result();
 
     TESTOUT($"""
 
-       clamp(v1,v1,v1)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 0]:N16}    Sum: {Sum[ 0]:N3}
-       clamp(v1)        Iterations: {CommaDelimit(I)}    Seconds: {Result[ 1]:N16}    Sum: {Sum[ 1]:N3}
-       clamp(v2,v1,v1)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 2]:N16}    Sum: {Sum[ 2]:N3}
-       clamp(v2)        Iterations: {CommaDelimit(I)}    Seconds: {Result[ 3]:N16}    Sum: {Sum[ 3]:N3}
-       clamp(v3,v1,v1)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 4]:N16}    Sum: {Sum[ 4]:N3}
-       clamp(v3)        Iterations: {CommaDelimit(I)}    Seconds: {Result[ 5]:N16}    Sum: {Sum[ 5]:N3}
-       clamp(v4,v1,v1)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 6]:N16}    Sum: {Sum[ 6]:N3}
-       clamp(v4)        Iterations: {CommaDelimit(I)}    Seconds: {Result[ 7]:N16}    Sum: {Sum[ 7]:N3}
+       clamp(v1,v1,v1)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 0]:N16}    Sum: {CommaDelimit(Sum[ 0]),15}
+       clamp(v1)        Iterations: {CommaDelimit(I)}    Seconds: {Result[ 1]:N16}    Sum: {CommaDelimit(Sum[ 1]),15}
+       clamp(v2,v2,v2)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 2]:N16}    Sum: {CommaDelimit(Sum[ 2]),15}
+       clamp(v2,v1,v1)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 3]:N16}    Sum: {CommaDelimit(Sum[ 3]),15}
+       clamp(v2)        Iterations: {CommaDelimit(I)}    Seconds: {Result[ 4]:N16}    Sum: {CommaDelimit(Sum[ 4]),15}
+       clamp(v3,v3,v3)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 5]:N16}    Sum: {CommaDelimit(Sum[ 5]),15}
+       clamp(v3,v1,v1)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 6]:N16}    Sum: {CommaDelimit(Sum[ 6]),15}
+       clamp(v3)        Iterations: {CommaDelimit(I)}    Seconds: {Result[ 7]:N16}    Sum: {CommaDelimit(Sum[ 7]),15}
+       clamp(v4,v4,v4)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 8]:N16}    Sum: {CommaDelimit(Sum[ 8]),15}
+       clamp(v4,v1,v1)  Iterations: {CommaDelimit(I)}    Seconds: {Result[ 9]:N16}    Sum: {CommaDelimit(Sum[ 9]),15}
+       clamp(v4)        Iterations: {CommaDelimit(I)}    Seconds: {Result[10]:N16}    Sum: {CommaDelimit(Sum[10]),15}
 
-       cross(v3,v3)     Iterations: {CommaDelimit(I)}    Seconds: {Result[ 8]:N16}    Sum: {Sum[ 8]:N3}
+       cross(v3,v3)     Iterations: {CommaDelimit(I)}    Seconds: {Result[11]:N16}    Sum: {CommaDelimit(Sum[11]),15}
 
-       dot(v2,v2)       Iterations: {CommaDelimit(I)}    Seconds: {Result[ 9]:N16}    Sum: {Sum[ 9]:N3}
-       dot(v2)          Iterations: {CommaDelimit(I)}    Seconds: {Result[10]:N16}    Sum: {Sum[10]:N3}
-       dot(v3,v3)       Iterations: {CommaDelimit(I)}    Seconds: {Result[11]:N16}    Sum: {Sum[11]:N3}
-       dot(v3)          Iterations: {CommaDelimit(I)}    Seconds: {Result[12]:N16}    Sum: {Sum[12]:N3}
-       dot(v4,v4)       Iterations: {CommaDelimit(I)}    Seconds: {Result[13]:N16}    Sum: {Sum[13]:N3}
-       dot(v4)          Iterations: {CommaDelimit(I)}    Seconds: {Result[14]:N16}    Sum: {Sum[14]:N3}
+       dot(v2,v2)       Iterations: {CommaDelimit(I)}    Seconds: {Result[12]:N16}    Sum: {CommaDelimit(Sum[12]),15}
+       dot(v2)          Iterations: {CommaDelimit(I)}    Seconds: {Result[13]:N16}    Sum: {CommaDelimit(Sum[13]),15}
+       dot(v3,v3)       Iterations: {CommaDelimit(I)}    Seconds: {Result[14]:N16}    Sum: {CommaDelimit(Sum[14]),15}
+       dot(v3)          Iterations: {CommaDelimit(I)}    Seconds: {Result[15]:N16}    Sum: {CommaDelimit(Sum[15]),15}
+       dot(v4,v4)       Iterations: {CommaDelimit(I)}    Seconds: {Result[16]:N16}    Sum: {CommaDelimit(Sum[16]),15}
+       dot(v4)          Iterations: {CommaDelimit(I)}    Seconds: {Result[17]:N16}    Sum: {CommaDelimit(Sum[17]),15}
 
     """);
 }

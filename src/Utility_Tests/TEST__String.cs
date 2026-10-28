@@ -92,7 +92,7 @@ internal static partial class Program {
         );
 
         //======================================================================================================================================================
-        TEST("CommaDelimit()",true
+        TEST("CommaDelimit(int)",true
             && CommaDelimit(s16(-12_345)) == "-12,345"
             && CommaDelimit(s16( -2_345)) ==  "-2,345"
             && CommaDelimit(s16(   -345)) ==    "-345"
@@ -147,9 +147,65 @@ internal static partial class Program {
             && CommaDelimit(           123_456_789_000L) ==            "123,456,789,000"
             && CommaDelimit( 9_223_372_036_854_775_807L) ==  "9,223,372,036,854,775,807"
 
-            && CommaDelimit(                         0UL) ==                          "0"
-            && CommaDelimit(18_446_744_073_709_551_615UL) == "18,446,744,073,709,551,615"
+            && CommaDelimit(                         0uL) ==                          "0"
+            && CommaDelimit(           123_456_789_000uL) ==            "123,456,789,000"
+            && CommaDelimit(18_446_744_073_709_551_615uL) == "18,446,744,073,709,551,615"
         );
+
+        TEST("CommaDelimit(float)",true
+            && CommaDelimit(123456.0f    ,1) == "123,456.0"
+            && CommaDelimit( 12345.6f    ,1) ==  "12,345.6"
+            && CommaDelimit(  1234.56f   ,2) ==   "1,234.56"
+            && CommaDelimit(   123.456f  ,3) ==     "123.456"
+            && CommaDelimit(    12.3456f ,4) ==      "12.3456"
+            && CommaDelimit(     1.23456f,5) ==       "1.23456"
+
+            && CommaDelimit(12345678912345.0d            , 1) == "12,345,678,912,345.0"
+            && CommaDelimit( 1234567891234.5d            , 1) ==  "1,234,567,891,234.5"
+            && CommaDelimit(  123456789123.45d           , 2) ==    "123,456,789,123.45"
+            && CommaDelimit(   12345678912.345d          , 3) ==     "12,345,678,912.345"
+            && CommaDelimit(    1234567891.2345d         , 4) ==      "1,234,567,891.2345"
+            && CommaDelimit(     123456789.12345d        , 5) ==        "123,456,789.12345"
+            && CommaDelimit(      12345678.912345d       , 6) ==         "12,345,678.912345"
+            && CommaDelimit(       1234567.8912345d      , 7) ==          "1,234,567.8912345"
+            && CommaDelimit(        123456.78912345d     , 8) ==            "123,456.78912345"
+            && CommaDelimit(         12345.678912345d    , 9) ==             "12,345.678912345"
+            && CommaDelimit(          1234.5678912345d   ,10) ==              "1,234.5678912345"
+            && CommaDelimit(           123.45678912345d  ,11) ==                "123.45678912345"
+            && CommaDelimit(            12.345678912345d ,12) ==                 "12.345678912345"
+            && CommaDelimit(             1.2345678912345d,13) ==                  "1.2345678912345"
+        );
+
+        #if false
+        TESTOUT($"""
+
+            CommaDelimit(123456.0    )  == "{CommaDelimit(123456.0f    ,3)}"
+            CommaDelimit( 12345.6    )  == "{CommaDelimit( 12345.6f    ,3)}"
+            CommaDelimit(  1234.56   )  == "{CommaDelimit(  1234.56f   ,3)}"
+            CommaDelimit(   123.456  )  == "{CommaDelimit(   123.456f  ,3)}"
+            CommaDelimit(    12.3456 )  == "{CommaDelimit(    12.3456f ,5)}"
+            CommaDelimit(     1.23456)  == "{CommaDelimit(     1.23456f,5)}"
+
+            CommaDelimit(12345678912345.0            )  == "{CommaDelimit(12345678912345.0d            , 1)}"
+            CommaDelimit( 1234567891234.5            )  == "{CommaDelimit( 1234567891234.5d            , 1)}"
+
+            CommaDelimit(  123456789123.45           )  == "{CommaDelimit(  123456789123.45d           , 4)}"
+            CommaDelimit(   12345678912.345          )  == "{CommaDelimit(   12345678912.345d          , 4)}"
+            CommaDelimit(    1234567891.2345         )  == "{CommaDelimit(    1234567891.2345d         , 4)}"
+
+            CommaDelimit(     123456789.12345        )  == "{CommaDelimit(     123456789.12345d        , 7)}"
+            CommaDelimit(      12345678.912345       )  == "{CommaDelimit(      12345678.912345d       , 7)}"
+            CommaDelimit(       1234567.8912345      )  == "{CommaDelimit(       1234567.8912345d      , 7)}"
+
+            CommaDelimit(        123456.78912345     )  == "{CommaDelimit(        123456.78912345d     ,10)}"
+            CommaDelimit(         12345.678912345    )  == "{CommaDelimit(         12345.678912345d    ,10)}"
+            CommaDelimit(          1234.5678912345   )  == "{CommaDelimit(          1234.5678912345d   ,10)}"
+
+            CommaDelimit(           123.45678912345  )  == "{CommaDelimit(           123.45678912345d  ,13)}"
+            CommaDelimit(            12.345678912345 )  == "{CommaDelimit(            12.345678912345d ,13)}"
+            CommaDelimit(             1.2345678912345)  == "{CommaDelimit(             1.2345678912345d,13)}"
+        """);
+        #endif
 
         //======================================================================================================================================================
         TEST(".IsNumeric()",true
@@ -224,7 +280,7 @@ internal static partial class Program {
         );
 
         TEST(".ToTitleCase()",true
-            && "blarg BLARG bLaRg".ToTitleCase() == "Blarg Blarg Blarg"
+            && "blarg BLARG bLaRg".ToTitle() == "Blarg Blarg Blarg"
         );
 
         //======================================================================================================================================================

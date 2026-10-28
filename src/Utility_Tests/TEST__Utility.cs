@@ -173,10 +173,9 @@ internal static partial class Program {
         //######################################################################################################################################################
         {
             DataArray A = new DataArray(256);
-            //DataArray B = new DataArray(256);
-
             for (int i = 0; i < 64; ++i) {A.u32[i] = (uint)i;}
 
+            //DataArray B = new DataArray(256);
             //var View = B.f32;
             //for (int i = 0; i < 64; ++i) {View[i] = (float)i;}
 

@@ -15,7 +15,7 @@ internal static partial class Program {
                      X86Base: {X86Base      .IsSupported,-5}  X64: {X86Base      .X64.IsSupported}
 
                          SSE: {Sse          .IsSupported,-5}  X64: {Sse          .X64.IsSupported}
-                        SSE2: {Sse2         .IsSupported,-5}  X64: {Sse2         .X64.IsSupported} ***   SSE2 guaranteed for all x86-64
+                        SSE2: {Sse2         .IsSupported,-5}  X64: {Sse2         .X64.IsSupported} ***   Up to "SSE2" is guaranteed for all x86-64 CPUs
                         SSE3: {Sse3         .IsSupported,-5}  X64: {Sse3         .X64.IsSupported}
                        SSSE3: {Ssse3        .IsSupported,-5}  X64: {Ssse3        .X64.IsSupported}
                        SSE41: {Sse41        .IsSupported,-5}  X64: {Sse41        .X64.IsSupported}
