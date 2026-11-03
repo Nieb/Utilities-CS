@@ -33,22 +33,33 @@ internal static partial class Program {
                0     Inf  |  {b( 0f !=      FLOAT_INF)}  |  {b( 0f <      FLOAT_INF)}  {b( 0f <=      FLOAT_INF)}  |  {b( 0f ==      FLOAT_INF)}  |  {b( 0f >=      FLOAT_INF)}  {b( 0f >      FLOAT_INF)}
                1     Inf  |  {b( 1f !=      FLOAT_INF)}  |  {b( 1f <      FLOAT_INF)}  {b( 1f <=      FLOAT_INF)}  |  {b( 1f ==      FLOAT_INF)}  |  {b( 1f >=      FLOAT_INF)}  {b( 1f >      FLOAT_INF)}
             --------------+------+----------+------+----------
+              NaN    -1   |  {b(FLOAT_NaN != -1f)}  |  {b(FLOAT_NaN < -1f)}  {b(FLOAT_NaN <= -1f)}  |  {b(FLOAT_NaN == -1f)}  |  {b(FLOAT_NaN >= -1f)}  {b(FLOAT_NaN > -1f)}
+              NaN     0   |  {b(FLOAT_NaN !=  0f)}  |  {b(FLOAT_NaN <  0f)}  {b(FLOAT_NaN <=  0f)}  |  {b(FLOAT_NaN ==  0f)}  |  {b(FLOAT_NaN >=  0f)}  {b(FLOAT_NaN >  0f)}
+              NaN     1   |  {b(FLOAT_NaN !=  1f)}  |  {b(FLOAT_NaN <  1f)}  {b(FLOAT_NaN <=  1f)}  |  {b(FLOAT_NaN ==  1f)}  |  {b(FLOAT_NaN >=  1f)}  {b(FLOAT_NaN >  1f)}
+                          |      |          |      |
+              -1     NaN  |  {b(-1f != FLOAT_NaN)}  |  {b(-1f < FLOAT_NaN)}  {b(-1f <= FLOAT_NaN)}  |  {b(-1f == FLOAT_NaN)}  |  {b(-1f >= FLOAT_NaN)}  {b(-1f > FLOAT_NaN)}
+               0     NaN  |  {b( 0f != FLOAT_NaN)}  |  {b( 0f < FLOAT_NaN)}  {b( 0f <= FLOAT_NaN)}  |  {b( 0f == FLOAT_NaN)}  |  {b( 0f >= FLOAT_NaN)}  {b( 0f > FLOAT_NaN)}
+               1     NaN  |  {b( 1f != FLOAT_NaN)}  |  {b( 1f < FLOAT_NaN)}  {b( 1f <= FLOAT_NaN)}  |  {b( 1f == FLOAT_NaN)}  |  {b( 1f >= FLOAT_NaN)}  {b( 1f > FLOAT_NaN)}
+            --------------+------+----------+------+----------
 
 
-            NaN == NaN:  {FLOAT_NaN == FLOAT_NaN}
-            NaN != NaN:  {FLOAT_NaN != FLOAT_NaN}
+             NaN ==  NaN:  {FLOAT_NaN == FLOAT_NaN,5}
+             NaN !=  NaN:  {FLOAT_NaN != FLOAT_NaN,5}
 
-            Inf == Inf:  {FLOAT_INF == FLOAT_INF}
-            Inf != Inf:  {FLOAT_INF != FLOAT_INF}
+             Inf ==  Inf:  {FLOAT_INF == FLOAT_INF,5}
+             Inf !=  Inf:  {FLOAT_INF != FLOAT_INF,5}
 
-            -0  ==   0:  {FLOAT_NEG_ZERO == 0f}
-            -0  !=   0:  {FLOAT_NEG_ZERO != 0f}
+            -Inf == -Inf:  {FLOAT_NEG_INF == FLOAT_NEG_INF,5}
+            -Inf != -Inf:  {FLOAT_NEG_INF != FLOAT_NEG_INF,5}
 
-             Inf /   0  ==  {FLOAT_INF     / 0f}
-            -Inf /   0  ==  {FLOAT_NEG_INF / 0f}
+             -0  ==   0 :  {FLOAT_NEG_ZERO == 0f,5}
+             -0  !=   0 :  {FLOAT_NEG_ZERO != 0f,5}
 
-             Inf / EPS  ==  {FLOAT_INF     / EPS9}
-            -Inf / EPS  ==  {FLOAT_NEG_INF / EPS9}
+            ( Inf /   0)  ==  {FLOAT_INF     / 0f,2}
+            (-Inf /   0)  ==  {FLOAT_NEG_INF / 0f,2}
+
+            ( Inf / EPS)  ==  {FLOAT_INF     / EPS9,2}
+            (-Inf / EPS)  ==  {FLOAT_NEG_INF / EPS9,2}
 
 
                         RAY_MISS:  {RAY_MISS}
