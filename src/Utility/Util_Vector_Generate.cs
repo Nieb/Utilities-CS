@@ -7,7 +7,7 @@ internal static partial class VEC_Generate {
     //  https://www.desmos.com/calculator/ct29koavbu
     //
     internal static vec2[] Phyllotaxis2(int Count, float Radius=1f) {
-        vec2[] P = new vec2[Count+1];
+        vec2[] P = new vec2[Count];
 
         for (int i = 1; i <= Count; ++i) {
             float Theta = i * PHI_RAD;
@@ -28,7 +28,7 @@ internal static partial class VEC_Generate {
     internal static vec3[] Phyllotaxis3(int Count, float Radius=1f, float SphereCoverage=1f) {
         SphereCoverage = 1f - cos(SphereCoverage*PI);
 
-        vec3[] P = new vec3[Count+1];
+        vec3[] P = new vec3[Count];
 
         for (int i = 0; i <= Count; ++i) {
             float Pch = asin(1f - (SphereCoverage*i / Count));
