@@ -1,3 +1,5 @@
+using Unsafe        = System.Runtime.CompilerServices.Unsafe;
+using MemoryMarshal = System.Runtime.InteropServices.MemoryMarshal;
 using Vector2 = System.Numerics.Vector2;    using float2 = (float x, float y);                      using int2 = (int x, int y);
 using Vector3 = System.Numerics.Vector3;    using float3 = (float x, float y, float z);             using int3 = (int x, int y, int z);
 using Vector4 = System.Numerics.Vector4;    using float4 = (float x, float y, float z, float w);    using int4 = (int x, int y, int z, int w);
@@ -39,14 +41,13 @@ internal struct ivec3 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator   ivec3(       int[] V) => new   ivec3( V[0], V[1], V[2]); //         int[3]  to  ivec3
-  //[In(line)] public static implicit operator   int[](       ivec3 V) =>            [  V.x,  V.y,  V.z]; //          ivec3  to  int[3]
+    [In(line)] public static implicit operator System.ReadOnlySpan<int>(in ivec3 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 3);
 
-    [In(line)] public static implicit operator Vector3(       ivec3 V) => new Vector3(  V.x,  V.y,  V.z); //          ivec3  to  Vector3
-
-    [In(line)] public static implicit operator   ivec3(        int3 T) => new   ivec3(  T.x,  T.y,  T.z); //  (int,int,int)  to  ivec3
-  //[In(line)] public static implicit operator    int3(       ivec3 V) =>            (  V.x,  V.y,  V.z); //          ivec3  to  (int,int,int)
     [In(line)] public static implicit operator   ivec3((i2 V, i1 z) T) => new   ivec3(T.V.x,T.V.y,  T.z); //    (ivec2,int)  to  ivec3
+    [In(line)] public static implicit operator   ivec3(        int3 T) => new   ivec3(  T.x,  T.y,  T.z); //  (int,int,int)  to  ivec3
+
+  //[In(line)] public static implicit operator    int3(       ivec3 V) =>            (  V.x,  V.y,  V.z); //          ivec3  to  (int,int,int)
+    [In(line)] public static implicit operator Vector3(       ivec3 V) => new Vector3(  V.x,  V.y,  V.z); //          ivec3  to  Vector3
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

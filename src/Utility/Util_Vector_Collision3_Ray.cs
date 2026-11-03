@@ -159,6 +159,12 @@ internal static partial class VEC_Collision3 {
                                             : RAY_MISS;
     }
 
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    internal static float RayVsTriangleYZ(vec3 Rp, vec3 Rn,    vec3 Ta, vec3 Tb, vec3 Tc, vec3 Tn,    bool BackFaceTest = false) {return RAY_MISS;}
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    internal static float RayVsTriangleZX(vec3 Rp, vec3 Rn,    vec3 Ta, vec3 Tb, vec3 Tc, vec3 Tn,    bool BackFaceTest = false) {return RAY_MISS;}
+
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -213,7 +219,7 @@ internal static partial class VEC_Collision3 {
     //
     //      RayVsLine(  RayPos,  RayNrm,    LinePointA, RadiusA,  LinePointB, RadiusB  )
     //
-    [In(line)] internal static float RayVsLine(vec3 Rp, vec3 Rn,    vec3 A, float Ar, vec3 B, float Br,    bool OffsetResult=true) {
+    internal static float RayVsLine(vec3 Rp, vec3 Rn,    vec3 A, float Ar, vec3 B, float Br,    bool OffsetResult=true) {
         vec3 dAB =  B - A;
         vec3 dAP = Rp - A;
 
@@ -278,7 +284,7 @@ internal static partial class VEC_Collision3 {
     //
     [In(line)] internal static float RayVsBox(vec3 Rp, vec3 Rn,    vec3 Bp, vec3 Bs) => RayVsBounds(Rp,Rn, Bp,Bp+Bs);
 
-    //==========================================================================================================================================================
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
     //
     //      RayVsBounds(  RayPos,  RayNrm,  LowerBounds,  UpperBounds  )
     //
@@ -336,12 +342,9 @@ internal static partial class VEC_Collision3 {
     //
     //      (float HitDist, int HitSide) = RayVsVoxelChunk(  RayPos,  RayNrm,  VoxelChunkPos,  VoxelChunkSize,  Voxels  )
     //
-    //internal static float RayVsGrid(vec3 Rp, vec3 Rn,    vec3 Gp, ivec3 Gs, uint[] Grid) => RayVsVoxelChunk(Rp,Rn,  Gp,Gs,Grid).Item1;
-    internal static float RayVsGrid(vec3 Rp, vec3 Rn,    vec3 Gp, ivec3 Gs, uint[] Grid) {
-        (float A, _) = RayVsVoxelChunk(Rp,Rn,  Gp,Gs,Grid);
-        return A;
-    }
+    internal static float RayVsGrid(vec3 Rp, vec3 Rn,    vec3 Gp, ivec3 Gs, uint[] Grid) {(float A,_) = RayVsVoxelChunk(Rp,Rn,Gp,Gs,Grid); return A;}
 
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
     internal static (float, int) RayVsVoxelChunk(vec3 Rp, vec3 Rn,    vec3 Vp, ivec3 Vs, uint[] Voxel) {
         #if DEBUG
             if      (Volume(Vs)-Voxel.Length < 0) throw new System.ArgumentException("  Volume(VoxelSize) < Voxel.Length\n");
@@ -409,9 +412,9 @@ internal static partial class VEC_Collision3 {
 
         //======================================================================================================================================================
         while (true) {
-            //bool TieXY = abs(NextDist.x - NextDist.y) < EPS6;   //  The GridStep section should use these ???    Instead of just falling through to Step-on-Z.
-            //bool TieXZ = abs(NextDist.x - NextDist.z) < EPS6;   //      Properly select an axis when tied?    Just cycle axis priority?
-            //bool TieYZ = abs(NextDist.y - NextDist.z) < EPS6;   //      Or:  If an edge is hit 3 voxels should be checked.  If a corner is hit 7 voxels should be checked.
+            //bool TieXY = abs(NextDist.x - NextDist.y) < EPS6;   //  The GridStep section should use these...    Instead of just falling through to Step-on-Z.
+            //bool TieYZ = abs(NextDist.y - NextDist.z) < EPS6;   //      Properly select an axis when tied?    Just cycle axis priority?
+            //bool TieZX = abs(NextDist.z - NextDist.x) < EPS6;   //      or:  If an EDGE is hit 3 Voxels should be checked.  If a CORNER is hit 7 Voxels should be checked.
 
             if (RayCoord >= 0  &&  RayCoord < Vs) {
                 if ((Voxel[idx(RayCoord,Vs)] & 0x000000FFu) != 0u) { //  if (Alpha != 0)      Assuming: RrGgBbAa (Red,Green,Blue,Alpha)

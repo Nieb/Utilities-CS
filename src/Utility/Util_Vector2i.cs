@@ -1,3 +1,5 @@
+using Unsafe        = System.Runtime.CompilerServices.Unsafe;
+using MemoryMarshal = System.Runtime.InteropServices.MemoryMarshal;
 using Vector2 = System.Numerics.Vector2;    using float2 = (float x, float y);                      using int2 = (int x, int y);
 using Vector3 = System.Numerics.Vector3;    using float3 = (float x, float y, float z);             using int3 = (int x, int y, int z);
 using Vector4 = System.Numerics.Vector4;    using float4 = (float x, float y, float z, float w);    using int4 = (int x, int y, int z, int w);
@@ -28,13 +30,12 @@ internal struct ivec2 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator   ivec2(int[] V) => new   ivec2(V[0],V[1]); //     int[2]  to  ivec2
-  //[In(line)] public static implicit operator   int[](ivec2 V) =>            [ V.x, V.y]; //      ivec2  to  int[2]
-
-    [In(line)] public static implicit operator Vector2(ivec2 V) => new Vector2( V.x, V.y); //      ivec2  to  Vector2
+    [In(line)] public static implicit operator System.ReadOnlySpan<int>(in ivec2 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 2);
 
     [In(line)] public static implicit operator   ivec2( int2 T) => new   ivec2( T.x, T.y); //  (int,int)  to  ivec2
+
   //[In(line)] public static implicit operator    int2(ivec2 V) =>            ( V.x, V.y); //      ivec2  to  (int,int)
+    [In(line)] public static implicit operator Vector2(ivec2 V) => new Vector2( V.x, V.y); //      ivec2  to  Vector2
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

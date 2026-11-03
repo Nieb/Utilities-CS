@@ -14,7 +14,7 @@ internal static partial class Program {
             //Test__Float32_Random1();
 
             //Test__Float32_BaseTenPrecision();
-            Test__Float64_BaseTenPrecision();
+            //Test__Float64_BaseTenPrecision();
 
             //Test__Intrinsics();
 

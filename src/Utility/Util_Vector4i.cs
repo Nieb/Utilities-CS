@@ -1,3 +1,5 @@
+using Unsafe        = System.Runtime.CompilerServices.Unsafe;
+using MemoryMarshal = System.Runtime.InteropServices.MemoryMarshal;
 using Vector2 = System.Numerics.Vector2;    using float2 = (float x, float y);                      using int2 = (int x, int y);
 using Vector3 = System.Numerics.Vector3;    using float3 = (float x, float y, float z);             using int3 = (int x, int y, int z);
 using Vector4 = System.Numerics.Vector4;    using float4 = (float x, float y, float z, float w);    using int4 = (int x, int y, int z, int w);
@@ -41,15 +43,14 @@ internal struct ivec4 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator   ivec4(       int[] V) => new   ivec4( V[0], V[1], V[2], V[3]); //             int[4]  to  ivec4
-  //[In(line)] public static implicit operator   int[](       ivec4 V) =>            [  V.x,  V.y,  V.z,  V.w]; //              ivec4  to  int[4]
+    [In(line)] public static implicit operator System.ReadOnlySpan<int>(in ivec4 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 4);
 
-    [In(line)] public static implicit operator Vector4(       ivec4 V) => new Vector4(  V.x,  V.y,  V.z,  V.w); //              ivec4  to  Vector4
-
-    [In(line)] public static implicit operator   ivec4(        int4 T) => new   ivec4(  T.x,  T.y,  T.z,  T.w); //  (int,int,int,int)  to  ivec4
-  //[In(line)] public static implicit operator    int4(        vec4 V) =>            (  V.x,  V.y,  V.z,  V.w); //              ivec4  to  (int,int,int,int)
-    [In(line)] public static implicit operator   ivec4((i2 A, i2 B) T) => new   ivec4(T.A.x,T.A.y,T.B.x,T.B.y); //      (ivec2,ivec2)  to  ivec4
     [In(line)] public static implicit operator   ivec4((i3 V, i1 w) T) => new   ivec4(T.V.x,T.V.y,T.V.z,  T.w); //        (ivec3,int)  to  ivec4
+    [In(line)] public static implicit operator   ivec4((i2 A, i2 B) T) => new   ivec4(T.A.x,T.A.y,T.B.x,T.B.y); //      (ivec2,ivec2)  to  ivec4
+    [In(line)] public static implicit operator   ivec4(        int4 T) => new   ivec4(  T.x,  T.y,  T.z,  T.w); //  (int,int,int,int)  to  ivec4
+
+  //[In(line)] public static implicit operator    int4(        vec4 V) =>            (  V.x,  V.y,  V.z,  V.w); //              ivec4  to  (int,int,int,int)
+    [In(line)] public static implicit operator Vector4(       ivec4 V) => new Vector4(  V.x,  V.y,  V.z,  V.w); //              ivec4  to  Vector4
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

@@ -1,3 +1,5 @@
+using Unsafe        = System.Runtime.CompilerServices.Unsafe;
+using MemoryMarshal = System.Runtime.InteropServices.MemoryMarshal;
 using Vector2 = System.Numerics.Vector2;    using float2 = (float x, float y);                      using int2 = (int x, int y);
 using Vector3 = System.Numerics.Vector3;    using float3 = (float x, float y, float z);             using int3 = (int x, int y, int z);
 using Vector4 = System.Numerics.Vector4;    using float4 = (float x, float y, float z, float w);    using int4 = (int x, int y, int z, int w);
@@ -41,19 +43,16 @@ internal struct vec4 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator    vec4(     float[] V) => new    vec4( V[0], V[1], V[2], V[3]); //                   float[4]  to  vec4
-  //[In(line)] public static implicit operator float[](        vec4 V) =>            [  V.x,  V.y,  V.z,  V.w]; //                       vec4  to  float[4]
+    [In(line)] public static implicit operator System.ReadOnlySpan<float>(in vec4 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 4);
 
     [In(line)] public static implicit operator    vec4(       ivec4 V) => new    vec4(  V.x,  V.y,  V.z,  V.w); //                      ivec4  to  vec4
-    [In(line)] public static implicit operator Vector4(        vec4 V) => new Vector4(  V.x,  V.y,  V.z,  V.w); //                       vec4  to  Vector4
+    [In(line)] public static implicit operator    vec4((v3 V, v1 w) T) => new    vec4(T.V.x,T.V.y,T.V.z,  T.w); //               (vec3,float)  to  vec4
+    [In(line)] public static implicit operator    vec4((v2 A, v2 B) T) => new    vec4(T.A.x,T.A.y,T.B.x,T.B.y); //                (vec2,vec2)  to  vec4
+    [In(line)] public static implicit operator    vec4(      float4 T) => new    vec4(  T.x,  T.y,  T.z,  T.w); //  (float,float,float,float)  to  vec4
     [In(line)] public static implicit operator    vec4(     Vector4 v) => new    vec4(  v.X,  v.Y,  v.Z,  v.W); //                    Vector4  to  vec4
 
-    [In(line)] public static implicit operator    vec4(      float4 T) => new    vec4(  T.x,  T.y,  T.z,  T.w); //  (float,float,float,float)  to  vec4
   //[In(line)] public static implicit operator  float4(        vec4 V) =>            (  V.x,  V.y,  V.z,  V.w); //                       vec4  to  (float,float,float,float)
-    [In(line)] public static implicit operator    vec4((v2 A, v2 B) T) => new    vec4(T.A.x,T.A.y,T.B.x,T.B.y); //                (vec2,vec2)  to  vec4
-    [In(line)] public static implicit operator    vec4((v3 V, v1 w) T) => new    vec4(T.V.x,T.V.y,T.V.z,  T.w); //               (vec3,float)  to  vec4
-
-  //[In(line)] public static implicit operator Vector4(      float4 T) => new Vector4(  T.x,  T.y,  T.z,  T.w); //  (float,float,float,float)  to  Vector4  :(
+    [In(line)] public static implicit operator Vector4(        vec4 V) => new Vector4(  V.x,  V.y,  V.z,  V.w); //                       vec4  to  Vector4
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

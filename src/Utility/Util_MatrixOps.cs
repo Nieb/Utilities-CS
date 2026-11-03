@@ -210,6 +210,57 @@ internal static partial class MAT {
     */
     }
 
+    //==========================================================================================================================================================
+    //
+    //  glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+    //  glDepthRange(0,1);
+    //  glClearDepth(0);
+    //  glDepthFunc(GL_GREATER);  glDepthFunc(GL_GEQUAL);
+    //
+    [In(line)] public static mat4 ToPersp_ReverseZ(float ViewAspectX, float FovY, float ViewDepthNear, float ViewDepthFar) {
+        float F = ViewDepthFar;
+        float N = ViewDepthNear;
+
+        float T =  N * tan(FovY/2);
+        float B = -T;
+
+        float R =  T * ViewAspectX;
+        float L = -R;
+
+        float dX = (R-L); //  Width  at NearPlane.
+        float dY = (T-B); //  Height at NearPlane.
+        float dZ = (F-N); //  Depth   Near to Far.
+
+        return new mat4(
+            (2*N)/dX,        0,        0,          0,
+                   0, (2*N)/dY,        0,          0,
+                   0,        0,    -N/dZ,   (F*N)/dZ,
+                   0,        0,        1,          0
+        );
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------
+    [In(line)] public static mat4 ToPersp_ReverseInfiniteZ(float ViewAspectX, float FovY, float ViewDepthNear) {
+        float N = ViewDepthNear;
+
+        float T =  N * tan(FovY/2);
+        float B = -T;
+
+        float R =  T * ViewAspectX;
+        float L = -R;
+
+        float dX = (R-L); //  Width  at NearPlane.
+        float dY = (T-B); //  Height at NearPlane.
+
+        return new mat4(
+            (2*N)/dX,        0, 0, 0,
+                   0, (2*N)/dY, 0, 0,
+                   0,        0, 0, N,
+                   0,        0, 1, 0
+        );
+    }
+
+
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################

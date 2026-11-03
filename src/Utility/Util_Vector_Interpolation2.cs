@@ -117,7 +117,7 @@ internal static class VEC_Interpolation2 {
     //
     //      Sigmoidish(  X,  PositionXY,  ScaleXY  )
     //
-    internal static float Sigmoidish(float x, float Px, float Py, float Sx, float Sy) => Py - Sy*0.5f + (  Sy / (1f + exp(-x/Sx) * exp(Px/Sx))  );
+    internal static float Sigmoidish(float x, float Px, float Py, float Sx, float Sy) => Py - Sy*0.5f + (  Sy / (1f + exp((Px-x)/Sx))  );
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -137,12 +137,12 @@ internal static class VEC_Interpolation2 {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
     //##########################################################################################################################################################
-    internal static float LerpX(vec2 P, vec3 A, vec3 B) => Lerp(LineCoord(P,A.xy,B.xy), A.x,B.x); //{vec2 dAB = B.yz-A.yz;  float W = dot(P-A.yz,dAB)/dot(dAB);  return Lerp(W, A.x, B.x);}
-    internal static float LerpY(vec2 P, vec3 A, vec3 B) => Lerp(LineCoord(P,A.xy,B.xy), A.y,B.y); //{vec2 dAB = B.xz-A.xz;  float W = dot(P-A.xz,dAB)/dot(dAB);  return Lerp(W, A.y, B.y);}
+    internal static float LerpX(vec2 P, vec3 A, vec3 B) => Lerp(LineCoord(P,A.yz,B.yz), A.x,B.x); //{vec2 dAB = B.yz-A.yz;  float W = dot(P-A.yz,dAB)/dot(dAB);  return Lerp(W, A.x, B.x);}
+    internal static float LerpY(vec2 P, vec3 A, vec3 B) => Lerp(LineCoord(P,A.xz,B.xz), A.y,B.y); //{vec2 dAB = B.xz-A.xz;  float W = dot(P-A.xz,dAB)/dot(dAB);  return Lerp(W, A.y, B.y);}
     internal static float LerpZ(vec2 P, vec3 A, vec3 B) => Lerp(LineCoord(P,A.xy,B.xy), A.z,B.z); //{vec2 dAB = B.xy-A.xy;  float W = dot(P-A.xy,dAB)/dot(dAB);  return Lerp(W, A.z, B.z);}
 
-    internal static float  MixX(vec2 P, vec3 A, vec3 B) =>  Mix(LineCoord(P,A.xy,B.xy), A.x,B.x); //{vec2 dAB = B.yz-A.yz;  float W = dot(P-A.yz,dAB)/dot(dAB);  return  Mix(W, A.x, B.x);}
-    internal static float  MixY(vec2 P, vec3 A, vec3 B) =>  Mix(LineCoord(P,A.xy,B.xy), A.y,B.y); //{vec2 dAB = B.xz-A.xz;  float W = dot(P-A.xz,dAB)/dot(dAB);  return  Mix(W, A.y, B.y);}
+    internal static float  MixX(vec2 P, vec3 A, vec3 B) =>  Mix(LineCoord(P,A.yz,B.yz), A.x,B.x); //{vec2 dAB = B.yz-A.yz;  float W = dot(P-A.yz,dAB)/dot(dAB);  return  Mix(W, A.x, B.x);}
+    internal static float  MixY(vec2 P, vec3 A, vec3 B) =>  Mix(LineCoord(P,A.xz,B.xz), A.y,B.y); //{vec2 dAB = B.xz-A.xz;  float W = dot(P-A.xz,dAB)/dot(dAB);  return  Mix(W, A.y, B.y);}
     internal static float  MixZ(vec2 P, vec3 A, vec3 B) =>  Mix(LineCoord(P,A.xy,B.xy), A.z,B.z); //{vec2 dAB = B.xy-A.xy;  float W = dot(P-A.xy,dAB)/dot(dAB);  return  Mix(W, A.z, B.z);}
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------

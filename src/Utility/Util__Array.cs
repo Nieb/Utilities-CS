@@ -50,7 +50,7 @@ internal static class Array {
   //[In(line)] internal static int Count(this string A)  => (A == null || A == "") ?  0 : A.Length;
   //
   //[In(line)] internal static int Length<T>(this T[] A) => (A == null           ) ? -1 : A.Length-1;    As much as I would prefer this,
-  //[In(line)] internal static int Length(this string A) => (A == null || A == "") ? -1 : A.Length-1;    I don't want two co-existing things that behave differently.
+  //[In(line)] internal static int Length(this string A) => (A == null || A == "") ? -1 : A.Length-1;    I don't want two co-existing things that behave differently.  (".Length" & ".Length()")
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -63,17 +63,35 @@ internal static class Array {
 
     //==========================================================================================================================================================
     //
+    //  Immediately GarbageCollect an Array.
+    //
+    //  This only works when used upon the original ref from the originating scope.
+    //  Also, there must be no additional references stored elsewhere.
+    //
+    //      Delete(ref Blarg);
+    //      DeleteAndCollect(ref Blarg); ...
+    //
+    [In(line)] internal static void Delete<T>(ref T[] A) {A = null; System.GC.Collect(); System.GC.WaitForPendingFinalizers();}
+
+    //==========================================================================================================================================================
+    //
+    //  This method allocates a new array with the specified size,
+    //  copies elements from the old array to the new one,
+    //  and then replaces the old array reference with the new one.
+    //
+    //  Array must be one-dimensional.
+    //
+    //      Resize(ref Blarg, ItemCount);
+    //
+    [In(line)] internal static void Resize<T>(ref T[] A, int Size) => System.Array.Resize(ref A, Size);
+
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //##########################################################################################################################################################
+    //
     //      Blarg.FillWith( ThisValue );
     //
-    [In(line)] internal static void FillWith(this  s8[] A,  s8 V) => System.Array.Fill(A, V);
-    [In(line)] internal static void FillWith(this  u8[] A,  u8 V) => System.Array.Fill(A, V);
-    [In(line)] internal static void FillWith(this s16[] A, s16 V) => System.Array.Fill(A, V);
-    [In(line)] internal static void FillWith(this u16[] A, u16 V) => System.Array.Fill(A, V);
-    [In(line)] internal static void FillWith(this s32[] A, s32 V) => System.Array.Fill(A, V);
-    [In(line)] internal static void FillWith(this u32[] A, u32 V) => System.Array.Fill(A, V);
-
-    [In(line)] internal static void FillWith(this f32[] A, f32 V) => System.Array.Fill(A, V);
-
     [In(line)] internal static void FillWith<T>(this T[] A, T V) => System.Array.Fill(A, V);
 
     //==========================================================================================================================================================
@@ -89,52 +107,41 @@ internal static class Array {
 
     //==========================================================================================================================================================
     //
+    //      Blarg.IndexOf(ValueToFind);
+    //
+    [In(line)] internal static int IndexOf<T>(this T[] A, T V) => System.Array.IndexOf(A, V);
+
+    //==========================================================================================================================================================
+    //
     //  This would be better, but alas...
     //      Blarg[i..] = [Values, To, Set, Etc];
     //
     //      Blarg.SetFrom(i,   Values, To, Set, Etc);
     //
-    [In(line)] internal static void SetFrom(this  s8[] A, int I, params  s8[] B) => B.CopyTo(A, I);
-    [In(line)] internal static void SetFrom(this  u8[] A, int I, params  u8[] B) => B.CopyTo(A, I);
-    [In(line)] internal static void SetFrom(this s16[] A, int I, params s16[] B) => B.CopyTo(A, I);
-    [In(line)] internal static void SetFrom(this u16[] A, int I, params u16[] B) => B.CopyTo(A, I);
-    [In(line)] internal static void SetFrom(this s32[] A, int I, params s32[] B) => B.CopyTo(A, I);
-    [In(line)] internal static void SetFrom(this u32[] A, int I, params u32[] B) => B.CopyTo(A, I);
+  //[In(line)] internal static void SetFrom<T>(this T[] A, int I, params T[] B) => System.Array.ConstrainedCopy(
+  //         sourceArray: B,      sourceIndex: 0,
+  //    destinationArray: A, destinationIndex: I,  length: B.Length
+  //);
 
-    [In(line)] internal static void SetFrom(this f32[] A, int I, params f32[] B) => B.CopyTo(A, I);
+  //[In(line)] internal static void SetFrom<T>(this T[] A, int I, System.ReadOnlySpan<T> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
 
-    [In(line)] internal static void SetFrom(this Data32[] A, int I, params Data32[] B) => B.CopyTo(A, I);
-    [In(line)] internal static void SetFrom(this Data64[] A, int I, params Data64[] B) => B.CopyTo(A, I);
+  //[In(line)] internal static void SetFrom<T_Dst, T_Src>(this T_Dst[] A, int I, System.ReadOnlySpan<T_Src> B)
+  //where T_Dst: struct
+  //where T_Src: struct, T_Dst {
+  //    System.Runtime.InteropServices.MemoryMarshal.Cast<T_Src, T_Dst>(B)
+  //        .CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
+  //}
 
-  //[In(line)] internal static void SetFrom<T>(this T[] A, int I, params T[] B) => B.CopyTo(A, I);  fails to determine type...
+    [In(line)] internal static void SetFrom(this  s8[] A, int I, System.ReadOnlySpan< s8> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
+    [In(line)] internal static void SetFrom(this  u8[] A, int I, System.ReadOnlySpan< u8> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
+    [In(line)] internal static void SetFrom(this s16[] A, int I, System.ReadOnlySpan<s16> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
+    [In(line)] internal static void SetFrom(this u16[] A, int I, System.ReadOnlySpan<u16> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
+    [In(line)] internal static void SetFrom(this s32[] A, int I, System.ReadOnlySpan<s32> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
+    [In(line)] internal static void SetFrom(this u32[] A, int I, System.ReadOnlySpan<u32> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
 
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //
-    //  Immediately GarbageCollect an Array.
-    //
-    //  This only works when used upon the original ref from the originating scope.
-    //  Also, there must be no additional references stored elsewhere.
-    //
-    //      Delete(ref Blarg);
-    //      DeleteAndCollect(ref Blarg); ...
-    //
-    [In(line)] internal static void Delete<T>(ref T[] A) {A = null; System.GC.Collect(); System.GC.WaitForPendingFinalizers();}
-
-    //##########################################################################################################################################################
-    //##########################################################################################################################################################
-    //
-    //  This method allocates a new array with the specified size,
-    //  copies elements from the old array to the new one,
-    //  and then replaces the old array reference with the new one.
-    //
-    //  Array must be one-dimensional.
-    //
-    //      Resize(ref Blarg, ItemCount);
-    //
-    [In(line)] internal static void Resize<T>(ref T[] A, int Size) => System.Array.Resize(ref A, (Size<0) ? 0 : Size);
+    [In(line)] internal static void SetFrom(this f16[] A, int I, System.ReadOnlySpan<f16> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
+    [In(line)] internal static void SetFrom(this f32[] A, int I, System.ReadOnlySpan<f32> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
+    [In(line)] internal static void SetFrom(this f64[] A, int I, System.ReadOnlySpan<f64> B) => B.CopyTo(System.MemoryExtensions.AsSpan(A, I, B.Length));
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

@@ -1,3 +1,5 @@
+using Unsafe        = System.Runtime.CompilerServices.Unsafe;
+using MemoryMarshal = System.Runtime.InteropServices.MemoryMarshal;
 using Vector2 = System.Numerics.Vector2;    using float2 = (float x, float y);                      using int2 = (int x, int y);
 using Vector3 = System.Numerics.Vector3;    using float3 = (float x, float y, float z);             using int3 = (int x, int y, int z);
 using Vector4 = System.Numerics.Vector4;    using float4 = (float x, float y, float z, float w);    using int4 = (int x, int y, int z, int w);
@@ -39,18 +41,15 @@ internal struct vec3 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator    vec3(     float[] V) => new    vec3( V[0], V[1], V[2]); //             float[3]  to  vec3
-  //[In(line)] public static implicit operator float[](        vec3 V) =>            [  V.x,  V.y,  V.z]; //                 vec3  to  float[3]
+    [In(line)] public static implicit operator System.ReadOnlySpan<float>(in vec3 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 3);
 
     [In(line)] public static implicit operator    vec3(       ivec3 V) => new    vec3(  V.x,  V.y,  V.z); //                ivec3  to  vec3
-    [In(line)] public static implicit operator Vector3(        vec3 V) => new Vector3(  V.x,  V.y,  V.z); //                 vec3  to  Vector3
+    [In(line)] public static implicit operator    vec3((v2 V, v1 z) T) => new    vec3(T.V.x,T.V.y,  T.z); //         (vec2,float)  to  vec3
+    [In(line)] public static implicit operator    vec3(      float3 T) => new    vec3(  T.x,  T.y,  T.z); //  (float,float,float)  to  vec3
     [In(line)] public static implicit operator    vec3(     Vector3 v) => new    vec3(  v.X,  v.Y,  v.Z); //              Vector3  to  vec3
 
-    [In(line)] public static implicit operator    vec3(      float3 T) => new    vec3(  T.x,  T.y,  T.z); //  (float,float,float)  to  vec3
   //[In(line)] public static implicit operator  float3(        vec3 V) =>            (  V.x,  V.y,  V.z); //                 vec3  to  (float,float,float)
-    [In(line)] public static implicit operator    vec3((v2 V, v1 z) T) => new    vec3(T.V.x,T.V.y,  T.z); //         (vec2,float)  to  vec3
-
-  //[In(line)] public static implicit operator Vector3(      float3 T) => new Vector3(  T.x,  T.y,  T.z); //  (float,float,float)  to  Vector3  :(
+    [In(line)] public static implicit operator Vector3(        vec3 V) => new Vector3(  V.x,  V.y,  V.z); //                 vec3  to  Vector3
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

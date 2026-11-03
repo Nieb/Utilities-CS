@@ -44,13 +44,13 @@ internal static class INT {
     //      wrap( A, LowerBounds, UpperBounds )
     //      wrap( A,              UpperBounds )     LowerBounds is 0
     //
-    [In(line)] internal static s16 wrap(s16 A, s16 L, s16 U) {s32 Domain = U-L;  s32 R = s16((A-L) % Domain);  return s16(R+L + ((R < 0) ? Domain : 0));}
-    [In(line)] internal static s32 wrap(s32 A, s32 L, s32 U) {s32 Domain = U-L;  s32 R =     (A-L) % Domain;   return     R+L + ((R < 0) ? Domain : 0);}
-    [In(line)] internal static s64 wrap(s64 A, s64 L, s64 U) {s64 Domain = U-L;  s64 R =     (A-L) % Domain;   return     R+L + ((R < 0) ? Domain : 0);}
+    [In(line)] internal static s16 wrap(s16 A, s16 L, s16 U) {s32 Domain = U-L;  s32 R = (A-L) % Domain;  return s16(R+L + ((R < 0) ? Domain : 0));}
+    [In(line)] internal static s32 wrap(s32 A, s32 L, s32 U) {s32 Domain = U-L;  s32 R = (A-L) % Domain;  return     R+L + ((R < 0) ? Domain : 0);}
+    [In(line)] internal static s64 wrap(s64 A, s64 L, s64 U) {s64 Domain = U-L;  s64 R = (A-L) % Domain;  return     R+L + ((R < 0) ? Domain : 0);}
 
-    [In(line)] internal static s16 wrap(s16 A,        s16 U) {                   s16 R = s16(  A   %    U  );  return s16(R   + ((R < 0) ?      U : 0));}
-    [In(line)] internal static s32 wrap(s32 A,        s32 U) {                   s32 R =    (  A   %    U  );  return     R   + ((R < 0) ?      U : 0);}
-    [In(line)] internal static s64 wrap(s64 A,        s64 U) {                   s64 R =    (  A   %    U  );  return     R   + ((R < 0) ?      U : 0);}
+    [In(line)] internal static s16 wrap(s16 A,        s16 U) {                   s32 R = A % U;           return s16(R   + ((R < 0) ?      U : 0));}
+    [In(line)] internal static s32 wrap(s32 A,        s32 U) {                   s32 R = A % U;           return     R   + ((R < 0) ?      U : 0);}
+    [In(line)] internal static s64 wrap(s64 A,        s64 U) {                   s64 R = A % U;           return     R   + ((R < 0) ?      U : 0);}
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

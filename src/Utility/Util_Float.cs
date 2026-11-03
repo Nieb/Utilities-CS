@@ -4,7 +4,14 @@ internal static class FLT {
     //##########################################################################################################################################################
     //##########################################################################################################################################################
 
-    internal static bool IsNaN(this float A) => float.IsNaN(A);
+    [In(line)] internal static bool   IsMin(this float A) => (A == MIN_FLOAT);
+    [In(line)] internal static bool   IsMax(this float A) => (A == MAX_FLOAT);
+
+    [In(line)] internal static bool   IsNaN(this float A) => float.IsNaN(A);
+
+    [In(line)] internal static bool   IsInf(this float A) => (A == FLOAT_INF);
+    [In(line)] internal static bool   IsNif(this float A) => (A == FLOAT_NEG_INF);
+    [In(line)] internal static bool IsNifty(this float A) => (A == FLOAT_NEG_INF);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

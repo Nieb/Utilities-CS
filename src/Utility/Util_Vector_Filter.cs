@@ -21,8 +21,11 @@ internal static partial class VEC_Filter {
     //
     //    out: 0 to 1
     //
-    internal static float SoftLimit(float V, float T) {if(V<=T)return V; else {float iTT = 1f-T;   iTT *= iTT;   return 1f - iTT/(iTT + V - T*T);}}
-    internal static vec3  SoftLimit(vec3  V, float T) {if(V<=T)return V; else {float iTT = 1f-T;   iTT *= iTT;   return 1f - iTT/(iTT + V - T*T);}}
+    internal static float SoftLimit(float V, float T) {if (V <= T) return V; else {float iTT = 1f-T;   iTT *= iTT;   return 1f - iTT/(iTT + V - T*T);}}
+
+    [In(line)] internal static vec2 SoftLimit(vec2 V, float T) => new vec2(SoftLimit(V.x,T),SoftLimit(V.y,T));
+    [In(line)] internal static vec3 SoftLimit(vec3 V, float T) => new vec3(SoftLimit(V.x,T),SoftLimit(V.y,T),SoftLimit(V.z,T));
+    [In(line)] internal static vec4 SoftLimit(vec4 V, float T) => new vec4(SoftLimit(V.x,T),SoftLimit(V.y,T),SoftLimit(V.z,T),SoftLimit(V.w,T));
 
     //==========================================================================================================================================================
     //                                                            "Sigmoid based Soft-Limiter"
@@ -31,8 +34,11 @@ internal static partial class VEC_Filter {
     //
     //    out: 0 to 1
     //
-    internal static float SoftLimit_Sigmoid(float V, float T) {if(V<=T)return V; else {float iT = 1f-T;   return T-iT + (2f * iT)/( 1f + exp((-V+T)*(2f/iT)) );}}
-    internal static vec3  SoftLimit_Sigmoid(vec3  V, float T) {if(V<=T)return V; else {float iT = 1f-T;   return T-iT + (2f * iT)/( 1f + exp((-V+T)*(2f/iT)) );}}
+    internal static float SoftLimit_Sigmoid(float V, float T) {if (V <= T) return V; else {float iT = 1f-T;   return T-iT + (2f * iT)/( 1f + exp((-V+T)*(2f/iT)) );}}
+
+    [In(line)] internal static vec2 SoftLimit_Sigmoid(vec2 V, float T) => new vec2(SoftLimit_Sigmoid(V.x,T),SoftLimit_Sigmoid(V.y,T));
+    [In(line)] internal static vec3 SoftLimit_Sigmoid(vec3 V, float T) => new vec3(SoftLimit_Sigmoid(V.x,T),SoftLimit_Sigmoid(V.y,T),SoftLimit_Sigmoid(V.z,T));
+    [In(line)] internal static vec4 SoftLimit_Sigmoid(vec4 V, float T) => new vec4(SoftLimit_Sigmoid(V.x,T),SoftLimit_Sigmoid(V.y,T),SoftLimit_Sigmoid(V.z,T),SoftLimit_Sigmoid(V.w,T));
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

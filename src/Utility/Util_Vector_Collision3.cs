@@ -97,7 +97,7 @@ internal static partial class VEC_Collision3 {
     //
     //      SphereVsSphere(  SpherePos, SphereRds,  SpherePos, SphereRds  )
     //
-    [In(line)] internal static bool SphereVsSphere(vec2 Sp1, float Sr1, vec2 Sp2, float Sr2) => dot(Sp1 - Sp2) <= sq(Sr1 + Sr2);
+    [In(line)] internal static bool SphereVsSphere(vec3 Sp1, float Sr1, vec3 Sp2, float Sr2) => dot(Sp1 - Sp2) <= sq(Sr1 + Sr2);
 
     //==========================================================================================================================================================
     //
