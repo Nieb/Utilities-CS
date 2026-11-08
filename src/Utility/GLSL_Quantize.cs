@@ -57,8 +57,8 @@ public readonly static string Quantization = $$$"""
     float HardLimit(float V, float T) {return clamp(V, 0.0, T);} //{return mix(V, T, step(T,V));}
 
     //==========================================================================================================================================================
-    float SoftLimit(float V, float T) {                 float iTT=1.0-T; iTT*=iTT;  return mix(V,   1.0 - (   iTT   / (iTT + V - T*T)),  step(T,V));}
-    vec3  SoftLimit(vec3  V, float t) {vec3 T=vec3(t);  vec3  iTT=1.0-T; iTT*=iTT;  return mix(V,   1.0 - (   iTT   / (iTT + V - T*T)),  step(T,V));}
+    float SoftLimit(float V, float T) {                 float iTT=1.0-T; iTT*=iTT;  return mix(V,   1.0 - ( iTT / (iTT + V - T*T)),  step(T,V));}
+    vec3  SoftLimit(vec3  V, float t) {vec3 T=vec3(t);  vec3  iTT=1.0-T; iTT*=iTT;  return mix(V,   1.0 - ( iTT / (iTT + V - T*T)),  step(T,V));}
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     float SoftLimit_Sigmoid(float V, float T) {                 float iT=1.0-T;     return mix(V,  T-iT + ((2.0*iT) / (1.0+exp((-V+T)*(2.0/iT)))),  step(T,V));}

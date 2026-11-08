@@ -31,12 +31,12 @@ internal static class INT {
     [In(line)] internal static u64 clamp(u64 A, u64 L, u64 U) => System.Math.Clamp(A,L,U);
 #endif
 
-    [In(line)] internal static i2 clamp(i2 A, i1 L, i1 U) => new i2(clamp(A.x,L  ,U  ), clamp(A.y,L  ,U  ));
-    [In(line)] internal static i2 clamp(i2 A, i2 L, i2 U) => new i2(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y));
-    [In(line)] internal static i3 clamp(i3 A, i1 L, i1 U) => new i3(clamp(A.x,L  ,U  ), clamp(A.y,L  ,U  ), clamp(A.z,L  ,U  ));
-    [In(line)] internal static i3 clamp(i3 A, i3 L, i3 U) => new i3(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y), clamp(A.z,L.z,U.z));
-    [In(line)] internal static i4 clamp(i4 A, i1 L, i1 U) => new i4(clamp(A.x,L  ,U  ), clamp(A.y,L  ,U  ), clamp(A.z,L  ,U  ), clamp(A.w,L  ,U  ));
-    [In(line)] internal static i4 clamp(i4 A, i4 L, i4 U) => new i4(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y), clamp(A.z,L.z,U.z), clamp(A.w,L.w,U.w));
+    [In(line)] internal static ivec2 clamp(i2 A, i1 L, i1 U) => new(clamp(A.x,L  ,U  ), clamp(A.y,L  ,U  ));
+    [In(line)] internal static ivec2 clamp(i2 A, i2 L, i2 U) => new(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y));
+    [In(line)] internal static ivec3 clamp(i3 A, i1 L, i1 U) => new(clamp(A.x,L  ,U  ), clamp(A.y,L  ,U  ), clamp(A.z,L  ,U  ));
+    [In(line)] internal static ivec3 clamp(i3 A, i3 L, i3 U) => new(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y), clamp(A.z,L.z,U.z));
+    [In(line)] internal static ivec4 clamp(i4 A, i1 L, i1 U) => new(clamp(A.x,L  ,U  ), clamp(A.y,L  ,U  ), clamp(A.z,L  ,U  ), clamp(A.w,L  ,U  ));
+    [In(line)] internal static ivec4 clamp(i4 A, i4 L, i4 U) => new(clamp(A.x,L.x,U.x), clamp(A.y,L.y,U.y), clamp(A.z,L.z,U.z), clamp(A.w,L.w,U.w));
 
     //==========================================================================================================================================================
     //                                                                       "Wrap"
@@ -73,22 +73,22 @@ internal static class INT {
                                                                               : ((B < C) ? ((B < D) ? B : D)
                                                                                          : ((C < D) ? C : D));
 
-    [In(line)] internal static i2 min(i2 A, i1 B) => new i2(min(A.x,B  ), min(A.y,B  ));
-    [In(line)] internal static i2 min(i1 A, i2 B) => new i2(min(A  ,B.x), min(A  ,B.y));
-    [In(line)] internal static i3 min(i3 A, i1 B) => new i3(min(A.x,B  ), min(A.y,B  ), min(A.z,B  ));
-    [In(line)] internal static i3 min(i1 A, i3 B) => new i3(min(A  ,B.x), min(A  ,B.y), min(A  ,B.z));
-    [In(line)] internal static i4 min(i4 A, i1 B) => new i4(min(A.x,B  ), min(A.y,B  ), min(A.z,B  ), min(A.w,B  ));
-    [In(line)] internal static i4 min(i1 A, i4 B) => new i4(min(A  ,B.x), min(A  ,B.y), min(A  ,B.z), min(A  ,B.w));
+    [In(line)] internal static ivec2 min(i2 A, i1 B) => new(min(A.x,B  ), min(A.y,B  ));
+    [In(line)] internal static ivec2 min(i1 A, i2 B) => new(min(A  ,B.x), min(A  ,B.y));
+    [In(line)] internal static ivec3 min(i3 A, i1 B) => new(min(A.x,B  ), min(A.y,B  ), min(A.z,B  ));
+    [In(line)] internal static ivec3 min(i1 A, i3 B) => new(min(A  ,B.x), min(A  ,B.y), min(A  ,B.z));
+    [In(line)] internal static ivec4 min(i4 A, i1 B) => new(min(A.x,B  ), min(A.y,B  ), min(A.z,B  ), min(A.w,B  ));
+    [In(line)] internal static ivec4 min(i1 A, i4 B) => new(min(A  ,B.x), min(A  ,B.y), min(A  ,B.z), min(A  ,B.w));
 
-    [In(line)] internal static i2 min(i2 A, i2 B)             => new i2(min(A.x,B.x),         min(A.y,B.y));
-    [In(line)] internal static i2 min(i2 A, i2 B, i2 C)       => new i2(min(A.x,B.x,C.x),     min(A.y,B.y,C.y));
-    [In(line)] internal static i2 min(i2 A, i2 B, i2 C, i2 D) => new i2(min(A.x,B.x,C.x,D.x), min(A.y,B.y,C.y,D.y));
-    [In(line)] internal static i3 min(i3 A, i3 B)             => new i3(min(A.x,B.x),         min(A.y,B.y),         min(A.z,B.z));
-    [In(line)] internal static i3 min(i3 A, i3 B, i3 C)       => new i3(min(A.x,B.x,C.x),     min(A.y,B.y,C.y),     min(A.z,B.z,C.z));
-    [In(line)] internal static i3 min(i3 A, i3 B, i3 C, i3 D) => new i3(min(A.x,B.x,C.x,D.x), min(A.y,B.y,C.y,D.y), min(A.z,B.z,C.z,D.z));
-    [In(line)] internal static i4 min(i4 A, i4 B)             => new i4(min(A.x,B.x),         min(A.y,B.y),         min(A.z,B.z),         min(A.w,B.w));
-    [In(line)] internal static i4 min(i4 A, i4 B, i4 C)       => new i4(min(A.x,B.x,C.x),     min(A.y,B.y,C.y),     min(A.z,B.z,C.z),     min(A.w,B.w,C.w));
-    [In(line)] internal static i4 min(i4 A, i4 B, i4 C, i4 D) => new i4(min(A.x,B.x,C.x,D.x), min(A.y,B.y,C.y,D.y), min(A.z,B.z,C.z,D.z), min(A.w,B.w,C.w,D.w));
+    [In(line)] internal static ivec2 min(i2 A, i2 B)             => new(min(A.x,B.x),         min(A.y,B.y));
+    [In(line)] internal static ivec2 min(i2 A, i2 B, i2 C)       => new(min(A.x,B.x,C.x),     min(A.y,B.y,C.y));
+    [In(line)] internal static ivec2 min(i2 A, i2 B, i2 C, i2 D) => new(min(A.x,B.x,C.x,D.x), min(A.y,B.y,C.y,D.y));
+    [In(line)] internal static ivec3 min(i3 A, i3 B)             => new(min(A.x,B.x),         min(A.y,B.y),         min(A.z,B.z));
+    [In(line)] internal static ivec3 min(i3 A, i3 B, i3 C)       => new(min(A.x,B.x,C.x),     min(A.y,B.y,C.y),     min(A.z,B.z,C.z));
+    [In(line)] internal static ivec3 min(i3 A, i3 B, i3 C, i3 D) => new(min(A.x,B.x,C.x,D.x), min(A.y,B.y,C.y,D.y), min(A.z,B.z,C.z,D.z));
+    [In(line)] internal static ivec4 min(i4 A, i4 B)             => new(min(A.x,B.x),         min(A.y,B.y),         min(A.z,B.z),         min(A.w,B.w));
+    [In(line)] internal static ivec4 min(i4 A, i4 B, i4 C)       => new(min(A.x,B.x,C.x),     min(A.y,B.y,C.y),     min(A.z,B.z,C.z),     min(A.w,B.w,C.w));
+    [In(line)] internal static ivec4 min(i4 A, i4 B, i4 C, i4 D) => new(min(A.x,B.x,C.x,D.x), min(A.y,B.y,C.y,D.y), min(A.z,B.z,C.z,D.z), min(A.w,B.w,C.w,D.w));
 
     //==========================================================================================================================================================
     //                                                                  "Maximum" Value
@@ -110,22 +110,22 @@ internal static class INT {
                                                                               : ((B > C) ? ((B > D) ? B : D)
                                                                                          : ((C > D) ? C : D));
 
-    [In(line)] internal static i2 max(i2 A, i1 B) => new i2(max(A.x,B  ), max(A.y,B  ));
-    [In(line)] internal static i2 max(i1 A, i2 B) => new i2(max(A  ,B.x), max(A  ,B.y));
-    [In(line)] internal static i3 max(i3 A, i1 B) => new i3(max(A.x,B  ), max(A.y,B  ), max(A.z,B  ));
-    [In(line)] internal static i3 max(i1 A, i3 B) => new i3(max(A  ,B.x), max(A  ,B.y), max(A  ,B.z));
-    [In(line)] internal static i4 max(i4 A, i1 B) => new i4(max(A.x,B  ), max(A.y,B  ), max(A.z,B  ), max(A.w,B  ));
-    [In(line)] internal static i4 max(i1 A, i4 B) => new i4(max(A  ,B.x), max(A  ,B.y), max(A  ,B.z), max(A  ,B.w));
+    [In(line)] internal static ivec2 max(i2 A, i1 B) => new(max(A.x,B  ), max(A.y,B  ));
+    [In(line)] internal static ivec2 max(i1 A, i2 B) => new(max(A  ,B.x), max(A  ,B.y));
+    [In(line)] internal static ivec3 max(i3 A, i1 B) => new(max(A.x,B  ), max(A.y,B  ), max(A.z,B  ));
+    [In(line)] internal static ivec3 max(i1 A, i3 B) => new(max(A  ,B.x), max(A  ,B.y), max(A  ,B.z));
+    [In(line)] internal static ivec4 max(i4 A, i1 B) => new(max(A.x,B  ), max(A.y,B  ), max(A.z,B  ), max(A.w,B  ));
+    [In(line)] internal static ivec4 max(i1 A, i4 B) => new(max(A  ,B.x), max(A  ,B.y), max(A  ,B.z), max(A  ,B.w));
 
-    [In(line)] internal static i2 max(i2 A, i2 B)             => new i2(max(A.x,B.x),         max(A.y,B.y));
-    [In(line)] internal static i2 max(i2 A, i2 B, i2 C)       => new i2(max(A.x,B.x,C.x),     max(A.y,B.y,C.y));
-    [In(line)] internal static i2 max(i2 A, i2 B, i2 C, i2 D) => new i2(max(A.x,B.x,C.x,D.x), max(A.y,B.y,C.y,D.y));
-    [In(line)] internal static i3 max(i3 A, i3 B)             => new i3(max(A.x,B.x),         max(A.y,B.y),         max(A.z,B.z));
-    [In(line)] internal static i3 max(i3 A, i3 B, i3 C)       => new i3(max(A.x,B.x,C.x),     max(A.y,B.y,C.y),     max(A.z,B.z,C.z));
-    [In(line)] internal static i3 max(i3 A, i3 B, i3 C, i3 D) => new i3(max(A.x,B.x,C.x,D.x), max(A.y,B.y,C.y,D.y), max(A.z,B.z,C.z,D.z));
-    [In(line)] internal static i4 max(i4 A, i4 B)             => new i4(max(A.x,B.x),         max(A.y,B.y),         max(A.z,B.z),         max(A.w,B.w));
-    [In(line)] internal static i4 max(i4 A, i4 B, i4 C)       => new i4(max(A.x,B.x,C.x),     max(A.y,B.y,C.y),     max(A.z,B.z,C.z),     max(A.w,B.w,C.w));
-    [In(line)] internal static i4 max(i4 A, i4 B, i4 C, i4 D) => new i4(max(A.x,B.x,C.x,D.x), max(A.y,B.y,C.y,D.y), max(A.z,B.z,C.z,D.z), max(A.w,B.w,C.w,D.w));
+    [In(line)] internal static ivec2 max(i2 A, i2 B)             => new(max(A.x,B.x),         max(A.y,B.y));
+    [In(line)] internal static ivec2 max(i2 A, i2 B, i2 C)       => new(max(A.x,B.x,C.x),     max(A.y,B.y,C.y));
+    [In(line)] internal static ivec2 max(i2 A, i2 B, i2 C, i2 D) => new(max(A.x,B.x,C.x,D.x), max(A.y,B.y,C.y,D.y));
+    [In(line)] internal static ivec3 max(i3 A, i3 B)             => new(max(A.x,B.x),         max(A.y,B.y),         max(A.z,B.z));
+    [In(line)] internal static ivec3 max(i3 A, i3 B, i3 C)       => new(max(A.x,B.x,C.x),     max(A.y,B.y,C.y),     max(A.z,B.z,C.z));
+    [In(line)] internal static ivec3 max(i3 A, i3 B, i3 C, i3 D) => new(max(A.x,B.x,C.x,D.x), max(A.y,B.y,C.y,D.y), max(A.z,B.z,C.z,D.z));
+    [In(line)] internal static ivec4 max(i4 A, i4 B)             => new(max(A.x,B.x),         max(A.y,B.y),         max(A.z,B.z),         max(A.w,B.w));
+    [In(line)] internal static ivec4 max(i4 A, i4 B, i4 C)       => new(max(A.x,B.x,C.x),     max(A.y,B.y,C.y),     max(A.z,B.z,C.z),     max(A.w,B.w,C.w));
+    [In(line)] internal static ivec4 max(i4 A, i4 B, i4 C, i4 D) => new(max(A.x,B.x,C.x,D.x), max(A.y,B.y,C.y,D.y), max(A.z,B.z,C.z,D.z), max(A.w,B.w,C.w,D.w));
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -150,17 +150,17 @@ internal static class INT {
     [In(line)] internal static i1  ceil(i1 A, i1 N) => (A < 0) ? N*(     A     /N)
                                                                : N*((A + N - 1)/N);
 
-    [In(line)] internal static i2 round(i2 A, i1 N) => new i2(round(A.x,N), round(A.y,N));
-    [In(line)] internal static i3 round(i3 A, i1 N) => new i3(round(A.x,N), round(A.y,N), round(A.z,N));
-    [In(line)] internal static i4 round(i4 A, i1 N) => new i4(round(A.x,N), round(A.y,N), round(A.z,N), round(A.w,N));
+    [In(line)] internal static ivec2 round(i2 A, i1 N) => new(round(A.x,N), round(A.y,N));
+    [In(line)] internal static ivec3 round(i3 A, i1 N) => new(round(A.x,N), round(A.y,N), round(A.z,N));
+    [In(line)] internal static ivec4 round(i4 A, i1 N) => new(round(A.x,N), round(A.y,N), round(A.z,N), round(A.w,N));
 
-    [In(line)] internal static i2 floor(i2 A, i1 N) => new i2(floor(A.x,N), floor(A.y,N));
-    [In(line)] internal static i3 floor(i3 A, i1 N) => new i3(floor(A.x,N), floor(A.y,N), floor(A.z,N));
-    [In(line)] internal static i4 floor(i4 A, i1 N) => new i4(floor(A.x,N), floor(A.y,N), floor(A.z,N), floor(A.w,N));
+    [In(line)] internal static ivec2 floor(i2 A, i1 N) => new(floor(A.x,N), floor(A.y,N));
+    [In(line)] internal static ivec3 floor(i3 A, i1 N) => new(floor(A.x,N), floor(A.y,N), floor(A.z,N));
+    [In(line)] internal static ivec4 floor(i4 A, i1 N) => new(floor(A.x,N), floor(A.y,N), floor(A.z,N), floor(A.w,N));
 
-    [In(line)] internal static i2  ceil(i2 A, i1 N) => new i2(ceil(A.x,N), ceil(A.y,N));
-    [In(line)] internal static i3  ceil(i3 A, i1 N) => new i3(ceil(A.x,N), ceil(A.y,N), ceil(A.z,N));
-    [In(line)] internal static i4  ceil(i4 A, i1 N) => new i4(ceil(A.x,N), ceil(A.y,N), ceil(A.z,N), ceil(A.w,N));
+    [In(line)] internal static ivec2  ceil(i2 A, i1 N) => new(ceil(A.x,N), ceil(A.y,N));
+    [In(line)] internal static ivec3  ceil(i3 A, i1 N) => new(ceil(A.x,N), ceil(A.y,N), ceil(A.z,N));
+    [In(line)] internal static ivec4  ceil(i4 A, i1 N) => new(ceil(A.x,N), ceil(A.y,N), ceil(A.z,N), ceil(A.w,N));
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -169,6 +169,25 @@ internal static class INT {
     [In(line)] internal static s16 sign(s16 A) => s16((A < 0) ? -1 : 1);
     [In(line)] internal static s32 sign(s32 A) =>     (A < 0) ? -1 : 1;
     [In(line)] internal static s64 sign(s64 A) =>     (A < 0) ? -1 : 1;
+
+    [In(line)] internal static ivec2 sign(i2 A) => new(sign(A.x), sign(A.y));
+    [In(line)] internal static ivec3 sign(i3 A) => new(sign(A.x), sign(A.y), sign(A.z));
+    [In(line)] internal static ivec4 sign(i4 A) => new(sign(A.x), sign(A.y), sign(A.z), sign(A.w));
+
+    //==========================================================================================================================================================
+    //                                                                     Copy "Sign"
+    //      sign( AbsoluteValueOfThis, WithTheSignOfThis )
+    //
+    [In(line)] internal static s32 sign(s32 A, s32 S) => (S < 0) ? -abs(A) : abs(A);
+
+    [In(line)] internal static ivec2 sign(i2 A, i1 S) => new(sign(A.x,S  ), sign(A.y,S  ));
+    [In(line)] internal static ivec2 sign(i2 A, i2 S) => new(sign(A.x,S.x), sign(A.y,S.y));
+
+    [In(line)] internal static ivec3 sign(i3 A, i1 S) => new(sign(A.x,S  ), sign(A.y,S  ), sign(A.z,S  ));
+    [In(line)] internal static ivec3 sign(i3 A, i3 S) => new(sign(A.x,S.x), sign(A.y,S.y), sign(A.z,S.z));
+
+    [In(line)] internal static ivec4 sign(i4 A, i1 S) => new(sign(A.x,S  ), sign(A.y,S  ), sign(A.z,S  ), sign(A.w,S  ));
+    [In(line)] internal static ivec4 sign(i4 A, i4 S) => new(sign(A.x,S.x), sign(A.y,S.y), sign(A.z,S.z), sign(A.w,S.w));
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

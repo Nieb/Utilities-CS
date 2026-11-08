@@ -43,14 +43,14 @@ internal struct ivec4 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator System.ReadOnlySpan<int>(in ivec4 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 4);
-
     [In(line)] public static implicit operator   ivec4((i3 V, i1 w) T) => new   ivec4(T.V.x,T.V.y,T.V.z,  T.w); //        (ivec3,int)  to  ivec4
     [In(line)] public static implicit operator   ivec4((i2 A, i2 B) T) => new   ivec4(T.A.x,T.A.y,T.B.x,T.B.y); //      (ivec2,ivec2)  to  ivec4
     [In(line)] public static implicit operator   ivec4(        int4 T) => new   ivec4(  T.x,  T.y,  T.z,  T.w); //  (int,int,int,int)  to  ivec4
 
   //[In(line)] public static implicit operator    int4(        vec4 V) =>            (  V.x,  V.y,  V.z,  V.w); //              ivec4  to  (int,int,int,int)
     [In(line)] public static implicit operator Vector4(       ivec4 V) => new Vector4(  V.x,  V.y,  V.z,  V.w); //              ivec4  to  Vector4
+
+    [In(line)] public static implicit operator System.ReadOnlySpan<int>(in ivec4 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 4);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

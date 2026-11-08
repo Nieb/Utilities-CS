@@ -14,9 +14,11 @@ internal struct ivec2 : System.IFormattable {
     [FieldOffset(4)] public int y;                                              [FieldOffset(4)] public int v;
 
     //==========================================================================================================================================================
-    public ivec2 xy {get => this;            set => this=value;}
+    public ivec2 xy {[In(line)] get => this;            [In(line)] set => this=value;}
+    public ivec2 yx {[In(line)] get => new ivec2(y,x);  [In(line)] set {x=value.y; y=value.x;}}
 
-    public ivec2 yx {get => new ivec2(y,x);  set {x=value.y; y=value.x;}}
+    public ivec2 xx => new ivec2(x,x);
+    public ivec2 yy => new ivec2(y,y);
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     public ivec3 xy_ => new ivec3(x,y,0);
@@ -30,12 +32,12 @@ internal struct ivec2 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator System.ReadOnlySpan<int>(in ivec2 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 2);
-
     [In(line)] public static implicit operator   ivec2( int2 T) => new   ivec2( T.x, T.y); //  (int,int)  to  ivec2
 
   //[In(line)] public static implicit operator    int2(ivec2 V) =>            ( V.x, V.y); //      ivec2  to  (int,int)
     [In(line)] public static implicit operator Vector2(ivec2 V) => new Vector2( V.x, V.y); //      ivec2  to  Vector2
+
+    [In(line)] public static implicit operator System.ReadOnlySpan<int>(in ivec2 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 2);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

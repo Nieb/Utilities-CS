@@ -22,6 +22,9 @@ internal struct vec3 : System.IFormattable {
     public vec2 xz  {get => new vec2(x,z);    set {x=value.x; z=value.y;}}
     public vec2 zy  {get => new vec2(z,y);    set {z=value.x; y=value.y;}}
 
+    public vec2 xx => new vec2(x,x);
+    public vec2 yy => new vec2(y,y);
+
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     public vec3 xyz {get => this;             set => this=value;}               public vec3 rgb {get => this;  set => this=value;}
 
@@ -41,8 +44,6 @@ internal struct vec3 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator System.ReadOnlySpan<float>(in vec3 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 3);
-
     [In(line)] public static implicit operator    vec3(       ivec3 V) => new    vec3(  V.x,  V.y,  V.z); //                ivec3  to  vec3
     [In(line)] public static implicit operator    vec3((v2 V, v1 z) T) => new    vec3(T.V.x,T.V.y,  T.z); //         (vec2,float)  to  vec3
     [In(line)] public static implicit operator    vec3(      float3 T) => new    vec3(  T.x,  T.y,  T.z); //  (float,float,float)  to  vec3
@@ -50,6 +51,9 @@ internal struct vec3 : System.IFormattable {
 
   //[In(line)] public static implicit operator  float3(        vec3 V) =>            (  V.x,  V.y,  V.z); //                 vec3  to  (float,float,float)
     [In(line)] public static implicit operator Vector3(        vec3 V) => new Vector3(  V.x,  V.y,  V.z); //                 vec3  to  Vector3
+
+  //[In(line)] public static implicit operator    vec3(System.ReadOnlySpan<float> S) => new vec3(S[0],S[1],S[2]); //  [float,float,float]  to  vec3
+    [In(line)] public static implicit operator System.ReadOnlySpan<float>(in vec3 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 3);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

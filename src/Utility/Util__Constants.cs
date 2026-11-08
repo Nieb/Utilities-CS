@@ -100,6 +100,7 @@ internal static class Constants {
     internal const float PI7        = 21.99114857512855266923850368295652018938018579562574f;       //  7pi
     internal const float PI8        = 25.13274122871834590770114706623602307357735519500085f;       //  8pi
 
+    internal const float PIH_RCP    =  0.63661977236758134307553505349005744813783858296183f;       //  1 / half-pi
     internal const float PI_RCP     =  0.31830988618379067153776752674502872406891929148091f;       //  1 /  pi
     internal const float PI2_RCP    =  0.15915494309189533576888376337251436203445964574046f;       //  1 / 2pi
     internal const float PI3_RCP    =  0.10610329539459689051258917558167624135630643049364f;       //  1 / 3pi

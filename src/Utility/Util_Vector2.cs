@@ -14,9 +14,11 @@ internal struct vec2 : System.IFormattable {
     [FieldOffset(4)] public float y;                                            [FieldOffset(4)] public float v;
 
     //==========================================================================================================================================================
-    public vec2 xy {get => this;           set => this=value;}
+    public vec2 xy {[In(line)] get => this;           [In(line)] set => this=value;}
+    public vec2 yx {[In(line)] get => new vec2(y,x);  [In(line)] set {x=value.y; y=value.x;}}
 
-    public vec2 yx {get => new vec2(y,x);  set {x=value.y; y=value.x;}}
+    public vec2 xx => new vec2(x,x);
+    public vec2 yy => new vec2(y,y);
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     public vec3 xy_ => new vec3(x,y,0);
@@ -30,14 +32,14 @@ internal struct vec2 : System.IFormattable {
 
     //==========================================================================================================================================================
     //                                                                  Directly Assign
-    [In(line)] public static implicit operator System.ReadOnlySpan<float>(in vec2 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 2);
-
     [In(line)] public static implicit operator    vec2(  ivec2 V) => new    vec2( V.x, V.y); //          ivec2  to  vec2
     [In(line)] public static implicit operator    vec2( float2 T) => new    vec2( T.x, T.y); //  (float,float)  to  vec2
     [In(line)] public static implicit operator    vec2(Vector2 v) => new    vec2( v.X, v.Y); //        Vector2  to  vec2
 
   //[In(line)] public static implicit operator  float2(   vec2 V) =>            ( V.x, V.y); //           vec2  to  (float,float)
     [In(line)] public static implicit operator Vector2(   vec2 V) => new Vector2( V.x, V.y); //           vec2  to  Vector2
+
+    [In(line)] public static implicit operator System.ReadOnlySpan<float>(in vec2 V) => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in V.x), 2);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
