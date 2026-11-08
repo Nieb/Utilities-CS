@@ -205,10 +205,10 @@ internal static class VEC_Collision2 {
     //      RectVsRect(  RectPos1,  RectSize1,  RectPos2,  RectSize2  )
     //
     [In(line)] internal static bool RectVsRect( vec2 Rp1,  vec2 Rs1,  vec2 Rp2,  vec2 Rs2) => (Rp1+Rs1 >= Rp2  &&  Rp1 <= Rp2+Rs2);
-    [In(line)] internal static bool RectVsRect(ivec2 Rp1, ivec2 Rs1, ivec2 Rp2, ivec2 Rs2) => (Rp1+Rs1 >= Rp2  &&  Rp1 <  Rp2+Rs2);
+    [In(line)] internal static bool RectVsRect(ivec2 Rp1, ivec2 Rs1, ivec2 Rp2, ivec2 Rs2) => (Rp1+Rs1 >  Rp2  &&  Rp1 <  Rp2+Rs2);
 
     [In(line)] internal static bool BoundsVsBounds( vec2 a0,  vec2 a1,  vec2 b0,  vec2 b1) => (a1 >= b0  &&  a0 <= b1);
-    [In(line)] internal static bool BoundsVsBounds(ivec2 a0, ivec2 a1, ivec2 b0, ivec2 b1) => (a1 >= b0  &&  a0 <  b1);
+    [In(line)] internal static bool BoundsVsBounds(ivec2 a0, ivec2 a1, ivec2 b0, ivec2 b1) => (a1 >  b0  &&  a0 <  b1);
 
     //==========================================================================================================================================================
     //

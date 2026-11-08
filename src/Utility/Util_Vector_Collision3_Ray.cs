@@ -342,7 +342,7 @@ internal static partial class VEC_Collision3 {
     //
     //      (float HitDist, int HitSide) = RayVsVoxelChunk(  RayPos,  RayNrm,  VoxelChunkPos,  VoxelChunkSize,  Voxels  )
     //
-    internal static float RayVsGrid(vec3 Rp, vec3 Rn,    vec3 Gp, ivec3 Gs, uint[] Grid) {(float A,_) = RayVsVoxelChunk(Rp,Rn,Gp,Gs,Grid); return A;}
+    internal static float RayVsGrid(vec3 Rp, vec3 Rn,    vec3 Gp, ivec3 Gs, uint[] Grid) {(float HitDist,_) = RayVsVoxelChunk(Rp,Rn,Gp,Gs,Grid); return HitDist;}
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     internal static (float, int) RayVsVoxelChunk(vec3 Rp, vec3 Rn,    vec3 Vp, ivec3 Vs, uint[] Voxel) {
@@ -412,10 +412,6 @@ internal static partial class VEC_Collision3 {
 
         //======================================================================================================================================================
         while (true) {
-            //bool TieXY = abs(NextDist.x - NextDist.y) < EPS6;   //  The GridStep section should use these...    Instead of just falling through to Step-on-Z.
-            //bool TieYZ = abs(NextDist.y - NextDist.z) < EPS6;   //      Properly select an axis when tied?    Just cycle axis priority?
-            //bool TieZX = abs(NextDist.z - NextDist.x) < EPS6;   //      or:  If an EDGE is hit 3 Voxels should be checked.  If a CORNER is hit 7 Voxels should be checked.
-
             if (RayCoord >= 0  &&  RayCoord < Vs) {
                 if ((Voxel[idx(RayCoord,Vs)] & 0x000000FFu) != 0u) { //  if (Alpha != 0)      Assuming: RrGgBbAa (Red,Green,Blue,Alpha)
                     return (PreHitDist + HitDist, HitSide);
@@ -425,7 +421,20 @@ internal static partial class VEC_Collision3 {
                 return (RAY_MISS, HitSide);
             }
 
-            //  Which Axis has a closer GridStep along Ray?
+            //
+            //  GridStep should use these...
+            //  Instead of just falling through to a Step-on-Z.
+            //      Just cycle axis priority?
+            //       OR
+            //      Properly check all voxels?
+            //          If an EDGE is hit 3 Voxels should be checked.
+            //          If a CORNER is hit 7 Voxels should be checked.
+            //
+            //bool TieXY = abs(NextDist.x - NextDist.y) < EPS6;
+            //bool TieYZ = abs(NextDist.y - NextDist.z) < EPS6;
+            //bool TieZX = abs(NextDist.z - NextDist.x) < EPS6;
+
+            //  Which Axis has a closer GridStep along Ray?                                                        v  shouldn't this be "+" ??
             if      (NextDist.x < NextDist.y && NextDist.x < NextDist.z) {RayCoord.x += RayStep_Dir.x;  HitSide = 1-RayStep_Dir.x;  HitDist = NextDist.x;  NextDist.x += RayStep_Dist.x;}
             else if (NextDist.y < NextDist.x && NextDist.y < NextDist.z) {RayCoord.y += RayStep_Dir.y;  HitSide = 2-RayStep_Dir.y;  HitDist = NextDist.y;  NextDist.y += RayStep_Dist.y;}
             else                                                         {RayCoord.z += RayStep_Dir.z;  HitSide = 5-RayStep_Dir.z;  HitDist = NextDist.z;  NextDist.z += RayStep_Dist.z;}

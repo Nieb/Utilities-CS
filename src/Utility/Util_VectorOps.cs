@@ -455,7 +455,6 @@ internal static partial class VEC {
 
     //==========================================================================================================================================================
     //                                                                     Copy "Sign"
-    //
     //      sign( AbsoluteValueOfThis, WithTheSignOfThis )
     //
     [In(line)] internal static v1 sign(v1 A, v1 S) => MathF.CopySign(A,S);

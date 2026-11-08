@@ -20,7 +20,7 @@ internal static partial class VEC_Collision3 {
     [In(line)] internal static float WhichSideOfPlane(vec3 Pnt, vec3 Pp, vec3 Pn) => dot(Pn, Pnt-Pp);
 
     //==========================================================================================================================================================
-    public static bool BoundsInFrontOfPlane(vec3 b0, vec3 b1, vec3 Pp, vec3 Pn) => dot(Pn, FarthestPointInDirection(Pn,b0,b1)-Pp) > 0f;
+    [In(line)] public static bool BoundsInFrontOfPlane(vec3 b0, vec3 b1, vec3 Pp, vec3 Pn) => dot(Pn, FarthestPointInDirection(Pn,b0,b1)-Pp) > 0f;
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################
@@ -82,10 +82,10 @@ internal static partial class VEC_Collision3 {
     //      BoxVsBox(  RectPos1,  RectSize1,  RectPos2,  RectSize2  )
     //
     [In(line)] internal static bool BoxVsBox( vec3 Bp1,  vec3 Bs1,  vec3 Bp2,  vec3 Bs2) => (Bp1+Bs1 >= Bp2  &&  Bp1 <= Bp2+Bs2);
-    [In(line)] internal static bool BoxVsBox(ivec3 Bp1, ivec3 Bs1, ivec3 Bp2, ivec3 Bs2) => (Bp1+Bs1 >= Bp2  &&  Bp1 <  Bp2+Bs2);
+    [In(line)] internal static bool BoxVsBox(ivec3 Bp1, ivec3 Bs1, ivec3 Bp2, ivec3 Bs2) => (Bp1+Bs1 >  Bp2  &&  Bp1 <  Bp2+Bs2);
 
     [In(line)] internal static bool BoundsVsBounds( vec3 a0,  vec3 a1,  vec3 b0,  vec3 b1) => (a1 >= b0  &&  a0 <= b1);
-    [In(line)] internal static bool BoundsVsBounds(ivec3 a0, ivec3 a1, ivec3 b0, ivec3 b1) => (a1 >= b0  &&  a0 <  b1);
+    [In(line)] internal static bool BoundsVsBounds(ivec3 a0, ivec3 a1, ivec3 b0, ivec3 b1) => (a1 >  b0  &&  a0 <  b1);
 
     //##########################################################################################################################################################
     //##########################################################################################################################################################

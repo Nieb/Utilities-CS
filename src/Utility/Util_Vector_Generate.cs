@@ -9,7 +9,7 @@ internal static partial class VEC_Generate {
     internal static vec2[] Phyllotaxis2(int Count, float Radius=1f) {
         vec2[] P = new vec2[Count];
 
-        for (int i = 1; i <= Count; ++i) {
+        for (int i = 1; i < Count; ++i) {
             float Theta = i * PHI_RAD;
             float Rds = Radius * sqrt((float)i / (float)Count);
 
@@ -30,7 +30,7 @@ internal static partial class VEC_Generate {
 
         vec3[] P = new vec3[Count];
 
-        for (int i = 0; i <= Count; ++i) {
+        for (int i = 0; i < Count; ++i) {
             float Pch = asin(1f - (SphereCoverage*i / Count));
             float Yaw = i * PI2_PHI;
 
