@@ -22,11 +22,18 @@ internal struct vec3 : System.IFormattable {
     public vec2 xz  {get => new vec2(x,z);    set {x=value.x; z=value.y;}}
     public vec2 zy  {get => new vec2(z,y);    set {z=value.x; y=value.y;}}
 
+    public vec2 nxy => new vec2(-x, y);
+    public vec2 xny => new vec2( x,-y);
+
     public vec2 xx => new vec2(x,x);
     public vec2 yy => new vec2(y,y);
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     public vec3 xyz {get => this;             set => this=value;}               public vec3 rgb {get => this;  set => this=value;}
+
+    public vec3 nxyz => new vec3(-x, y, z);
+    public vec3 xnyz => new vec3( x,-y, z);
+    public vec3 xynz => new vec3( x, y,-z);
 
     public vec3 xzy {get => new vec3(x,z,y);  set {x=value.x; z=value.y; y=value.z;}}
     public vec3 zyx {get => new vec3(z,y,x);  set {z=value.x; y=value.y; x=value.z;}}

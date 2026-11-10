@@ -17,6 +17,9 @@ internal struct vec2 : System.IFormattable {
     public vec2 xy {[In(line)] get => this;           [In(line)] set => this=value;}
     public vec2 yx {[In(line)] get => new vec2(y,x);  [In(line)] set {x=value.y; y=value.x;}}
 
+    public vec2 nxy => new vec2(-x, y);
+    public vec2 xny => new vec2( x,-y);
+
     public vec2 xx => new vec2(x,x);
     public vec2 yy => new vec2(y,y);
 

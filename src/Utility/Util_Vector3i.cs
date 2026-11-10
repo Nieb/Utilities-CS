@@ -22,11 +22,18 @@ internal struct ivec3 : System.IFormattable {
     public ivec2 xz  {get => new ivec2(x,z);    set {x=value.x; z=value.y;}}
     public ivec2 zy  {get => new ivec2(z,y);    set {z=value.x; y=value.y;}}
 
+    public ivec2 nxy => new ivec2(-x, y);
+    public ivec2 xny => new ivec2( x,-y);
+
     public ivec2 xx => new ivec2(x,x);
     public ivec2 yy => new ivec2(y,y);
 
     //----------------------------------------------------------------------------------------------------------------------------------------------------------
     public ivec3 xyz {get => this;              set => this=value;}             public ivec3 rgb {get => this;  set => this=value;}
+
+    public vec3 nxyz => new vec3(-x, y, z);
+    public vec3 xnyz => new vec3( x,-y, z);
+    public vec3 xynz => new vec3( x, y,-z);
 
     public ivec3 xzy {get => new ivec3(x,z,y);  set {x=value.x; z=value.y; y=value.z;}}
     public ivec3 zyx {get => new ivec3(z,y,x);  set {z=value.x; y=value.y; x=value.z;}}

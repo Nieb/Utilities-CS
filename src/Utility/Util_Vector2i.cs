@@ -17,6 +17,9 @@ internal struct ivec2 : System.IFormattable {
     public ivec2 xy {[In(line)] get => this;            [In(line)] set => this=value;}
     public ivec2 yx {[In(line)] get => new ivec2(y,x);  [In(line)] set {x=value.y; y=value.x;}}
 
+    public ivec2 nxy => new ivec2(-x, y);
+    public ivec2 xny => new ivec2( x,-y);
+
     public ivec2 xx => new ivec2(x,x);
     public ivec2 yy => new ivec2(y,y);
 

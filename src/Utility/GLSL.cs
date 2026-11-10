@@ -19,8 +19,8 @@ internal static partial class GLSL {
         AMD GPUs do not support Optional Function-Parameters.
 
         glPointSize()  &  gl_PointSize
-            Radius   on AMD
-            Diameter on Nvidia
+            Diameter on AMD
+            Radius   on Nvidia
 
     //########################################################################################################################################################*/
     //##########################################################################################################################################################
